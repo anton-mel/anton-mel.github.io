@@ -143,52 +143,47 @@ function App() {
             <section className="main-section" id="about">
               <h1 className="page-title">Biography</h1>
               <div className="biography-content">
-                <p>Hi, I’m a rising senior at <strong>Yale University</strong> from Western Ukraine, studying <strong>Electrical Engineering & Computer Science</strong>. I’m currently conducting research in Yale’s <strong>Efficient Computing Lab</strong>, where I work on building high-performance systems with rigorous correctness guarantees.</p>
-
-                <p>My research centers on system-level innovation across <strong>operating systems, reconfigurable hardware, and distributed infrastructure</strong>. I’ve rebuilt <em>WeensyOS</em> in Rust, designed a shell for an <em>mCertiKOS</em> variant, and prototyped a video-streaming driver on a Xilinx ZCU106. Most recently, I’ve been extending a Linux-based control stack for remote reconfiguration of <strong>FPGA arrays</strong>, in collaboration with the <strong>Yale Quantum Institute</strong>.</p>
-
-                {/* <p>I’m drawn to projects where building isn’t just implementation—it’s <em>inquiry</em>. To me, engineering is a method of discovering what's possible by creating it. I hope to explore this philosophy in more depth through a personal blog, inspired by my advisor’s reflections on system building as a scientific endeavor.</p> */}
-
-                {/* <p>Beyond research, I balance my life with hands-on creativity and cultural work: baking <em>paska</em>, translating Japanese <em>kobanshi</em>, and exploring the trails of New England. My heritage continues to shape how I think and build—practical, resource-conscious, and grounded in people’s realities.</p> */}
-
-                <p>🇺🇦 <strong>Born in a small village in Western Ukraine</strong>, I carry that perspective into everything I design—whether it’s a kernel module or a human-centric toolchain.</p>
-              </div>
+              <p>
+                I’m a rising senior at Yale University from Western Ukraine, studying Electrical Engineering & Computer Science. I conduct research in the <a href="https://www.yecl.org/" target="_blank" rel="noopener noreferrer">Efficient Computing Lab</a>. 
+                My interests lies in high-performance systems with strong robustness guarantees. Currently, I’m working on FPGA system in collaboration with the <a href="https://quantuminstitute.yale.edu/Yale" target="_blank" rel="noopener noreferrer">Quantum Institute</a>.
+              </p>
+            </div>
             </section>
             {/* ───────── Publications / News ───────── */}
             <section className="main-section" id="publications">
               <h1 className="page-title">Publications & News</h1>
 
-              <div className="pub-year">[2025]</div>
+              {/* <div className="pub-year">[2025]</div>
               <ul className="pub-list">
                 <li><a href="#">TODO</a> Later</li>
                 <li><a href="#">TODO</a> Later</li>
-                {/* <li><a href="#">Weave</a> accepted to OSDI’25!</li> */}
-                {/* <li><a href="#">In-network ordering of coherence messages for release consistency</a> accepted to ISCA’25!</li> */}
-                {/* <li><a href="#">PULSE</a> accepted to ASPLOS’25!</li> */}
-              </ul>
+              </ul> */}
 
               <div className="pub-year">[2024]</div>
               <ul className="pub-list">
-                {/* <li><a href="#">NetApp Faculty Fellowship</a> — thanks NetApp!</li> */}
-                {/* <li><a href="#">Yupeng</a> has successfully defended his thesis! Congrats Dr. Tang!</li> */}
-                {/* <li><a href="#">Length leakage in oblivious storage</a> accepted to USENIX Security’24!</li> */}
-                {/* <li><a href="#">Trinity</a> accepted to EuroSys’24, wins <strong>Best Student Paper Award!</strong> Congratulations Ziming Mao!</li> */}
-                {/* <li><a href="#">PromptCache</a> accepted to MLSys’24!</li> */}
-                <li><a href="#">TODO</a> Later</li>
-                <li><a href="#">TODO</a> Later</li>
+                <li>TA'd and redesigned <a href="#projects">WeensyOS</a> in CPSC 3230.</li>
+                <li> Joined <a href="https://www.yecl.org/" target="_blank" rel="noopener noreferrer">Efficient Computing Lab</a> as a summer Research Intern.</li>
+                <li>
+                  Joined <a href="https://vision.cs.yale.edu/team/" target="_blank" rel="noopener noreferrer">Vision Lab</a> as a Research Assistant.
+                </li>
               </ul>
 
               <div className="pub-year">[2023]</div>
               <ul className="pub-list">
-                <li><a href="#">TODO</a> Later</li>
-                {/* <li><a href="#">SCALO</a> accepted to ISCA’23, wins <strong>Best Paper Award!</strong></li> */}
-                {/* <li>Work on using <a href="#">Complementary Learning Systems for prefetching in disaggregated memory</a> accepted to HotOS’23!</li> */}
-                {/* <li><a href="#">Karma</a> accepted to OSDI’23!</li> */}
-                {/* <li>Received <a href="#">Roberts Innovation Fund Award</a> for work on resource disaggregation!</li> */}
+                {/* <li>
+                  Assisted with occlusion-robust pedestrian prediction model and Omniverse synthetic data generation pipeline.
+                  </li>
+                  <li>
+                  Co-led hyperspectral pill classification project with Swedish National Forensics Lab.
+                  </li> */}
+                <li>Intern at <a href="https://www.ironflight.ai/" target="_blank" rel="noopener noreferrer">IronFlight.AI</a>.</li>
+                <li>Summer study abroad at <a href="https://www.ogu.ac.jp/english/" target="_blank" rel="noopener noreferrer">Osaka Gakuin University</a>.</li>
               </ul>
+
 
               <div className="pub-year">[2022]</div>
               <ul className="pub-list">
+                <li>Selected at <a href="https://science.yalecollege.yale.edu/stem-fellowships/funding-stem-opportunities-yale/stars" target="_blank" rel="noopener noreferrer">STARS Program</a>.</li>
                 <li>Started at Yale!</li>
               </ul>
             </section>
@@ -280,7 +275,7 @@ function App() {
                 </h2>
                 <p className="project-meta">Nov 2024 – Dec 2024 &nbsp;|&nbsp; Yale University</p>
                 <p>
-                  Developed an out-of-order execution pipeline for the PARCv2 processor in a Computer Architecture lab, integrating a Reorder Buffer (ROB) and supporting speculative execution after branch instructions. The processor improves throughput for branch-heavy workloads, with minimal speedup in general cases. <br/>
+                  Developed an out-of-order execution pipeline for the PARCv2 processor in a Computer Architecture lab, integrating a Reorder Buffer (ROB) and supporting speculative execution after branch instructions. The processor improves throughput for branch-heavy workloads. <br/>
                   <a href="public/akt33-am3785-Lab4-Report.pdf" target="_blank" rel="noopener noreferrer" style={{fontWeight: 'bold', marginTop: '5px', display: 'inline-block'}}>
                     The report with evaluations
                   </a> can be found here.
