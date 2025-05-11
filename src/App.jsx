@@ -6,6 +6,7 @@ function App() {
   const [isDarkMode, setIsDarkMode]   = useState(true);
   const [scrollProgress, setProgress] = useState(0);
   const [activeSection, setActive]    = useState('about');
+  const [showMoreProjects, setShowMoreProjects] = useState(false);
 
   /* ------------- theme toggle ------------- */
   useEffect(() => {
@@ -144,8 +145,8 @@ function App() {
               <h1 className="page-title">Biography</h1>
               <div className="biography-content">
               <p>
-                I’m a rising senior at Yale University from Western Ukraine, studying Electrical Engineering & Computer Science. I conduct research in the <a href="https://www.yecl.org/" target="_blank" rel="noopener noreferrer">Efficient Computing Lab</a>. 
-                My interests lies in high-performance systems with strong robustness guarantees. Currently, I’m working on FPGA system in collaboration with the <a href="https://quantuminstitute.yale.edu/Yale" target="_blank" rel="noopener noreferrer">Quantum Institute</a>.
+                I'm a rising senior at Yale University from Western Ukraine, studying Electrical Engineering & Computer Science. I conduct research in the <a href="https://www.yecl.org/" target="_blank" rel="noopener noreferrer">Efficient Computing Lab</a>. 
+                My interests lies in high-performance systems with strong robustness guarantees. Currently, I'm working on FPGA system in collaboration with the <a href="https://quantuminstitute.yale.edu/Yale" target="_blank" rel="noopener noreferrer">Quantum Institute</a>.
               </p>
             </div>
             </section>
@@ -248,54 +249,79 @@ function App() {
                   Eddie Kohler at Harvard and used across most Ivy League—from C to memory-safe Rust. Runs on 
                   bare-metal x86-64, showcasing physical and virtual memory layout with only minimal <code>unsafe</code> code.
                 </p>
-                <img src="public/weensyosdemo.gif" alt="WeensyOS demo" style={{ width: '100%', marginTop: '10px', borderRadius: '8px' }} />
+                <img src="public/weensyosdemo.gif" alt="WeensyOS demo" style={{ width: '100%', marginTop: '10px', marginBottom: '30px', borderRadius: '8px' }} />
               </article>
 
-              {/* Linux Flock */}
-              <article className="project">
-                <h2 className="project-title">
-                  <a href="https://github.com/anton-mel/linux-flock" target="_blank" rel="noopener noreferrer">
-                    Linux Flock for mCertiKOS
-                  </a>
-                </h2>
-                <p className="project-meta">Mar 2024 – Apr 2024 &nbsp;|&nbsp; Yale University</p>
-                <p>
-                  Designed and implemented a custom minimalistic version of Linux’s <code>flock()</code> advisory locking mechanism within <strong>mCertiKOS</strong> — a formal verified teaching operating system kernel. This was part of an advanced Operating 
-                  Systems course focused on OS fundamentals, including bootloaders, privilege levels, memory management, file systems, core preemption, 
-                 PCI device integration, and more.
-                </p>
-              </article>
 
-              {/* Out-of-Order PARCv2 Processor */}
-              <article className="project">
-                <h2 className="project-title">
-                  <a href="https://github.com/anton-mel/cpsc420" target="_blank" rel="noopener noreferrer">
-                    Out-of-Order PARCv2 Processor
-                  </a>
-                </h2>
-                <p className="project-meta">Nov 2024 – Dec 2024 &nbsp;|&nbsp; Yale University</p>
-                <p>
-                  Developed an out-of-order execution pipeline for the PARCv2 processor in a Computer Architecture lab, integrating a Reorder Buffer (ROB) and supporting speculative execution after branch instructions. The processor improves throughput for branch-heavy workloads. <br/>
-                  <a href="public/akt33-am3785-Lab4-Report.pdf" target="_blank" rel="noopener noreferrer" style={{fontWeight: 'bold', marginTop: '5px', display: 'inline-block'}}>
-                    The report with evaluations
-                  </a> can be found here.
-                </p>
-                
+                  {/* <article className="project">
+                    <h2 className="project-title">
+                      <a href="https://github.com/anton-mel/linux-flock" target="_blank" rel="noopener noreferrer">
+                        Linux Flock for mCertiKOS
+                      </a>
+                    </h2>
+                    <p className="project-meta">Mar 2024 – Apr 2024 &nbsp;|&nbsp; Yale University</p>
+                    <p>
+                      Designed and implemented a custom minimalistic version of Linux's <code>flock()</code> advisory locking mechanism within <strong>mCertiKOS</strong> — a formal verified teaching operating system kernel. This was part of an advanced Operating 
+                      Systems course focused on OS fundamentals, including bootloaders, privilege levels, memory management, file systems, core preemption, 
+                      PCI device integration, and more.
+                    </p>
+                  </article>
 
-                <img src="public/ooodemo.png" alt="WeensyOS demo" style={{ width: '100%', marginTop: '10px', borderRadius: '8px' }} />
-              </article>
-
+                  <article className="project">
+                    <h2 className="project-title">
+                      <a href="https://github.com/anton-mel/cpsc420" target="_blank" rel="noopener noreferrer">
+                        Out-of-Order PARCv2 Processor
+                      </a>
+                    </h2>
+                    <p className="project-meta">Nov 2024 – Dec 2024 &nbsp;|&nbsp; Yale University</p>
+                    <p>
+                      Developed an out-of-order execution pipeline for the PARCv2 processor in a Computer Architecture lab, integrating a Reorder Buffer (ROB) and supporting speculative execution after branch instructions. The processor improves throughput for branch-heavy workloads. <br/>
+                      <a href="public/akt33-am3785-Lab4-Report.pdf" target="_blank" rel="noopener noreferrer" style={{fontWeight: 'bold', marginTop: '5px', display: 'inline-block'}}>
+                        The report with evaluations
+                      </a> can be found here.
+                    </p>
+                    <img src="public/ooodemo.png" alt="WeensyOS demo" style={{ width: '100%', marginTop: '10px', borderRadius: '8px' }} />
+                  </article> */}
+ 
+{/* 
+              <button 
+                onClick={() => setShowMoreProjects(!showMoreProjects)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#888',
+                  cursor: 'pointer',
+                  fontSize: '1em',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  transition: 'color 0.2s ease',
+                  padding: 0,
+                  outline: 'none',
+                  marginTop: '10px',
+                  marginBottom: '20px'
+                }}
+                onMouseOver={(e) => {
+                  const button = e.currentTarget;
+                  button.style.color = 'var(--link-hover)';
+                }}
+                onMouseOut={(e) => {
+                  const button = e.currentTarget;
+                  button.style.color = '#888';
+                }}
+              >
+                {showMoreProjects ? 'Show Less' : 'Show More'}
+              </button> */}
             </section>
             {/* NEW — Classes & Teaching ----------------------------------- */}
             <section className="main-section" id="courses">
               <h1 className="page-title">Classes & Teaching</h1>
 
-              <h2>Courses I’ve TA’ed</h2>
+              <h2>Courses I've TA'ed</h2>
 
               <p>
                 <strong>CPSC 323 – Systems Programming and Computer Organization</strong><br/>
                 <em>Instructors – Prof. Lin Zhong and Prof. Jay Lim</em><br/>
-                Teaching assistant for Yale core undergraduate CS course. Redesigned two assignments, including a complete Rust rewrite of the WeensyOS kernel used in Homework 5 and the final project. Graded exams and held regular office hours to support students throughout the term.
+                Teaching assistant for Yale core cs course. Redesigned two assignments, including a complete Rust rewrite of the WeensyOS kernel used in Homework 5 and the final project. Graded exams and held regular office hours.
               </p>
 
               <h2>Coursework</h2>
