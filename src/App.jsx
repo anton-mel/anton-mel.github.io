@@ -206,7 +206,7 @@ function App() {
                   compared to traditional implementation of Raft/Paxos strong fault tolerance algorithms.
                   Containerised both clusters and deployed on AWS EKS with Terraform across three US
                   regions; evaluated performance improvement and fault-tolerance at scale using Chaos Mesh. <br/>
-                  <a href="/FastRaftProtocol.pdf" target="_blank" rel="noopener noreferrer" style={{fontWeight: 'bold', marginTop: '5px', display: 'inline-block'}}>
+                  <a href="/dist/FastRaftProtocol.pdf" target="_blank" rel="noopener noreferrer" style={{fontWeight: 'bold', marginTop: '5px', display: 'inline-block'}}>
                     This Paper
                   </a> discusses the implementation details and results. <br />
                   <a href="https://drive.google.com/file/d/1CAnlGilz4y45UXrxEveRO-Res6b4B9j5/view" target="_blank" rel="noopener noreferrer" style={{fontWeight: 'bold', marginTop: '5px', display: 'inline-block'}}>
