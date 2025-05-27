@@ -79,7 +79,7 @@ function App() {
           <div className="content-wrapper">
             <aside className="side-panel">
               <div className="avatar-container">
-                <img src="/profile.jpg" alt="Anton Melnychuk" className="avatar" />
+                <img src="public/profile.jpg" alt="Anton Melnychuk" className="avatar" />
               </div>
               <div className="personal-info">
                 <h1>Anton Melnychuk</h1>
