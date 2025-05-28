@@ -59,7 +59,7 @@ function App() {
   return (
     <>
       <div className="app">
-        <header className="header">
+        {/* <header className="header">
           <div className="scroll-progress" style={{ width: `${scrollProgress}%` }} />
           <div className="header-content">
             <a href="/" className="name">Academic Profile</a>
@@ -69,12 +69,9 @@ function App() {
               <a href="#projects"     onClick={navClick('projects')}     className={activeSection==='projects'     ? 'active' : ''}>projects</a>
               <a href="#courses"      onClick={navClick('courses')}      className={activeSection==='courses'      ? 'active' : ''}>courses</a>
 
-              <button className="theme-toggle" onClick={toggleTheme}>
-                {isDarkMode ? <FaSun /> : <FaMoon />}
-              </button>
             </nav>
           </div>
-        </header>
+        </header> */}
         <main className="main-content">
           <div className="content-wrapper">
             <aside className="side-panel">
@@ -84,10 +81,12 @@ function App() {
               <div className="personal-info">
                 <h1>Anton Melnychuk</h1>
                 <p className="description">
-                  Rising senior at Yale University
+                  Rising senior at Yale University <br/>
+                  anton [dot] melnychuk [at] yale.edu <br/>
+                  51 Prospect St, New Haven, CT
                 </p>
-                <div className="contact-info">
-                  <div className="info-item">
+                {/* <div className="contact-info"> */}
+                  {/* <div className="info-item">
                     <FaMapMarkerAlt className="icon" />
                     <a
                       href="https://www.google.com/maps/place/Arthur+K.+Watson+Hall,+51+Prospect+St,+New+Haven,+CT+06511"
@@ -96,13 +95,13 @@ function App() {
                     >
                       51 Prospect St, New Haven CT
                     </a>
-                  </div>
-                  <div className="info-item">
+                  </div> */}
+                  {/* <div className="info-item">
                     <FaUniversity className="icon" />
                     <a href="https://www.yecl.org/" target="_blank" rel="noopener noreferrer">
                       Efficient Computing Lab
                     </a>
-                  </div>
+                  </div> */}
                   {/* <div className="info-item">
                     <FaUserTie className="icon" />
                     <a
@@ -113,7 +112,7 @@ function App() {
                       Professor Anurag Khandelwal
                     </a>
                   </div> */}
-                  <div className="info-item">
+                  {/* <div className="info-item">
                     <FaBuilding className="icon" />
                     <a
                       href="https://matrix.to/#/@an.tony:matrix.org"
@@ -122,22 +121,22 @@ function App() {
                     >
                       Element, Matrix
                     </a>
-                  </div>
-                  <div className="info-item">
+                  </div> */}
+                  {/* <div className="info-item">
                     <FaEnvelope className="icon" />
                     <a href="mailto:anton.melnychuk@yale.edu">Yale Email</a>
-                  </div>
-                  <div className="info-item">
+                  </div> */}
+                  {/* <div className="info-item">
                     <FaGithub className="icon" />
                     <a href="https://github.com/anton-mel" target="_blank"
                     rel="noopener noreferrer">GitHub</a>
-                  </div>
-                  <div className="info-item">
+                  </div> */}
+                  {/* <div className="info-item">
                     <FaLinkedin className="icon" />
                     <a href="https://www.linkedin.com/in/antonmelnychuk" target="_blank"
                     rel="noopener noreferrer">LinkedIn</a>
-                  </div>
-                </div>
+                  </div> */}
+                {/* </div> */}
               </div>
             </aside>
             {/* Biography -------------------------------------------------- */}
@@ -145,7 +144,7 @@ function App() {
               <h1 className="page-title">Biography</h1>
               <div className="biography-content">
               <p>
-                I'm a rising senior at Yale University from Western Ukraine, studying Electrical Engineering & Computer Science. I conduct research in the <a href="https://www.yecl.org/" target="_blank" rel="noopener noreferrer">Efficient Computing Lab</a>. 
+                I'm a rising senior at Yale University from small village in Western Ukraine, studying Electrical Engineering & Computer Science. I conduct research in the <a href="https://www.yecl.org/" target="_blank" rel="noopener noreferrer">Efficient Computing Lab</a>. 
                 My interests lies in high-performance systems with strong robustness guarantees. Currently, I'm working on FPGA system in collaboration with the <a href="https://quantuminstitute.yale.edu/Yale" target="_blank" rel="noopener noreferrer">Quantum Institute</a>.
               </p>
             </div>
@@ -156,8 +155,8 @@ function App() {
 
               <div className="pub-year">[2025]</div>
               <ul className="pub-list">
-                <li><a href="https://lh5.googleusercontent.com/8AscVi6F78FNj-O-ylTvtIUX0zrUOkdyzlhkNTR6_aATbe4G1Z1d6oDHMFieXy8EobaTxfJZ1jSzgDwovwEnwtENzw9Sh3D8yzls_bAEBv5J6NzHsuZuXXyUNC3MYS2Apg=w1280">Multi-FPGA</a> SoC Management Research (Ongoing).</li>
-                <li><a href="https://drive.google.com/file/d/1BWq0mF_oKC9xViJjrsqc4QLI0Ru1-Xs-/view">Fast Raft</a> (vs Raft) hierarchical consensus algorithm.</li>
+                <li><a href="https://lh5.googleusercontent.com/8AscVi6F78FNj-O-ylTvtIUX0zrUOkdyzlhkNTR6_aATbe4G1Z1d6oDHMFieXy8EobaTxfJZ1jSzgDwovwEnwtENzw9Sh3D8yzls_bAEBv5J6NzHsuZuXXyUNC3MYS2Apg=w1280">[Read] Multi-FPGA</a> SoC Management Research (Ongoing).</li>
+                <li><a href="https://drive.google.com/file/d/1BWq0mF_oKC9xViJjrsqc4QLI0Ru1-Xs-/view">[Read] Fast Raft</a> (vs Raft) hierarchical consensus algorithm.</li>
               </ul>
 
               <div className="pub-year">[2024]</div>
@@ -314,17 +313,17 @@ function App() {
             </section>
             {/* NEW — Classes & Teaching ----------------------------------- */}
             <section className="main-section" id="courses">
-              <h1 className="page-title">Classes & Teaching</h1>
+              <h1 className="page-title">Courses & Teaching</h1>
 
-              <h2>Courses I've TA'ed</h2>
+              <h2 className='ta-title'>Courses I've TA'ed</h2>
 
-              <p>
+              <p className='ta-description'>
                 <strong>CPSC 323 – Systems Programming and Computer Organization</strong><br/>
                 <em>Instructors – Prof. Lin Zhong and Prof. Jay Lim</em><br/>
-                Teaching assistant for Yale core cs course. Redesigned two assignments, including a complete Rust rewrite of the WeensyOS kernel used in Homework 5 and the final project. Graded exams and held regular office hours.
+                Teaching assistant for Yale core cs course. Redesigned two assignments, including a complete Rust rewrite of the WeensyOS kernel used in Homework 5 and the final project. Graded exams and held weekly office hours (7.5 hours).
               </p>
 
-              <h2>Relevant Coursework</h2>
+              <h2 className='ta-title'>Relevant Coursework</h2>
               <ul>
                 <li><strong>EENG 420</strong> – Computer Architecture</li>
                 <li><strong>EENG 425</strong> – Introduction to VLSI System Design [Incoming]</li>
@@ -341,8 +340,8 @@ function App() {
                 <li><strong>CPSC 365</strong> – Proof-Based Algorithms</li>
                 <li><strong>CPSC 202</strong> – Discrete Mathematics</li>
                 <li><strong>MATH 225</strong> – Linear Algebra</li>
-                <li><strong>PHYS 295</strong> – Research Methods in Astrophysics</li>
-                <li><strong>ASTR 330</strong> – Scientific Computing in Astrophysics</li>
+                {/* <li><strong>PHYS 295</strong> – Research Methods in Astrophysics</li> */}
+                {/* <li><strong>ASTR 330</strong> – Scientific Computing in Astrophysics</li> */}
                 {/* <li><strong>EAST 119</strong> – Asian Art and Culture</li> */}
                 {/* <li><strong>Japanese Language</strong> – Four-year certificate program</li> */}
               </ul>
@@ -350,23 +349,14 @@ function App() {
           </div>
         </main>
       </div>
-      <footer className="footer">
+      {/* <footer className="footer">
         <div className="footer-content">
-          <div className="footer-links">
-            <a href="/">Sitemap</a>
-            <div className="footer-follow">
-              FOLLOW: 
-              <a href="https://github.com/anton-mel" className="footer-icon-link">
-                <FaGithub /> GITHUB
-              </a>
-            </div>
-          </div>
           <div className="footer-copyright">
             © 2025 Anton Melnychuk. All rights reserved. <br/>
             Site last updated 2025-04-29.
           </div>
         </div>
-      </footer>
+      </footer> */}
     </>
   )
 }

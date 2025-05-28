@@ -7,7 +7,7 @@
   --light-text: #1c1c1d;
   --dark-border: #333;
   --light-border: #e0e0e0;
-  --footer-light-bg: #f2f3f3;
+  --footer-light-bg: #ffffff;
   --footer-light-border: #bdc1c4;
 }
 
@@ -157,6 +157,7 @@ html.light .navigation a.active {
 .navigation {
   display: flex;
   gap: 1rem;
+  padding: 5px 0;
   align-items: center;
 }
 
@@ -255,11 +256,11 @@ html.light .side-panel {
 }
 
 .avatar {
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  border: 1px solid var(--dark-border);
-  padding: 5px;
+  width: 220px;
+  height: 220px;
+  /* border-radius: 50%; */
+  /* border: 1px solid var(--dark-border); */
+  /* padding: 5px; */
   object-fit: cover;
   transition: border-color 0.3s ease;
 }
@@ -318,6 +319,38 @@ html.dark .avatar {
   margin-left: 300px;
   transition: background-color 0.3s ease;
   margin-bottom: 0;
+}
+
+.main-section ul li {
+  font-size: 13.5px;
+}
+
+.main-section ul li strong {
+  width: 70px;
+  display: inline-block;
+}
+
+.project p {
+  font-size: 13.5px;
+}
+
+.project h2 {
+  font-size: 16px;
+}
+
+.ta-title {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 16px;
+  font-weight: bold;
+  color: inherit;
+}
+
+.ta-description {
+  margin-bottom: 1.5rem;
+  line-height: 1.65;
+  font-size: 13.5px;
+  margin-left: 0;
 }
 
 html.dark .main-section {
@@ -419,14 +452,15 @@ html.light .footer a:hover {
 }
 
 .page-title {
-  font-size: 32px;
+  margin-top: 1rem;
+  font-size: 24px;
   font-weight: bold;
   margin-bottom: 1.5rem;
   color: inherit;
 }
 
 .biography-content {
-  font-size: 16px;
+  font-size: 13.5px;
   line-height: 1.65;
 }
 
@@ -448,18 +482,15 @@ html.light .footer a:hover {
   transition: color 0.3s ease;
 }
 
-.biography-content a:hover {
-  text-decoration: underline;
-}
-
 /* ====== Publications styling ====== */
 .pub-year {
   font-weight: 700;
   margin: 1.8rem 0 0.6rem;
-  font-size: 20px;
+  font-size: 16px;
 }
 
 .pub-list {
+  font-size: 13.5px;
   margin: 0 0 1.6rem 1.2rem;   /* indent bullets a hair */
   padding: 0;
   line-height: 1.6;
@@ -467,5 +498,49 @@ html.light .footer a:hover {
 
 .pub-list li a {               /* reuse your teal link color */
   color: var(--accent);
+}
+
+/* Add this to your existing CSS */
+a:hover {
+  text-decoration: none;
+}
+
+/* Mobile Responsive Design */
+@media screen and (max-width: 900px) {
+  .content-wrapper {
+    padding: 0 1rem;
+  }
+
+  .side-panel {
+    position: static;
+    width: 100%;
+    padding: 1rem 0;
+    margin-bottom: 1rem;
+  }
+
+  .side-panel > * {
+    padding-right: 0;
+  }
+
+  .avatar-container {
+    justify-content: center;
+  }
+
+  .personal-info {
+    text-align: center;
+  }
+
+  .contact-info {
+    display: none;
+  }
+
+  .main-section {
+    margin-left: 0;
+    padding: 0;
+  }
+
+  .info-item {
+    justify-content: center;
+  }
 }
 
