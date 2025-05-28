@@ -3,15 +3,9 @@ import './App.css'
 import { FaMapMarkerAlt, FaUniversity, FaUserTie, FaBuilding, FaEnvelope, FaGithub, FaLinkedin, FaSun, FaMoon } from 'react-icons/fa'
 
 function App() {
-  const [isDarkMode, setIsDarkMode]   = useState(false);
   const [scrollProgress, setProgress] = useState(0);
   const [activeSection, setActive]    = useState('about');
   const [showMoreProjects, setShowMoreProjects] = useState(false);
-
-  /* ------------- theme toggle ------------- */
-  useEffect(() => {
-    document.documentElement.className = isDarkMode ? 'dark' : 'light';
-  }, [isDarkMode]);
 
   /* ------------- scroll handler (progress bar + active tab) ------------- */
   const handleScroll = useCallback(() => {
@@ -38,7 +32,6 @@ function App() {
   }, [handleScroll]);
 
   /* ------------- helpers ------------- */
-  const toggleTheme   = () => setIsDarkMode(!isDarkMode);
   const navClick = id => e => {
     e.preventDefault();                       // stop default anchor jump
     setActive(id);                            // mark link active now
