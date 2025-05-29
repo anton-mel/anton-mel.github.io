@@ -1,6 +1,8 @@
 :root {
-  --accent:        #32afaf;
+  --accent: #32afaf;
+  --accent-hover: #1f8383;
 
+  --content-w: 920px;
   --light-bg: #ffffff;
   --light-text: #1c1c1d;
   --light-border: #e0e0e0;
@@ -9,7 +11,8 @@
   background: #ffffff;
 }
 
-html, body {
+html,
+body {
   background-color: #ffffff;
   margin: 0;
   padding: 0;
@@ -63,14 +66,9 @@ body {
   transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-.footer a:hover {
-  color: var(--light-text);
-}
-
 .main-section {
   flex: 1;
-  padding: 0 2rem;
-  margin-left: 300px;
+  margin-left: 320px;
   background-color: var(--light-bg);
   color: var(--light-text);
   transition: background-color 0.3s ease;
@@ -78,7 +76,7 @@ body {
 }
 
 .side-panel {
-  width: 270px;
+  width: 300px;
   flex-shrink: 0;
   padding-top: 20px;
   position: fixed;
@@ -94,8 +92,14 @@ body {
 }
 
 /* global link colour */
-a { color: var(--accent); }
-a:hover { color: var(--accent); }
+a {
+  color: var(--accent);
+}
+
+a:hover {
+  cursor: pointer;
+  color: var(--accent-hover);
+}
 
 .logo {
   height: 6em;
@@ -103,17 +107,12 @@ a:hover { color: var(--accent); }
   will-change: filter;
   transition: filter 300ms;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
 
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -134,7 +133,7 @@ a:hover { color: var(--accent); }
 }
 
 .header-content {
-  max-width: 1200px;
+  max-width: var(--content-w);
   margin: 0 auto;
   padding: 0 2rem;
   display: flex;
@@ -151,27 +150,11 @@ a:hover { color: var(--accent); }
   transition: color 0.3s ease;
 }
 
-.name:hover {
-  color: var(--accent);
-}
-
 .navigation {
   display: flex;
   gap: 1rem;
   padding: 5px 0;
   align-items: center;
-}
-
-.navigation a {
-  color: var(--accent);
-  text-decoration: none;
-  font-size: 16px;
-  font-weight: bold;
-  transition: color 0.3s ease;
-}
-
-.navigation a:hover {
-  color: var(--accent);
 }
 
 .theme-toggle {
@@ -187,10 +170,6 @@ a:hover { color: var(--accent); }
   outline: none;
   -webkit-tap-highlight-color: transparent;
   transition: color 0.3s ease;
-}
-
-.theme-toggle:hover {
-  color: var(--accent);
 }
 
 .theme-toggle:focus {
@@ -209,16 +188,17 @@ a:hover { color: var(--accent); }
 }
 
 .content-wrapper {
-  max-width: 1200px;
+  max-width: var(--content-w);
   margin: 0 auto;
   padding: 0 2rem;
   padding-bottom: 2rem;
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - 80px - 100px); /* Subtract header height and footer height */
+  min-height: calc(100vh - 80px - 100px);
+  /* Subtract header height and footer height */
 }
 
-.side-panel > * {
+.side-panel>* {
   padding-right: 2rem;
 }
 
@@ -229,8 +209,8 @@ a:hover { color: var(--accent); }
 }
 
 .avatar {
-  width: 220px;
-  height: 220px;
+  width: 250px;
+  height: 250px;
   /* border-radius: 50%; */
   /* border: 1px solid var(--dark-border); */
   /* padding: 5px; */
@@ -251,7 +231,15 @@ a:hover { color: var(--accent); }
 .description {
   margin-bottom: 1.5rem;
   line-height: 1.4;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  row-gap: 3px;
   font-size: 13.5px;
+}
+
+.description li {
+  list-style: none;
 }
 
 .contact-info {
@@ -321,7 +309,7 @@ a:hover { color: var(--accent); }
 }
 
 .footer-content {
-  max-width: 1200px;
+  max-width: var(--content-w);
   margin: 0 auto;
   padding: 0 2rem;
 }
@@ -334,7 +322,7 @@ a:hover { color: var(--accent); }
   margin-bottom: 0.2rem;
 }
 
-.footer-links > a {
+.footer-links>a {
   font-size: 18px;
   color: var(--accent);
   font-weight: bold;
@@ -398,12 +386,6 @@ a:hover { color: var(--accent); }
   margin-bottom: 1.5rem;
 }
 
-.biography-content a {
-  color: var(--accent);
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
 /* ====== Publications styling ====== */
 .pub-year {
   font-weight: 700;
@@ -413,16 +395,12 @@ a:hover { color: var(--accent); }
 
 .pub-list {
   font-size: 13.5px;
-  margin: 0 0 1.6rem 1.2rem;   /* indent bullets a hair */
+  margin: 0 0 1.6rem 1.2rem;
+  /* indent bullets a hair */
   padding: 0;
   line-height: 1.6;
 }
 
-.pub-list li a {               /* reuse your teal link color */
-  color: var(--accent);
-}
-
-/* Add this to your existing CSS */
 a:hover {
   text-decoration: none;
 }
@@ -440,7 +418,7 @@ a:hover {
     margin-bottom: 1rem;
   }
 
-  .side-panel > * {
+  .side-panel>* {
     padding-right: 0;
   }
 
@@ -465,4 +443,3 @@ a:hover {
     justify-content: center;
   }
 }
-

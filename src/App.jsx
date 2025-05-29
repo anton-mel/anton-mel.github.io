@@ -4,19 +4,19 @@ import { FaMapMarkerAlt, FaUniversity, FaUserTie, FaBuilding, FaEnvelope, FaGith
 
 function App() {
   const [scrollProgress, setProgress] = useState(0);
-  const [activeSection, setActive]    = useState('about');
+  const [activeSection, setActive] = useState('about');
   const [showMoreProjects, setShowMoreProjects] = useState(false);
 
   /* ------------- scroll handler (progress bar + active tab) ------------- */
   const handleScroll = useCallback(() => {
-    const total   = document.documentElement.scrollHeight - window.innerHeight;
+    const total = document.documentElement.scrollHeight - window.innerHeight;
     const current = window.scrollY;
     setProgress((current / total) * 100);
 
     /* figure out which .main-section is currently near the top */
     const sections = document.querySelectorAll('.main-section');
-    const headerH  = 90;                       // header + margin safety
-    let currentId  = activeSection;
+    const headerH = 90;                       // header + margin safety
+    let currentId = activeSection;
 
     sections.forEach(sec => {
       const top = sec.getBoundingClientRect().top;
@@ -39,15 +39,15 @@ function App() {
     const el = document.getElementById(id);
     if (!el) return;
 
-    const offset   = 80;                      // ↓ your desired clearance
-    const yPos     = el.getBoundingClientRect().top + window.scrollY - offset;
+    const offset = 80;                      // ↓ your desired clearance
+    const yPos = el.getBoundingClientRect().top + window.scrollY - offset;
 
     window.scrollTo({ top: yPos, behavior: 'smooth' });
 
     // keep hash in the address bar so the page can be shared / refreshed
     history.replaceState(null, '', `#${id}`);
   };
-  
+
 
   return (
     <>
@@ -73,13 +73,14 @@ function App() {
               </div>
               <div className="personal-info">
                 <h1>Anton Melnychuk</h1>
-                <p className="description">
-                  Rising senior at Yale University <br/>
-                  anton [dot] melnychuk [at] yale.edu <br/>
-                  51 Prospect St, New Haven, CT
-                </p>
+                <ul className="description">
+                  <li>51 Prospect St, New Haven, CT</li>
+                  <li>Contact: <a>anton.melnychuk [at] yale.edu</a></li>
+                  <li>GitHub: <a href='https://github.com/anton-mel'>anton-mel</a></li>
+                  <li><a>Full CV</a></li>
+                </ul>
                 {/* <div className="contact-info"> */}
-                  {/* <div className="info-item">
+                {/* <div className="info-item">
                     <FaMapMarkerAlt className="icon" />
                     <a
                       href="https://www.google.com/maps/place/Arthur+K.+Watson+Hall,+51+Prospect+St,+New+Haven,+CT+06511"
@@ -89,13 +90,13 @@ function App() {
                       51 Prospect St, New Haven CT
                     </a>
                   </div> */}
-                  {/* <div className="info-item">
+                {/* <div className="info-item">
                     <FaUniversity className="icon" />
                     <a href="https://www.yecl.org/" target="_blank" rel="noopener noreferrer">
                       Efficient Computing Lab
                     </a>
                   </div> */}
-                  {/* <div className="info-item">
+                {/* <div className="info-item">
                     <FaUserTie className="icon" />
                     <a
                       href="https://www.anuragkhandelwal.com/"
@@ -105,7 +106,7 @@ function App() {
                       Professor Anurag Khandelwal
                     </a>
                   </div> */}
-                  {/* <div className="info-item">
+                {/* <div className="info-item">
                     <FaBuilding className="icon" />
                     <a
                       href="https://matrix.to/#/@an.tony:matrix.org"
@@ -115,16 +116,16 @@ function App() {
                       Element, Matrix
                     </a>
                   </div> */}
-                  {/* <div className="info-item">
+                {/* <div className="info-item">
                     <FaEnvelope className="icon" />
                     <a href="mailto:anton.melnychuk@yale.edu">Yale Email</a>
                   </div> */}
-                  {/* <div className="info-item">
+                {/* <div className="info-item">
                     <FaGithub className="icon" />
                     <a href="https://github.com/anton-mel" target="_blank"
                     rel="noopener noreferrer">GitHub</a>
                   </div> */}
-                  {/* <div className="info-item">
+                {/* <div className="info-item">
                     <FaLinkedin className="icon" />
                     <a href="https://www.linkedin.com/in/antonmelnychuk" target="_blank"
                     rel="noopener noreferrer">LinkedIn</a>
@@ -136,11 +137,18 @@ function App() {
             <section className="main-section" id="about">
               <h1 className="page-title">Biography</h1>
               <div className="biography-content">
-              <p>
-                I'm a rising senior at Yale University from small village in Western Ukraine, studying Electrical Engineering & Computer Science. I conduct research in the <a href="https://www.yecl.org/" target="_blank" rel="noopener noreferrer">Efficient Computing Lab</a>. 
-                My interests lies in high-performance systems with strong robustness guarantees. Currently, I'm working on FPGA system in collaboration with the <a href="https://quantuminstitute.yale.edu/Yale" target="_blank" rel="noopener noreferrer">Quantum Institute</a>.
-              </p>
-            </div>
+                <p>
+                  I'm a rising senior at Yale University from a small village in Ukraine, studying Electrical Engineering & Computer Science with a Japanese
+                  Language Certificate. I conduct research in the <a href="https://www.yecl.org/" target="_blank" rel="noopener noreferrer">Efficient Computing Lab</a>, advised by <a href="https://www.linzhong.org/" target="_blank" rel="noopener noreferrer">
+                    Prof. Lin Zhong.</a> My interest lie in high-performance systems with strong robustness guarantees, spanning topics such as distributed systems, computer architecture, and hardware acceleration.
+                  As a first-generation, low-income international student, I care deeply about building systems as a way to drive social impact by bridging research hypotheses with real-world engineering challenges.
+                </p>
+                <p>
+                  Currently, I'm working on large-scale multi-FPGA SoC management systems in collaboration with the
+                  <a href="https://quantuminstitute.yale.edu/Yale" target="_blank" rel="noopener noreferrer"> Yale Quantum Institute</a>. Previously, I have built a custom Rust OS, explored full compile-time features to shift hardware responsibilities, contributed to reintroducing Rust LKM support in the Linux 22.02 release, and worked on lightweight OS verification techniques for TheseusOS.
+                </p>
+
+              </div>
             </section>
             {/* ───────── Publications / News ───────── */}
             <section className="main-section" id="publications">
@@ -162,17 +170,16 @@ function App() {
               </ul>
 
               <div className="pub-year">[2023]</div>
-              <ul className="pub-list">
-                {/* <li>
+              {/* <ul className="pub-list">
+                <li>
                   Assisted with occlusion-robust pedestrian prediction model and Omniverse synthetic data generation pipeline.
                   </li>
                   <li>
                   Co-led hyperspectral pill classification project with Swedish National Forensics Lab.
-                  </li> */}
+                  </li>
                 <li>Intern at <a href="https://www.ironflight.ai/" target="_blank" rel="noopener noreferrer">IronFlight.AI</a> as a Drone Embedded Developer.</li>
                 <li>Summer study abroad at <a href="https://www.ogu.ac.jp/english/" target="_blank" rel="noopener noreferrer">Osaka Gakuin University</a>.</li>
-              </ul>
-
+              </ul>*/}
 
               {/* <div className="pub-year">[2022]</div>
               <ul className="pub-list">
@@ -191,13 +198,13 @@ function App() {
                     Fast-Raft Network Consensus
                   </a>
                 </h2>
-                <p className="project-meta">Nov 2024 – Dec 2024 &nbsp;|&nbsp; Yale University [Research Project]</p>
+                <p className="project-meta">Nov 2024 – Dec 2024 &nbsp;|&nbsp; Yale University</p>
                 <p>
-                  Implemented the first <strong>gRPC-based Fast-Raft</strong> (hierarchical consensus) in Go,
-                  doubling speed and boosting throughput 5× for globally distributed, mobile-style networks, 
+                  Implemented the first gRPC-based Fast-Raft (hierarchical consensus) in Go,
+                  doubling speed and boosting throughput 5× for globally distributed, mobile-style networks,
                   compared to traditional implementation of Raft/Paxos strong fault tolerance algorithms.
                   Containerised both clusters and deployed on AWS EKS with Terraform across three US
-                  regions; evaluated performance improvement and fault-tolerance at scale using Chaos Mesh. <br/>
+                  regions; evaluated performance improvement and fault-tolerance at scale using Chaos Mesh. <br />
                   {/* <a href="/dist/FastRaftProtocol.pdf" target="_blank" rel="noopener noreferrer" style={{fontWeight: 'bold', marginTop: '5px', display: 'inline-block'}}>
                     This Paper
                   </a> discusses the implementation details and results. <br />
@@ -221,10 +228,10 @@ function App() {
                   </a>
                 </p>
                 <p>
-                  Contributed to the <em>Rust for Linux</em> initiative. Recompiled and set up a custom version 
-                  of Linux to support Rust-based kernel modules, contributing to the integration of Rust into the Linux kernel, with plans for eventual submission 
-                  to the Linux Kernel Mailing List (LKML). Allowed system developers to write custom Linux loadable kernel modules for thread-safe file operations, 
-                  minimizing <code>unsafe</code> blocks while ensuring compatibility with cross-compilation. 
+                  Contributed to the <em>Rust for Linux</em> initiative. Recompiled and set up a custom version
+                  of Linux to support Rust-based kernel modules, contributing to the integration of Rust into the Linux kernel, with plans for eventual submission
+                  to the Linux Kernel Mailing List (LKML). Allowed system developers to write custom Linux loadable kernel modules for thread-safe file operations,
+                  minimizing <code>unsafe</code> blocks while ensuring compatibility with cross-compilation.
                 </p>
               </article>
 
@@ -237,7 +244,7 @@ function App() {
                 </h2>
                 <p className="project-meta">May 2024 – Aug 2024 &nbsp;|&nbsp; Academic curriculum</p>
                 <p>
-                  Reimagined core systems curriculum by re-engineering <em>WeensyOS</em>—a minimalist teaching kernel created by Prof. 
+                  Reimagined core systems curriculum by re-engineering <em>WeensyOS</em>—a minimalist teaching kernel created by Prof.
                   Eddie Kohler at Harvard and used across 6 Ivy League to teach core OS concepts. It runs on bare-metal x86-64 machines (QEMU emulated CPUs) with POSIX compatibility and newly added microkernel design.
                   Rust-WeensyOS aims for a complete segfault-free experience, inspired by Rust OS pioneers like <a href="https://www.redox-os.org/" target="_blank" rel="noopener noreferrer">RedoxOS</a>.
                 </p>
@@ -245,7 +252,7 @@ function App() {
               </article>
 
 
-                  {/* <article className="project">
+              {/* <article className="project">
                     <h2 className="project-title">
                       <a href="https://github.com/anton-mel/linux-flock" target="_blank" rel="noopener noreferrer">
                         Linux Flock for mCertiKOS
@@ -274,8 +281,8 @@ function App() {
                     </p>
                     <img src="public/ooodemo.png" alt="WeensyOS demo" style={{ width: '100%', marginTop: '10px', borderRadius: '8px' }} />
                   </article> */}
- 
-{/* 
+
+              {/* 
               <button 
                 onClick={() => setShowMoreProjects(!showMoreProjects)}
                 style={{
@@ -311,8 +318,8 @@ function App() {
               <h2 className='ta-title'>Courses I've TA'ed</h2>
 
               <p className='ta-description'>
-                <strong>CPSC 323 – Systems Programming and Computer Organization</strong><br/>
-                <em>Instructors – Prof. Lin Zhong and Prof. Jay Lim</em><br/>
+                <strong>CPSC 323 – Systems Programming and Computer Organization</strong><br />
+                <em>Instructors – Prof. Lin Zhong and Prof. Jay Lim</em><br />
                 Teaching assistant for Yale core cs course. Redesigned two assignments, including a complete Rust rewrite of the WeensyOS kernel used in Homework 5 and the final project. Graded exams and held weekly office hours (7.5 hours).
               </p>
 
@@ -338,6 +345,25 @@ function App() {
                 {/* <li><strong>EAST 119</strong> – Asian Art and Culture</li> */}
                 {/* <li><strong>Japanese Language</strong> – Four-year certificate program</li> */}
               </ul>
+            </section>
+
+            <section className="main-section" id="projects">
+              <h1 className="page-title">Volunteering</h1>
+
+              {/* Iron Flight AI */}
+              <article className="project">
+                <h2 className="project-title">
+                  <a href="https://github.com/anton-mel/FastRaft" target="_blank" rel="noopener noreferrer">
+                    IronFlight.AI
+                  </a>
+                </h2>
+                <p className="project-meta">Nov 2024 – Dec 2024 &nbsp;|&nbsp; Drone Embedded Developer</p>
+                <p>
+                  Volunteered to support drone-based humanitarian R&D technology in Ukraine. Implemented an edge-computing pipeline by partitioning an object-tracking neural network for drone-server inference over UDP to reduce the hardware requirements and the drone market price.
+                  Optimized performance at the kernel-user boundary using custom NET and V4L2 Linux kernel modules.
+                  Developed lightweight, on-chip object-tracking models prior to deploying new system.
+                </p>
+              </article>
             </section>
           </div>
         </main>
