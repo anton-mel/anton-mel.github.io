@@ -145,7 +145,7 @@ function App() {
                 </p>
                 <p>
                   Currently, I'm working on large-scale multi-FPGA SoC management systems in collaboration with the
-                  <a href="https://quantuminstitute.yale.edu/Yale" target="_blank" rel="noopener noreferrer"> Yale Quantum Institute</a>. Previously, I have built a custom Rust OS, explored full compile-time features to shift hardware responsibilities, contributed to reintroducing Rust LKM support in the Linux 22.02 release, and worked on lightweight OS verification techniques for TheseusOS.
+                  <a href="https://quantuminstitute.yale.edu/" target="_blank" rel="noopener noreferrer"> Yale Quantum Institute</a>. Previously, I have built a custom Rust OS, explored full compile-time features to shift hardware responsibilities, contributed to reintroducing Rust LKM support in the Linux 22.02 release, and worked on lightweight OS verification techniques for TheseusOS.
                 </p>
 
               </div>
@@ -353,7 +353,7 @@ function App() {
               {/* Iron Flight AI */}
               <article className="project">
                 <h2 className="project-title">
-                  <a href="https://github.com/anton-mel/FastRaft" target="_blank" rel="noopener noreferrer">
+                  <a href="https://www.ironflight.ai/" target="_blank" rel="noopener noreferrer">
                     IronFlight.AI
                   </a>
                 </h2>
@@ -362,6 +362,19 @@ function App() {
                   Volunteered to support drone-based humanitarian R&D technology in Ukraine. Implemented an edge-computing pipeline by partitioning an object-tracking neural network for drone-server inference over UDP to reduce the hardware requirements and the drone market price.
                   Optimized performance at the kernel-user boundary using custom NET and V4L2 Linux kernel modules.
                   Developed lightweight, on-chip object-tracking models prior to deploying new system.
+                </p>
+              </article>
+
+              {/* Ukraine Global Scholars */}
+              <article className="project">
+                <h2 className="project-title">
+                  <a href="https://www.ugs.foundation/" target="_blank" rel="noopener noreferrer">
+                    Ukraine Global Scholars
+                  </a>
+                </h2>
+                <p className="project-meta">June 2021 – Present &nbsp;|&nbsp; Alumni</p>
+                <p>
+                  Ukraine Global Scholars (UGS) is a non-profit organization that has helped 300+ Ukrainian high school students from modest backgrounds receive $78+ million in scholarships to top global boarding schools and colleges.
                 </p>
               </article>
             </section>

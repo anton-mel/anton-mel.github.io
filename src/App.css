@@ -411,6 +411,10 @@ a:hover {
     padding: 0 1rem;
   }
 
+  .main-content {
+    padding-bottom: 20px;
+  }
+
   .side-panel {
     position: static;
     width: 100%;
