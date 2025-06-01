@@ -140,12 +140,12 @@ function App() {
                 <p>
                   I'm a rising senior at Yale University from a small village in Ukraine, studying Electrical Engineering & Computer Science with a Japanese
                   Language Certificate. I conduct research in the <a href="https://www.yecl.org/" target="_blank" rel="noopener noreferrer">Efficient Computing Lab</a>, advised by <a href="https://www.linzhong.org/" target="_blank" rel="noopener noreferrer">
-                    Prof. Lin Zhong.</a> My interest lie in high-performance systems with strong robustness guarantees, spanning topics such as distributed systems, computer architecture, and hardware acceleration.
-                  As a first-generation, low-income international student, I care deeply about building systems as a way to drive social impact by bridging research hypotheses with real-world engineering challenges.
+                    Prof. Lin Zhong.</a> My interest lie in <strong>high-performance systems with strong robustness guarantees,</strong> spanning topics such as distributed systems, computer architecture, and hardware acceleration.
+                  As a first-generation, low-income international student, I care deeply about building systems as a way to drive social impact by bridging research hypotheses with real-world engineering challenges. In my free time, I <a href="#volunteering" onClick={navClick('volunteering')}>experiment with</a> and assemble drones in support of Ukraine's drone R&D efforts.
                 </p>
                 <p>
-                  Currently, I'm working on large-scale multi-FPGA SoC management systems in collaboration with the
-                  <a href="https://quantuminstitute.yale.edu/" target="_blank" rel="noopener noreferrer"> Yale Quantum Institute</a>. Previously, I have built a custom Rust OS, explored full compile-time features to shift hardware responsibilities, contributed to reintroducing Rust LKM support in the Linux 22.02 release, and worked on lightweight OS verification techniques for TheseusOS.
+                  Currently, I'm working on large-scale multi-FPGA System-on-Chip (SoC) management systems in collaboration with the
+                  <a href="https://quantuminstitute.yale.edu/" target="_blank" rel="noopener noreferrer"> Yale Quantum Institute</a>. Previously, I have built a custom Rust OS used for teaching purposes at Yale, explored full compile-time capabilities to shift low-level hardware responsibilities up the software stack, contributed to reintroducing <a href='https://rust-for-linux.com/' target="_blank">Rust LKM support</a> in the Linux 22.02 release, and worked on lightweight OS verification techniques for TheseusOS.
                 </p>
 
               </div>
@@ -200,11 +200,8 @@ function App() {
                 </h2>
                 <p className="project-meta">Nov 2024 – Dec 2024 &nbsp;|&nbsp; Yale University</p>
                 <p>
-                  Implemented the first gRPC-based Fast-Raft (hierarchical consensus) in Go,
-                  doubling speed and boosting throughput 5× for globally distributed, mobile-style networks,
-                  compared to traditional implementation of Raft/Paxos strong fault tolerance algorithms.
-                  Containerised both clusters and deployed on AWS EKS with Terraform across three US
-                  regions; evaluated performance improvement and fault-tolerance at scale using Chaos Mesh. <br />
+                  <strong>First</strong> open-source implementation of the <strong>gRPC-based Fast-Raft protocol</strong>, a hierarchical consensus algorithm optimized for globally distributed highly-dynamic systems like mobile networks. Achieved a 2× speedup and a 5× increase in throughput best-case compared to traditional Raft and Paxos algorithms. Containerized cluster nodes and deployed them on AWS EKS using Terraform across three US regions. Performance improvements and fault tolerance were rigorously evaluated at scale using Chaos Mesh for fault injection and resilience testing. <br />
+
                   {/* <a href="/dist/FastRaftProtocol.pdf" target="_blank" rel="noopener noreferrer" style={{fontWeight: 'bold', marginTop: '5px', display: 'inline-block'}}>
                     This Paper
                   </a> discusses the implementation details and results. <br />
@@ -229,7 +226,7 @@ function App() {
                 </p>
                 <p>
                   Contributed to the <em>Rust for Linux</em> initiative. Recompiled and set up a custom version
-                  of Linux to support Rust-based kernel modules, contributing to the integration of Rust into the Linux kernel, with plans for eventual submission
+                  of Linux to <strong>support Rust-based kernel drivers,</strong> contributing to the integration of Rust into the Linux kernel, with plans for eventual submission
                   to the Linux Kernel Mailing List (LKML). Allowed system developers to write custom Linux loadable kernel modules for thread-safe file operations,
                   minimizing <code>unsafe</code> blocks while ensuring compatibility with cross-compilation.
                 </p>
@@ -246,7 +243,7 @@ function App() {
                 <p>
                   Reimagined core systems curriculum by re-engineering <em>WeensyOS</em>—a minimalist teaching kernel created by Prof.
                   Eddie Kohler at Harvard and used across 6 Ivy League to teach core OS concepts. It runs on bare-metal x86-64 machines (QEMU emulated CPUs) with POSIX compatibility and newly added microkernel design.
-                  Rust-WeensyOS aims for a complete segfault-free experience, inspired by Rust OS pioneers like <a href="https://www.redox-os.org/" target="_blank" rel="noopener noreferrer">RedoxOS</a>.
+                  Rust-WeensyOS aims for a complete segfault-free experience, inspired by Rust OS pioneers like <a href="https://www.redox-os.org/" target="_blank" rel="noopener noreferrer">RedoxOS</a>. Its previous version <strong>presents the first known-to-me attempt</strong> to statically offload major core kernel management services via two foreign function interfaces (FFI), as a proof of concept for the feasibility of transitioning portions of the Linux kernel to Rust.
                 </p>
                 {/* <img src="public/weensyosdemo.gif" alt="WeensyOS demo" style={{ width: '100%', marginTop: '10px', marginBottom: '30px', borderRadius: '8px' }} /> */}
               </article>
@@ -320,7 +317,7 @@ function App() {
               <p className='ta-description'>
                 <strong>CPSC 323 – Systems Programming and Computer Organization</strong><br />
                 <em>Instructors – Prof. Lin Zhong and Prof. Jay Lim</em><br />
-                Teaching assistant for Yale core cs course. Redesigned two assignments, including a complete Rust rewrite of the WeensyOS kernel used in Homework 5 and the final project. Graded exams and held weekly office hours (7.5 hours).
+                Teaching assistant for Yale core systems course with 400+ students. Redesigned two assignments, including a complete Rust rewrite of the WeensyOS kernel used in Homework 5 and the final project. Graded exams and held weekly office hours (7.5 hours).
               </p>
 
               <h2 className='ta-title'>Relevant Coursework</h2>
@@ -347,7 +344,7 @@ function App() {
               </ul>
             </section>
 
-            <section className="main-section" id="projects">
+            <section className="main-section" id="volunteering">
               <h1 className="page-title">Volunteering</h1>
 
               {/* Iron Flight AI */}
