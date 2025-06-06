@@ -139,13 +139,12 @@ function App() {
               <div className="biography-content">
                 <p>
                   I'm a rising senior at Yale University from a small village in Ukraine, studying Electrical Engineering & Computer Science with a Japanese
-                  Language Certificate. I conduct research in the <a href="https://www.yecl.org/" target="_blank" rel="noopener noreferrer">Efficient Computing Lab</a>, advised by <a href="https://www.linzhong.org/" target="_blank" rel="noopener noreferrer">
-                    Prof. Lin Zhong.</a> My interest lie in <strong>high-performance systems with strong robustness guarantees,</strong> spanning topics such as distributed systems, computer architecture, and hardware acceleration.
-                  As a first-generation, low-income international student, I care deeply about building systems as a way to drive social impact by bridging research hypotheses with real-world engineering challenges. In my free time, I <a href="#volunteering" onClick={navClick('volunteering')}>experiment with</a> and assemble drones in support of Ukraine's drone R&D efforts.
+                  Language Certificate. I’m fortunate to be involved in research at the <a href="https://www.yecl.org/" target="_blank" rel="noopener noreferrer">Efficient Computing Lab</a>, where I work under the guidance of <a href="https://www.linzhong.org/" target="_blank" rel="noopener noreferrer">Prof. Lin Zhong</a>. My interest lie in <strong>high-performance systems with strong robustness guarantees</strong>.
+                  As a first-generation, low-income international student, I care deeply about building systems as a way to drive social impact by bridging research hypotheses with real-world engineering challenges. In my free time, I assemble and experiment with drones in support of Ukraine's drone R&D.
                 </p>
                 <p>
                   Currently, I'm working on large-scale multi-FPGA System-on-Chip (SoC) management systems in collaboration with the
-                  <a href="https://quantuminstitute.yale.edu/" target="_blank" rel="noopener noreferrer"> Yale Quantum Institute</a>. Previously, I have built a custom Rust OS used for teaching purposes at Yale, explored full compile-time capabilities to shift low-level hardware responsibilities up the software stack, contributed to reintroducing <a href='https://rust-for-linux.com/' target="_blank">Rust LKM support</a> in the Linux 22.02 release, and worked on lightweight OS verification techniques for TheseusOS.
+                  Yale Quantum Institute. Previously, I have built a custom Rust OS used for teaching purposes at Yale, explored full compile-time capabilities to shift low-level hardware responsibilities up the software stack, contributed to reintroducing <a href='https://rust-for-linux.com/' target="_blank">Rust LKM support</a> in the Linux 22.02 release, and worked on lightweight OS verification techniques for TheseusOS.
                 </p>
 
               </div>
