@@ -77,7 +77,6 @@ function App() {
                   <li>51 Prospect St, New Haven, CT</li>
                   <li>Contact: <a>anton.melnychuk [at] yale.edu</a></li>
                   <li>GitHub: <a href='https://github.com/anton-mel'>anton-mel</a></li>
-                  <li><a>Full CV</a></li>
                 </ul>
                 {/* <div className="contact-info"> */}
                 {/* <div className="info-item">
@@ -138,13 +137,15 @@ function App() {
               <h1 className="page-title">Biography</h1>
               <div className="biography-content">
                 <p>
-                  I'm a rising senior at Yale University from a small village in Ukraine, studying Electrical Engineering & Computer Science with a Japanese
-                  Language Certificate. I’m fortunate to be involved in research at the <a href="https://www.yecl.org/" target="_blank" rel="noopener noreferrer">Efficient Computing Lab</a>, where I work under the guidance of <a href="https://www.linzhong.org/" target="_blank" rel="noopener noreferrer">Prof. Lin Zhong</a>. My interest lie in <strong>high-performance systems with strong robustness guarantees</strong>.
-                  As a first-generation, low-income international student, I care deeply about building systems as a way to drive social impact by bridging research hypotheses with real-world engineering challenges. In my free time, I assemble and experiment with drones in support of Ukraine's drone R&D.
+                  I'm a rising senior at Yale from Ukraine, studying Electrical Engineering & Computer Science with a Japanese
+                  Language Certificate (prev. Osaka Gakuin University). I’m fortunate to be involved in research at the <a href="https://www.yecl.org/" target="_blank" rel="noopener noreferrer">Efficient Computing Lab</a>, where I work under the guidance of <a href="https://www.linzhong.org/" target="_blank" rel="noopener noreferrer">Prof. Lin Zhong</a>. My interest lie in high-performance systems with strong robustness guarantees.
                 </p>
                 <p>
-                  Currently, I'm working on large-scale multi-FPGA System-on-Chip (SoC) management systems in collaboration with the
-                  Yale Quantum Institute. Previously, I have built a custom Rust OS used for teaching purposes at Yale, explored full compile-time capabilities to shift low-level hardware responsibilities up the software stack, contributed to reintroducing <a href='https://rust-for-linux.com/' target="_blank">Rust LKM support</a> in the Linux 22.02 release, and worked on lightweight OS verification techniques for TheseusOS.
+                  Currently I'm working on several multi-FPGA System-on-Chip (SoC) projects in collaboration with the Yale Quantum Institute, while also hobby-exploring high-frequency trading (HFT) with FPGA acceleration on my free time. Previously, I have built a custom Rust OS (look Rust WeensyOS) used for teaching purposes at Yale adapted by 3+ Ivy Universities, contributed to reintroducing <a href='https://rust-for-linux.com/' target="_blank">Rust LKM support</a> in the Linux 22.02 release, and worked on lightweight OS verification techniques through stricter <a href='https://crates.io/crates/proc_assertions' target='_blank'>Rust compiler</a> macros (2,000+ installs).
+                  In my free time, I assemble and experiment with drones in support of Ukraine's drone R&D (prev. Iron Flight).
+                </p>
+                <p>
+                  I care deeply about building systems as a way to drive social impact by bridging research hypotheses with real-world engineering challenges.
                 </p>
 
               </div>
@@ -156,19 +157,21 @@ function App() {
               <div className="pub-year">[2025]</div>
               <ul className="pub-list">
                 <li><a href="https://lh5.googleusercontent.com/8AscVi6F78FNj-O-ylTvtIUX0zrUOkdyzlhkNTR6_aATbe4G1Z1d6oDHMFieXy8EobaTxfJZ1jSzgDwovwEnwtENzw9Sh3D8yzls_bAEBv5J6NzHsuZuXXyUNC3MYS2Apg=w1280">[Read] Multi-FPGA</a> SoC Management Research (Ongoing).</li>
-                <li><a href="https://drive.google.com/file/d/1BWq0mF_oKC9xViJjrsqc4QLI0Ru1-Xs-/view">[Read] Fast Raft</a> (vs Raft) hierarchical consensus algorithm.</li>
+                <li><a href="https://drive.google.com/file/d/1BWq0mF_oKC9xViJjrsqc4QLI0Ru1-Xs-/view">[Archive] Fast Raft</a> (vs Raft) hierarchical consensus algorithm.</li>
+                <li>Visited QEC'25 Quantum Error Correction Symposium.</li>
+                <li>Visited OSDI’25 USENIX Symposium on Operating Systems Design and Implementation.</li>
               </ul>
 
               <div className="pub-year">[2024]</div>
               <ul className="pub-list">
-                <li>Teached and redesigned <a href="#projects">WeensyOS</a> @ Systems Programming course.</li>
+                <li>Introducing Rust <a href="#projects">WeensyOS</a> @ Systems Programming course!</li>
                 <li> Joined <a href="https://www.yecl.org/" target="_blank" rel="noopener noreferrer">Efficient Computing Lab</a> as a summer Research Intern.</li>
                 <li>
                   Joined <a href="https://vision.cs.yale.edu/team/" target="_blank" rel="noopener noreferrer">Vision Lab</a> as a Research Assistant.
                 </li>
               </ul>
 
-              <div className="pub-year">[2023]</div>
+              {/* <div className="pub-year">[2023]</div> */}
               {/* <ul className="pub-list">
                 <li>
                   Assisted with occlusion-robust pedestrian prediction model and Omniverse synthetic data generation pipeline.
@@ -355,7 +358,7 @@ function App() {
                 </h2>
                 <p className="project-meta">Nov 2024 – Dec 2024 &nbsp;|&nbsp; Drone Embedded Developer</p>
                 <p>
-                  Volunteered to support drone-based humanitarian R&D technology in Ukraine. Implemented an edge-computing pipeline by partitioning an object-tracking neural network for drone-server inference over UDP to reduce the hardware requirements and the drone market price.
+                  Volunteered to support drone-based humanitarian R&D technology in Ukraine. Proposed and implemented an edge-computing pipeline by partitioning an object-tracking neural network for drone-server inference over custom protocol to reduce the hardware requirements and the drone market price.
                   Optimized performance at the kernel-user boundary using custom NET and V4L2 Linux kernel modules.
                   Developed lightweight, on-chip object-tracking models prior to deploying new system.
                 </p>
