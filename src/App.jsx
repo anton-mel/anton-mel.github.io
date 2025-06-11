@@ -48,6 +48,9 @@ function App() {
     history.replaceState(null, '', `#${id}`);
   };
 
+  const copyPGP = () => {
+    navigator.clipboard.writeText('4761ECDDC5CCC90BD358773C168630462D227233');
+  };
 
   return (
     <>
@@ -76,60 +79,13 @@ function App() {
                 <ul className="description">
                   <li>51 Prospect St, New Haven, CT</li>
                   <li>Contact: <a>anton.melnychuk [at] yale.edu</a></li>
+                  <li>Matrix: @an.tony:matrix.org</li>
                   <li>GitHub: <a href='https://github.com/anton-mel'>anton-mel</a></li>
                 </ul>
-                {/* <div className="contact-info"> */}
-                {/* <div className="info-item">
-                    <FaMapMarkerAlt className="icon" />
-                    <a
-                      href="https://www.google.com/maps/place/Arthur+K.+Watson+Hall,+51+Prospect+St,+New+Haven,+CT+06511"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      51 Prospect St, New Haven CT
-                    </a>
-                  </div> */}
-                {/* <div className="info-item">
-                    <FaUniversity className="icon" />
-                    <a href="https://www.yecl.org/" target="_blank" rel="noopener noreferrer">
-                      Efficient Computing Lab
-                    </a>
-                  </div> */}
-                {/* <div className="info-item">
-                    <FaUserTie className="icon" />
-                    <a
-                      href="https://www.anuragkhandelwal.com/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Professor Anurag Khandelwal
-                    </a>
-                  </div> */}
-                {/* <div className="info-item">
-                    <FaBuilding className="icon" />
-                    <a
-                      href="https://matrix.to/#/@an.tony:matrix.org"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Element, Matrix
-                    </a>
-                  </div> */}
-                {/* <div className="info-item">
-                    <FaEnvelope className="icon" />
-                    <a href="mailto:anton.melnychuk@yale.edu">Yale Email</a>
-                  </div> */}
-                {/* <div className="info-item">
-                    <FaGithub className="icon" />
-                    <a href="https://github.com/anton-mel" target="_blank"
-                    rel="noopener noreferrer">GitHub</a>
-                  </div> */}
-                {/* <div className="info-item">
-                    <FaLinkedin className="icon" />
-                    <a href="https://www.linkedin.com/in/antonmelnychuk" target="_blank"
-                    rel="noopener noreferrer">LinkedIn</a>
-                  </div> */}
-                {/* </div> */}
+                <div className='sel-btn-box'>
+                  <button className="sel-btn" href="/cv.pdf" target="_blank" rel="noopener noreferrer">CV</button>
+                  <button className="sel-btn" onClick={copyPGP}>Copy PGP</button>
+                </div>
               </div>
             </aside>
             {/* Biography -------------------------------------------------- */}
@@ -138,16 +94,23 @@ function App() {
               <div className="biography-content">
                 <p>
                   I'm a rising senior at Yale from Ukraine, studying Electrical Engineering & Computer Science with a Japanese
-                  Language Certificate (prev. Osaka Gakuin University). I’m fortunate to be involved in research at the <a href="https://www.yecl.org/" target="_blank" rel="noopener noreferrer">Efficient Computing Lab</a>, where I work under the guidance of <a href="https://www.linzhong.org/" target="_blank" rel="noopener noreferrer">Prof. Lin Zhong</a>. My interest lie in high-performance systems with strong robustness guarantees.
+                  Language Certificate (prev. Osaka Gakuin University, Japan). I’m fortunate to be involved in research at
+                  the <a href="https://www.yecl.org/" target="_blank" rel="noopener noreferrer">Efficient Computing Lab</a>,
+                  where I work under the guidance of <a href="https://www.linzhong.org/" target="_blank" rel="noopener noreferrer">Prof. Lin Zhong</a>.
+                  My interest lie in high-performance systems with strong robustness guarantees:
+                </p>
+                <ul>
+                  <li>Can we build OS that is so robust it never hits the Blue Screen of Death?</li>
+                  <li>Enable drones to keep flying even when memory is completely exhausted?</li>
+                  <li>Power high-frequency trading platforms where every nanosecond counts?</li>
+                </ul>
+                <p>
+                  Currently I'm working on a multi-FPGA System-on-Chip (SoC) project in collaboration with the Yale Quantum Institute; meanwhile hobby-exploring high-frequency trading (HFT) with FPGA acceleration. Previously, I have built a custom Rust OS (see WeensyOS) used for teaching purposes at Yale adapted by 3+ Ivy Universities, contributed to reintroducing <a href='https://rust-for-linux.com/' target="_blank">Rust LKM support</a> in the Linux 22.02 release, and worked on lightweight OS verification techniques through stricter <a href='https://crates.io/crates/proc_assertions' target='_blank'>Rust compiler</a> (proc-macros crate, 2,000+ installs).
+                  In my free time, I assemble and experiment with drones in support of Ukraine's humanitarian drone R&D (prev. Iron Flight).
                 </p>
                 <p>
-                  Currently I'm working on several multi-FPGA System-on-Chip (SoC) projects in collaboration with the Yale Quantum Institute, while also hobby-exploring high-frequency trading (HFT) with FPGA acceleration on my free time. Previously, I have built a custom Rust OS (look Rust WeensyOS) used for teaching purposes at Yale adapted by 3+ Ivy Universities, contributed to reintroducing <a href='https://rust-for-linux.com/' target="_blank">Rust LKM support</a> in the Linux 22.02 release, and worked on lightweight OS verification techniques through stricter <a href='https://crates.io/crates/proc_assertions' target='_blank'>Rust compiler</a> macros (2,000+ installs).
-                  In my free time, I assemble and experiment with drones in support of Ukraine's drone R&D (prev. Iron Flight).
+                  I care deeply about building systems as a way to drive social impact by bridging research hypotheses with real-world engineering challenges (R&D).
                 </p>
-                <p>
-                  I care deeply about building systems as a way to drive social impact by bridging research hypotheses with real-world engineering challenges.
-                </p>
-
               </div>
             </section>
             {/* ───────── Publications / News ───────── */}
@@ -156,19 +119,20 @@ function App() {
 
               <div className="pub-year">[2025]</div>
               <ul className="pub-list">
-                <li><a href="https://lh5.googleusercontent.com/8AscVi6F78FNj-O-ylTvtIUX0zrUOkdyzlhkNTR6_aATbe4G1Z1d6oDHMFieXy8EobaTxfJZ1jSzgDwovwEnwtENzw9Sh3D8yzls_bAEBv5J6NzHsuZuXXyUNC3MYS2Apg=w1280">[Read] Multi-FPGA</a> SoC Management Research (Ongoing).</li>
-                <li><a href="https://drive.google.com/file/d/1BWq0mF_oKC9xViJjrsqc4QLI0Ru1-Xs-/view">[Archive] Fast Raft</a> (vs Raft) hierarchical consensus algorithm.</li>
+                <li><a href="#">[Blog] Multi-FPGA</a> SoC Management Research (Ongoing).</li>
+                <li><a href="#">[Blog]</a> Building custom PARCv2 CPU with OoO execution.</li>
                 <li>Visited QEC'25 Quantum Error Correction Symposium.</li>
-                <li>Visited OSDI’25 USENIX Symposium on Operating Systems Design and Implementation.</li>
+                <li>Visited OSDI’25 USENIX Symposium on Operating Systems.</li>
+                <li><a href="https://drive.google.com/file/d/1BWq0mF_oKC9xViJjrsqc4QLI0Ru1-Xs-/view">[Archive] Fast Raft</a> (vs Raft) hierarchical consensus algorithm.</li>
+
               </ul>
 
               <div className="pub-year">[2024]</div>
               <ul className="pub-list">
-                <li>Introducing Rust <a href="#projects">WeensyOS</a> @ Systems Programming course!</li>
-                <li> Joined <a href="https://www.yecl.org/" target="_blank" rel="noopener noreferrer">Efficient Computing Lab</a> as a summer Research Intern.</li>
-                <li>
-                  Joined <a href="https://vision.cs.yale.edu/team/" target="_blank" rel="noopener noreferrer">Vision Lab</a> as a Research Assistant.
-                </li>
+                <li>Introducing Rust <a href="#projects">WeensyOS</a> (5,000+ LOC) @ Systems Programming course!</li>
+                <li>Joined <a href="https://www.yecl.org/" target="_blank" rel="noopener noreferrer">Efficient Computing Lab</a> as a summer Research Intern.</li>
+                <li>Joined Ukraine Drone R&D @ <a href="https://www.ironflight.ai/" target="_blank" rel="noopener noreferrer">IronFlight.AI</a>.</li>
+                <li>Joined <a href="https://vision.cs.yale.edu/team/" target="_blank" rel="noopener noreferrer">Vision Lab</a> as a Research Assistant.</li>
               </ul>
 
               {/* <div className="pub-year">[2023]</div> */}
@@ -202,7 +166,7 @@ function App() {
                 </h2>
                 <p className="project-meta">Nov 2024 – Dec 2024 &nbsp;|&nbsp; Yale University</p>
                 <p>
-                  <strong>First</strong> open-source implementation of the <strong>gRPC-based Fast-Raft protocol</strong>, a hierarchical consensus algorithm optimized for globally distributed highly-dynamic systems like mobile networks. Achieved a 2× speedup and a 5× increase in throughput best-case compared to traditional Raft and Paxos algorithms. Containerized cluster nodes and deployed them on AWS EKS using Terraform across three US regions. Performance improvements and fault tolerance were rigorously evaluated at scale using Chaos Mesh for fault injection and resilience testing. <br />
+                  <strong>First open-source implementation of the gRPC-based Fast-Raft protocol</strong>, a hierarchical consensus algorithm optimized for globally distributed highly-dynamic systems like mobile networks. Achieved a 2× speedup and a 5× increase in throughput best-case compared to traditional Raft and Paxos algorithms. Containerized cluster nodes and deployed them on AWS EKS using Terraform across three US regions. Performance improvements and fault tolerance were rigorously evaluated at scale using Chaos Mesh for fault injection and resilience testing. <br />
 
                   {/* <a href="/dist/FastRaftProtocol.pdf" target="_blank" rel="noopener noreferrer" style={{fontWeight: 'bold', marginTop: '5px', display: 'inline-block'}}>
                     This Paper
@@ -217,7 +181,7 @@ function App() {
               <article className="project">
                 <h2 className="project-title">
                   <a href="https://github.com/anton-mel/linux" target="_blank" rel="noopener noreferrer">
-                    Rust for Linux — Thread-Safe File Ops Module
+                    Rust for Linux — Adding Rust LKM Support
                   </a>
                 </h2>
                 <p className="project-meta">
@@ -358,9 +322,15 @@ function App() {
                 </h2>
                 <p className="project-meta">Nov 2024 – Dec 2024 &nbsp;|&nbsp; Drone Embedded Developer</p>
                 <p>
-                  Volunteered to support drone-based humanitarian R&D technology in Ukraine. Proposed and implemented an edge-computing pipeline by partitioning an object-tracking neural network for drone-server inference over custom protocol to reduce the hardware requirements and the drone market price.
-                  Optimized performance at the kernel-user boundary using custom NET and V4L2 Linux kernel modules.
-                  Developed lightweight, on-chip object-tracking models prior to deploying new system.
+                  Volunteered to support drone-based humanitarian R&D technology in Ukraine.
+                  Proposed and developed an edge-computing object-tracking mechanism by partitioning
+                  reliable NNs across a drone-server interface using a custom protocol,
+                  reducing onboard workload, hardware requirements, and overall system cost. Deployed
+                  lightweight on-chip object tracking models and benchmarked trade-offs against the
+                  offloaded pipeline. Identified bottlenecks in the OpenCV library and reduced
+                  end-to-end latency by over 40% by eliminating redundant user–kernel frame
+                  transitions and rearchitecting critical data paths using in-kernel, zero-copy
+                  NET and V4L2 LKMs.
                 </p>
               </article>
 
