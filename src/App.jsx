@@ -97,13 +97,8 @@ function App() {
                   Language Certificate (prev. Osaka Gakuin University, Japan). I’m fortunate to be involved in research at
                   the <a href="https://www.yecl.org/" target="_blank" rel="noopener noreferrer">Efficient Computing Lab</a>,
                   where I work under the guidance of <a href="https://www.linzhong.org/" target="_blank" rel="noopener noreferrer">Prof. Lin Zhong</a>.
-                  My interest lie in high-performance systems with strong robustness guarantees:
+                  My interest lie in high-performance systems with strong robustness guarantees.
                 </p>
-                <ul>
-                  <li>Can we build OS that is so robust it never hits the Blue Screen of Death?</li>
-                  <li>Enable drones to keep flying even when memory is completely exhausted?</li>
-                  <li>Power high-frequency trading platforms where every nanosecond counts?</li>
-                </ul>
                 <p>
                   Currently I'm working on a multi-FPGA System-on-Chip (SoC) project in collaboration with the Yale Quantum Institute; meanwhile hobby-exploring high-frequency trading (HFT) with FPGA acceleration. Previously, I have built a custom Rust OS (see WeensyOS) used for teaching purposes at Yale adapted by 3+ Ivy Universities, contributed to reintroducing <a href='https://rust-for-linux.com/' target="_blank">Rust LKM support</a> in the Linux 22.02 release, and worked on lightweight OS verification techniques through stricter <a href='https://crates.io/crates/proc_assertions' target='_blank'>Rust compiler</a> (proc-macros crate, 2,000+ installs).
                   In my free time, I assemble and experiment with drones in support of Ukraine's humanitarian drone R&D (prev. Iron Flight).
