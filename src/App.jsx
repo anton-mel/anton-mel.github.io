@@ -55,19 +55,9 @@ function App() {
   return (
     <>
       <div className="app">
-        {/* <header className="header">
+        <header className="header">
           <div className="scroll-progress" style={{ width: `${scrollProgress}%` }} />
-          <div className="header-content">
-            <a href="/" className="name">Academic Profile</a>
-            <nav className="navigation">
-              <a href="#about"        onClick={navClick('about')}        className={activeSection==='about'        ? 'active' : ''}>about</a>
-              <a href="#publications" onClick={navClick('publications')} className={activeSection==='publications' ? 'active' : ''}>publications</a>
-              <a href="#projects"     onClick={navClick('projects')}     className={activeSection==='projects'     ? 'active' : ''}>projects</a>
-              <a href="#courses"      onClick={navClick('courses')}      className={activeSection==='courses'      ? 'active' : ''}>courses</a>
-
-            </nav>
-          </div>
-        </header> */}
+        </header>
         <main className="main-content">
           <div className="content-wrapper">
             <aside className="side-panel">
@@ -78,34 +68,33 @@ function App() {
                 <h1>Anton Melnychuk</h1>
                 <ul className="description">
                   <li>51 Prospect St, New Haven, CT</li>
+                  <li>Employer: <a href='#'>Efficient Computing Lab</a></li>
                   <li>Contact: <a>anton.melnychuk [at] yale.edu</a></li>
                   <li>Matrix: @an.tony:matrix.org</li>
                   <li>GitHub: <a href='https://github.com/anton-mel'>anton-mel</a></li>
+                  <li>GPG: <a href='#' onClick={copyPGP} style={{cursor: 'pointer'}}>copy key</a></li>
                 </ul>
-                <div className='sel-btn-box'>
-                  <button className="sel-btn" href="/cv.pdf" target="_blank" rel="noopener noreferrer">CV</button>
-                  <button className="sel-btn" onClick={copyPGP}>Copy PGP</button>
-                </div>
               </div>
             </aside>
             {/* Biography -------------------------------------------------- */}
             <section className="main-section" id="about">
-              <h1 className="page-title">Biography</h1>
               <div className="biography-content">
                 <p>
-                  I'm a rising senior at Yale from Ukraine, studying Electrical Engineering & Computer Science with a Japanese
-                  Language Certificate (prev. Osaka Gakuin University, Japan). I’m fortunate to be involved in research at
-                  the <a href="https://www.yecl.org/" target="_blank" rel="noopener noreferrer">Efficient Computing Lab</a>,
-                  where I work under the guidance of <a href="https://www.linzhong.org/" target="_blank" rel="noopener noreferrer">Prof. Lin Zhong</a>.
-                  My interest lie in high-performance systems with strong robustness guarantees.
+                  I'm a senior at <a href="https://www.yale.edu/" target="_blank" rel="noopener noreferrer">Yale University</a> from Ukraine, majoring in Electrical Engineering & Computer Science with a Japanese
+                  Language Certificate (rec. <a href="https://www.ogu.ac.jp/english/" target="_blank" rel="noopener noreferrer">Osaka Gakuin University</a>, Japan). My interests lie in high-performance systems with strong robustness guarantees.
                 </p>
-                <p>
-                  Currently I'm working on a multi-FPGA System-on-Chip (SoC) project in collaboration with the Yale Quantum Institute; meanwhile hobby-exploring high-frequency trading (HFT) with FPGA acceleration. Previously, I have built a custom Rust OS (see WeensyOS) used for teaching purposes at Yale adapted by 3+ Ivy Universities, contributed to reintroducing <a href='https://rust-for-linux.com/' target="_blank">Rust LKM support</a> in the Linux 22.02 release, and worked on lightweight OS verification techniques through stricter <a href='https://crates.io/crates/proc_assertions' target='_blank'>Rust compiler</a> (proc-macros crate, 2,000+ installs).
-                  In my free time, I assemble and experiment with drones in support of Ukraine's humanitarian drone R&D (prev. Iron Flight).
-                </p>
-                <p>
-                  I care deeply about building systems as a way to drive social impact by bridging research hypotheses with real-world engineering challenges (R&D).
-                </p>
+                <div className="hashtag-container">
+                  <span className="hashtag">#chip-design</span>
+                  <span className="hashtag">#fpgas</span>
+                  <span className="hashtag">#soc-design</span>
+                  <span className="hashtag">#computer-architecture</span>
+                  <span className="hashtag">#hardware-acceleration</span>
+                  <span className="hashtag">#operating-systems</span>
+                  <span className="hashtag">#rust</span>
+                  <span className="hashtag">#distributed-computing</span>
+                  <span className="hashtag">#networks</span>
+                  <span className="hashtag">#ai-infrastructure</span>
+                </div>
               </div>
             </section>
             {/* ───────── Publications / News ───────── */}
@@ -114,100 +103,97 @@ function App() {
 
               <div className="pub-year">[2025]</div>
               <ul className="pub-list">
-                <li><a href="#">[Blog] Multi-FPGA</a> SoC Management Research (Ongoing).</li>
-                <li><a href="#">[Blog]</a> Building custom PARCv2 CPU with OoO execution.</li>
-                <li>Visited QEC'25 Quantum Error Correction Symposium.</li>
-                <li>Visited OSDI’25 USENIX Symposium on Operating Systems.</li>
-                <li><a href="https://drive.google.com/file/d/1BWq0mF_oKC9xViJjrsqc4QLI0Ru1-Xs-/view">[Archive] Fast Raft</a> (vs Raft) hierarchical consensus algorithm.</li>
-
+                <li>
+                  <div className="pub-btn-col"><a href="#" className="a-btn">PDF</a></div>
+                  <div className="pub-text-col">Thesis Research in Brain-Computer Interfaces (Ongoing).</div>
+                </li>
+                <li>
+                  <div className="pub-btn-col"><a href="#" className="a-btn">PDF</a></div>
+                  <div className="pub-text-col">Multi-FPGA SoC Management Research for QEC (Ongoing).</div>
+                </li>
+                <li>
+                  <div className="pub-btn-col"><a href="#" className="a-btn">Link</a></div>
+                  <div className="pub-text-col">Participated in QEC'25 Quantum Error Correction Symposium.</div>
+                </li>
+                <li>
+                  <div className="pub-btn-col"><a href="#" className="a-btn">Link</a></div>
+                  <div className="pub-text-col">Participated in OSDI'25 USENIX Symposium on Operating Systems.</div>
+                </li>
+                <li>
+                  <div className="pub-btn-col"><a href="#" className="a-btn">Blog</a></div>
+                  <div className="pub-text-col">From In-Order to Out-of-Order: Speculative Execution in a Custom PARCv2 CPU.</div>
+                </li>
+                <li>
+                  <div className="pub-btn-col"><a href="https://drive.google.com/file/d/1BWq0mF_oKC9xViJjrsqc4QLI0Ru1-Xs-/view" className="a-btn">Read</a></div>
+                  <div className="pub-text-col">Fast Raft (vs Raft) faster hierarchical consensus algorithm for datacenters.</div>
+                </li>
               </ul>
 
               <div className="pub-year">[2024]</div>
               <ul className="pub-list">
-                <li>Introducing Rust <a href="#projects">WeensyOS</a> (5,000+ LOC) @ Systems Programming course!</li>
-                <li>Joined <a href="https://www.yecl.org/" target="_blank" rel="noopener noreferrer">Efficient Computing Lab</a> as a summer Research Intern.</li>
-                <li>Joined Ukraine Drone R&D @ <a href="https://www.ironflight.ai/" target="_blank" rel="noopener noreferrer">IronFlight.AI</a>.</li>
-                <li>Joined <a href="https://vision.cs.yale.edu/team/" target="_blank" rel="noopener noreferrer">Vision Lab</a> as a Research Assistant.</li>
-              </ul>
-
-              {/* <div className="pub-year">[2023]</div> */}
-              {/* <ul className="pub-list">
                 <li>
-                  Assisted with occlusion-robust pedestrian prediction model and Omniverse synthetic data generation pipeline.
-                  </li>
-                  <li>
-                  Co-led hyperspectral pill classification project with Swedish National Forensics Lab.
-                  </li>
-                <li>Intern at <a href="https://www.ironflight.ai/" target="_blank" rel="noopener noreferrer">IronFlight.AI</a> as a Drone Embedded Developer.</li>
-                <li>Summer study abroad at <a href="https://www.ogu.ac.jp/english/" target="_blank" rel="noopener noreferrer">Osaka Gakuin University</a>.</li>
-              </ul>*/}
-
-              {/* <div className="pub-year">[2022]</div>
-              <ul className="pub-list">
-                <li>Selected at <a href="https://science.yalecollege.yale.edu/stem-fellowships/funding-stem-opportunities-yale/stars" target="_blank" rel="noopener noreferrer">STARS Program</a>.</li>
-                <li>Started at Yale!</li>
-              </ul> */}
+                  <div className="pub-btn-col"><a href="#projects" className="a-btn">Blog</a></div>
+                  <div className="pub-text-col">Introducing <a href="#projects">Rust WeensyOS</a> (10,000+ LOC) @ Systems Programming course!</div>
+                </li>
+                <li>
+                  <div className="pub-btn-col"><a href="#" className="a-btn">Link</a></div>
+                  <div className="pub-text-col">Joined <a href="https://www.yecl.org/" target="_blank" rel="noopener noreferrer">Efficient Computing Lab</a> as a summer Research Intern.</div>
+                </li>
+                <li>
+                  <div className="pub-btn-col"><a href="#" className="a-btn">Link</a></div>
+                  <div className="pub-text-col">Joined Ukraine Drone R&D @ <a href="https://www.ironflight.ai/" target="_blank" rel="noopener noreferrer">IronFlight.AI</a>.</div>
+                </li>
+                <li>
+                  <div className="pub-btn-col"><a href="#" className="a-btn">Link</a></div>
+                  <div className="pub-text-col">Joined <a href="https://vision.cs.yale.edu/team/" target="_blank" rel="noopener noreferrer">Vision Lab</a> as a Research Assistant.</div>
+                </li>
+              </ul>
             </section>
+
             {/* ───────── Projects ───────── */}
             <section className="main-section" id="projects">
-              <h1 className="page-title">Selected Projects</h1>
+              <h1 className="page-title">Selected Projects & Blog</h1>
 
               {/* Fast-Raft */}
-              <article className="project">
-                <h2 className="project-title">
-                  <a href="https://github.com/anton-mel/FastRaft" target="_blank" rel="noopener noreferrer">
-                    Fast-Raft Network Consensus
-                  </a>
-                </h2>
-                <p className="project-meta">Nov 2024 – Dec 2024 &nbsp;|&nbsp; Yale University</p>
-                <p>
-                  <strong>First open-source implementation of the gRPC-based Fast-Raft protocol</strong>, a hierarchical consensus algorithm optimized for globally distributed highly-dynamic systems like mobile networks. Achieved a 2× speedup and a 5× increase in throughput best-case compared to traditional Raft and Paxos algorithms. Containerized cluster nodes and deployed them on AWS EKS using Terraform across three US regions. Performance improvements and fault tolerance were rigorously evaluated at scale using Chaos Mesh for fault injection and resilience testing. <br />
-
-                  {/* <a href="/dist/FastRaftProtocol.pdf" target="_blank" rel="noopener noreferrer" style={{fontWeight: 'bold', marginTop: '5px', display: 'inline-block'}}>
-                    This Paper
-                  </a> discusses the implementation details and results. <br />
-                  <a href="https://drive.google.com/file/d/1CAnlGilz4y45UXrxEveRO-Res6b4B9j5/view" target="_blank" rel="noopener noreferrer" style={{fontWeight: 'bold', marginTop: '5px', display: 'inline-block'}}>
-                    The demonstration video
-                  </a> can be found via Google Drive here. */}
-                </p>
-              </article>
+              <div className="blog-block">
+                <div className="blog-block-content">
+                  <div className="blog-block-title">
+                    <a href="https://github.com/anton-mel/FastRaft" target="_blank" rel="noopener noreferrer">Fast-Raft Network Consensus</a>
+                  </div>
+                  <div className="blog-block-meta">Nov 2024 – Dec 2024 &nbsp;|&nbsp; Distributed Systems, Go, AWS, gRPC, Terraform, Chaos Mesh</div>
+                  <div>
+                    <strong>First open-source implementation of the gRPC-based Fast-Raft protocol</strong>, a hierarchical consensus algorithm optimized for globally distributed highly-dynamic systems like mobile networks. Achieved a 2× speedup and a 5× increase in throughput best-case compared to traditional Raft and Paxos algorithms. Containerized cluster nodes and deployed them on AWS EKS using Terraform across three US regions. Performance improvements and fault tolerance were rigorously evaluated at scale using Chaos Mesh for fault injection and resilience testing.
+                  </div>
+                </div>
+              </div>
 
               {/* Rust for Linux */}
-              <article className="project">
-                <h2 className="project-title">
-                  <a href="https://github.com/anton-mel/linux" target="_blank" rel="noopener noreferrer">
-                    Rust for Linux — Adding Rust LKM Support
-                  </a>
-                </h2>
-                <p className="project-meta">
-                  Sep 2024 – Oct 2024&nbsp;&nbsp;|&nbsp;&nbsp;
-                  <a href="https://github.com/Rust-for-Linux/linux" target="_blank" rel="noopener noreferrer">
-                    Rust for Linux
-                  </a>
-                </p>
-                <p>
-                  Contributed to the <em>Rust for Linux</em> initiative. Recompiled and set up a custom version
-                  of Linux to <strong>support Rust-based kernel drivers,</strong> contributing to the integration of Rust into the Linux kernel, with plans for eventual submission
-                  to the Linux Kernel Mailing List (LKML). Allowed system developers to write custom Linux loadable kernel modules for thread-safe file operations,
-                  minimizing <code>unsafe</code> blocks while ensuring compatibility with cross-compilation.
-                </p>
-              </article>
+              <div className="blog-block">
+                <div className="blog-block-content">
+                  <div className="blog-block-title">
+                    <a href="https://github.com/anton-mel/linux" target="_blank" rel="noopener noreferrer">Rust for Linux — Adding Rust LKM Support</a>
+                  </div>
+                  <div className="blog-block-meta">Sep 2024 – Oct 2024&nbsp;|&nbsp; Writing Linux kernel, C-Rust Co-design, Device Drivers, FFI</div>
+                  <div>
+                    Contributed to the <em>Rust for Linux</em> initiative. Recompiled and set up a custom version of Linux to <strong>support Rust-based kernel drivers,</strong> contributing to the integration of Rust into the Linux kernel, with plans for eventual submission to the Linux Kernel Mailing List (LKML). Allowed system developers to write custom Linux loadable kernel modules for thread-safe file operations, minimizing <code>unsafe</code> blocks while ensuring compatibility with cross-compilation.
+                  </div>
+                </div>
+              </div>
 
               {/* WeensyOS-Rust */}
-              <article className="project">
-                <h2 className="project-title">
-                  <a href="https://github.com/anton-mel/WeensyOS" target="_blank" rel="noopener noreferrer">
-                    WeensyOS in Rust
-                  </a>
-                </h2>
-                <p className="project-meta">May 2024 – Aug 2024 &nbsp;|&nbsp; Academic curriculum</p>
-                <p>
-                  Reimagined core systems curriculum by re-engineering <em>WeensyOS</em>—a minimalist teaching kernel created by Prof.
-                  Eddie Kohler at Harvard and used across 6 Ivy League to teach core OS concepts. It runs on bare-metal x86-64 machines (QEMU emulated CPUs) with POSIX compatibility and newly added microkernel design.
-                  Rust-WeensyOS aims for a complete segfault-free experience, inspired by Rust OS pioneers like <a href="https://www.redox-os.org/" target="_blank" rel="noopener noreferrer">RedoxOS</a>. Its previous version <strong>presents the first known-to-me attempt</strong> to statically offload major core kernel management services via two foreign function interfaces (FFI), as a proof of concept for the feasibility of transitioning portions of the Linux kernel to Rust.
-                </p>
-                {/* <img src="public/weensyosdemo.gif" alt="WeensyOS demo" style={{ width: '100%', marginTop: '10px', marginBottom: '30px', borderRadius: '8px' }} /> */}
-              </article>
+              <div className="blog-block">
+                <div className="blog-block-content">
+                  <div className="blog-block-title">
+                    <a href="https://github.com/anton-mel/WeensyOS" target="_blank" rel="noopener noreferrer">WeensyOS in Rust</a>
+                  </div>
+                  <div className="blog-block-meta">May 2024 – Aug 2024 &nbsp;|&nbsp; Operating Systems, Booloader, Rust, Teaching, x86-64</div>
+                  <div>
+                    Reimagined core systems curriculum by re-engineering <em>WeensyOS</em>—a minimalist teaching kernel created by Prof. Eddie Kohler at Harvard and used across 6 Ivy League to teach core OS concepts. It runs on bare-metal x86-64 machines (QEMU emulated CPUs) with POSIX compatibility and newly added microkernel design. Rust-WeensyOS aims for a complete segfault-free experience, inspired by Rust OS pioneers like <a href="https://www.redox-os.org/" target="_blank" rel="noopener noreferrer">RedoxOS</a>. Its previous version <strong>presents the first known-to-me attempt</strong> to statically offload major core kernel management services via two foreign function interfaces (FFI), as a proof of concept for the feasibility of transitioning portions of the Linux kernel to Rust.
+                  </div>
+                </div>
+              </div>
+
+              <a href="/blog" className="blog-block-readmore">More Projects <span style={{fontSize: '1.1em', marginLeft: '2px'}}>→</span></a>
 
 
               {/* <article className="project">
@@ -321,9 +307,9 @@ function App() {
                   Proposed and developed an edge-computing object-tracking mechanism by partitioning
                   reliable NNs across a drone-server interface using a custom protocol,
                   reducing onboard workload, hardware requirements, and overall system cost. Deployed
-                  lightweight on-chip object tracking models and benchmarked trade-offs against the
-                  offloaded pipeline. Identified bottlenecks in the OpenCV library and reduced
-                  end-to-end latency by over 40% by eliminating redundant user–kernel frame
+                  lightweight on-chip models and benchmarked trade-offs against the
+                  offloaded pipeline. Identified bottlenecks in the OpenCV and reduced
+                  end-to-end latency by over 40% eliminating redundant user–kernel frame
                   transitions and rearchitecting critical data paths using in-kernel, zero-copy
                   NET and V4L2 LKMs.
                 </p>
@@ -338,7 +324,7 @@ function App() {
                 </h2>
                 <p className="project-meta">June 2021 – Present &nbsp;|&nbsp; Alumni</p>
                 <p>
-                  Ukraine Global Scholars (UGS) is a non-profit organization that has helped 300+ Ukrainian high school students from modest backgrounds receive $78+ million in scholarships to top global boarding schools and colleges.
+                  Ukraine Global Scholars (UGS) is a non-profit organization that has helped 300+ Ukrainian high school students from modest backgrounds receive $78+ million in scholarships to top colleges.
                 </p>
               </article>
             </section>
