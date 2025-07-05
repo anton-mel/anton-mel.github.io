@@ -1,11 +1,12 @@
 import { useState, useEffect, useCallback } from 'react'
 import './App.css'
-import { FaMapMarkerAlt, FaUniversity, FaUserTie, FaBuilding, FaEnvelope, FaGithub, FaLinkedin, FaSun, FaMoon } from 'react-icons/fa'
+import { FaMapMarkerAlt, FaUniversity, FaUserTie, FaBuilding, FaEnvelope, FaGithub, FaLinkedin, FaSun, FaMoon, FaChevronLeft, FaChevronRight, FaArrowUp } from 'react-icons/fa'
 
 function App() {
   const [scrollProgress, setProgress] = useState(0);
   const [activeSection, setActive] = useState('about');
   const [showMoreProjects, setShowMoreProjects] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   /* ------------- scroll handler (progress bar + active tab) ------------- */
   const handleScroll = useCallback(() => {
@@ -30,6 +31,19 @@ function App() {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
+
+  // Show scroll-to-top button if scrolled more than 0px
+  useEffect(() => {
+    const handleScrollBtn = () => {
+      setShowScrollTop(window.scrollY > 0);
+    };
+    window.addEventListener('scroll', handleScrollBtn, { passive: true });
+    return () => window.removeEventListener('scroll', handleScrollBtn);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   /* ------------- helpers ------------- */
   const navClick = id => e => {
@@ -68,7 +82,7 @@ function App() {
                 <h1>Anton Melnychuk</h1>
                 <ul className="description">
                   <li>51 Prospect St, New Haven, CT</li>
-                  <li>Employer: <a href='#'>Efficient Computing Lab</a></li>
+                  {/* <li>Employer: <a href='#'>Efficient Computing Lab</a></li> */}
                   <li>Contact: <a>anton.melnychuk [at] yale.edu</a></li>
                   <li>Matrix: @an.tony:matrix.org</li>
                   <li>GitHub: <a href='https://github.com/anton-mel'>anton-mel</a></li>
@@ -79,10 +93,31 @@ function App() {
             {/* Biography -------------------------------------------------- */}
             <section className="main-section" id="about">
               <div className="biography-content">
+
+                {/* Image Carousel */}
+                {/* <div className="carousel-container" style={{marginTop: '1rem'}}>
+                  <div className="carousel-wrapper">
+                    {carouselImages.map((image, index) => (
+                      <div key={index} className="carousel-slide">
+                        <img 
+                          src={image} 
+                          alt={`Carousel image ${index + 1}`}
+                          className="carousel-image"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div> */}
+
                 <p>
-                  I'm a senior at <a href="https://www.yale.edu/" target="_blank" rel="noopener noreferrer">Yale University</a> from Ukraine, majoring in Electrical Engineering & Computer Science with a Japanese
-                  Language Certificate (rec. <a href="https://www.ogu.ac.jp/english/" target="_blank" rel="noopener noreferrer">Osaka Gakuin University</a>, Japan). My interests lie in R&D of <strong>high-performance systems with strong robustness guarantees</strong>.
+                  I'm a rising senior at <a href="https://www.yale.edu/" target="_blank" rel="noopener noreferrer">Yale University</a>, majoring in Electrical and Computer Engineering with a Japanese
+                  Language Certificate from <a href="https://www.ogu.ac.jp/english/" target="_blank" rel="noopener noreferrer">Osaka Gakuin University</a>, Japan.
+                  <span style={{ display: "block", height: "1rem" }}></span>
+                  I'm most excited about hardware–system co-design for critical infrastructure like datacenters. I'm passionate about enhancing reliability (see Rust WeensyOS) with throughput and latency through custom RTL, SoCs, FPGAs, and ASICs (VLSI design), or building software-system infrastructures to solve general-purpose problems such as efficient consensus at scale (see Fast Raft paper), linearizability (NUMA-system locking at Huawei), real-time remote SoC FPGA-as-a-service acceleration (see ReconfigR), Linux kernel contributions (see Rust for Linux), LLM infra deployments on existing cloud platforms (AWS, Azure, GCP) and more. My work is supported by the <a href="https://www.yecl.org/" target="_blank" rel="noopener noreferrer">Efficient Computing Lab</a> and the <a href="https://csl.yale.edu/" target="_blank" rel="noopener noreferrer">Computer Systems Lab</a> at Yale.
+                  <span style={{ display: "block", height: "1rem" }}></span>
+                  I'm originally from a small village in western Ukraine. Although I haven't been back for a while, I continue to actively support Ukraine's humanitarian drone R&D efforts remotely 🇺🇦.
                 </p>
+
                 <div className="hashtag-container">
                   <span className="hashtag">#chip-design</span>
                   <span className="hashtag">#fpgas</span>
@@ -101,29 +136,29 @@ function App() {
             </section>
             {/* ───────── Publications / News ───────── */}
             <section className="main-section" id="publications">
-              <h1 className="page-title">Publications & News</h1>
+              <h1 className="page-title">News</h1>
 
               <div className="pub-year">[2025]</div>
               <ul className="pub-list">
                 <li>
                   <div className="pub-btn-col"><a href="#" className="a-btn">PDF</a></div>
-                  <div className="pub-text-col">Thesis Research in Brain-Computer Interfaces (Ongoing).</div>
+                  <div className="pub-text-col">Starting my Thesis Research in Brain-Computer Interfaces w\ <a href="https://www.cs.yale.edu/homes/abhishek/" target="_blank" rel="noopener noreferrer">Prof. Bhattacharjee</a>.</div>
                 </li>
                 <li>
                   <div className="pub-btn-col"><a href="#" className="a-btn">PDF</a></div>
-                  <div className="pub-text-col">Multi-FPGA SoC Management Research for QEC (Ongoing).</div>
+                  <div className="pub-text-col">ReconfigR: Remote & Runtime Multi-FPGA SoC Management (Ongoing).</div>
                 </li>
                 <li>
-                  <div className="pub-btn-col"><a href="#" className="a-btn">Link</a></div>
-                  <div className="pub-text-col">Participated in <a href="https://qec25.yalepages.org/" target="_blank" rel="noopener noreferrer">QEC'25 Quantum Error Correction Symposium</a>.</div>
+                  <div className="pub-btn-col"><a target="_blank" href="https://qec25.yalepages.org/" className="a-btn">Link</a></div>
+                  <div className="pub-text-col">Visisted QEC'25 Quantum Error Correction Symposium.</div>
                 </li>
                 <li>
-                  <div className="pub-btn-col"><a href="#" className="a-btn">Link</a></div>
-                  <div className="pub-text-col">Participated in <a href="https://www.usenix.org/conference/osdi25" target="_blank" rel="noopener noreferrer">OSDI'25 USENIX Symposium</a> on Operating Systems in Boston to meet industry professionals and learn about ongoing research directions.</div>
+                  <div className="pub-btn-col"><a target="_blank" href="https://www.usenix.org/conference/osdi25" className="a-btn">Link</a></div>
+                  <div className="pub-text-col">Participated in ATC'25/OSDI'25 USENIX Symposium on Operating Systems in Boston.</div>
                 </li>
                 <li>
                   <div className="pub-btn-col"><a href="#" className="a-btn recommended">Blog</a></div>
-                  <div className="pub-text-col">Turning Point: Visa Hurdles Ended My <a href="https://career.huawei.com/reccampportal/portal5/index.html" target="_blank" rel="noopener noreferrer">Huawei Kernel R&D Internship</a> Plans.</div>
+                  <div className="pub-text-col">Turning Point: Visa Hurdles & Update on <a href="https://career.huawei.com/reccampportal/portal5/index.html" target="_blank" rel="noopener noreferrer">Huawei Kernel R&D Internship</a> Plans.</div>
                 </li>
                 <li>
                   <div className="pub-btn-col"><a href="#" className="a-btn recommended">Blog</a></div>
@@ -141,24 +176,25 @@ function App() {
                   <div className="pub-btn-col"><a href="#projects" className="a-btn recommended">Blog</a></div>
                   <div className="pub-text-col">Introducing <a href="#projects">Rust WeensyOS</a> (10,000+ LOC) @ Systems Programming course!</div>
                 </li>
-                <li>
+                {/* <li>
                   <div className="pub-btn-col"><a href="#" className="a-btn">Link</a></div>
                   <div className="pub-text-col">Joined <a href="https://www.yecl.org/" target="_blank" rel="noopener noreferrer">Efficient Computing Lab</a> as a summer Research Intern.</div>
-                </li>
+                </li> */}
                 <li>
-                  <div className="pub-btn-col"><a href="#" className="a-btn">Link</a></div>
-                  <div className="pub-text-col">Joined Ukraine Drone R&D @ <a href="https://www.ironflight.ai/" target="_blank" rel="noopener noreferrer">IronFlight.AI</a>.</div>
+                  <div className="pub-btn-col"><a target="_blank" href="https://www.ironflight.ai/" className="a-btn">Link</a></div>
+                  <div className="pub-text-col">Joined Ukraine Drone R&D @ IronFlight.AI.</div>
                 </li>
-                <li>
+                {/* <li>
                   <div className="pub-btn-col"><a href="#" className="a-btn">Link</a></div>
                   <div className="pub-text-col">Joined <a href="https://vision.cs.yale.edu/team/" target="_blank" rel="noopener noreferrer">Vision Lab</a> as a Research Assistant.</div>
-                </li>
+                </li> */}
               </ul>
             </section>
 
             {/* ───────── Projects ───────── */}
             <section className="main-section" id="projects">
               <h1 className="page-title" style={{marginBottom: '1rem'}}>Selected Projects & Blog</h1>
+              
               <div>
                 {/* Fast-Raft */}
                 <div className="blog-block">
@@ -277,7 +313,7 @@ function App() {
               <h2 className='ta-title'>Relevant Coursework</h2>
               <ul>
                 <li><strong>EENG 420</strong> – Computer Architecture</li>
-                <li><strong>EENG 425</strong> – Introduction to VLSI System Design [Visitor]</li>
+                <li><strong>EENG 425</strong> – Introduction to VLSI System Design [Incoming]</li>
                 <li><strong>EENG 203</strong> – Circuits and Systems Design</li>
                 <li><strong>EENG 202</strong> – Introduction to Communications and Control [Incoming]</li>
                 <li><strong>EENG 201</strong> – Introduction to Computer Engineering</li>
@@ -314,12 +350,7 @@ function App() {
                   <strong>Volunteered to support drone-based humanitarian R&D technology in Ukraine. </strong> 
                    Proposed and developed an edge-computing object-tracking mechanism by partitioning
                   reliable NNs across a drone-server interface using a custom protocol,
-                  reducing onboard workload, hardware requirements, and overall system cost, <strong>resulting in a 40% increase in sales.</strong> Deployed
-                  lightweight on-chip models and benchmarked trade-offs against the
-                  offloaded pipeline. Conducted further analisys, identified bottlenecks in the OpenCV and reduced
-                  end-to-end latency by over 40% eliminating redundant user–kernel frame
-                  transitions and rearchitecting critical data paths using in-kernel, zero-copy
-                  NET and V4L2 loadable kernel modules.
+                  reducing onboard workload, hardware requirements, and overall system cost; funded and deployed 125+ units in 2024.
                 </p>
               </article>
 
@@ -339,6 +370,11 @@ function App() {
           </div>
         </main>
       </div>
+      {showScrollTop && (
+        <button className="scroll-to-top-btn" onClick={scrollToTop} aria-label="Scroll to top">
+          <FaArrowUp />
+        </button>
+      )}
       {/* <footer className="footer">
         <div className="footer-content">
           <div className="footer-copyright">
