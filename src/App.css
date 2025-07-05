@@ -623,30 +623,11 @@ a:hover {
   position: relative;
 }
 
-.blog-block:hover {
-  background: #fff;
-  z-index: 1;
-}
-
 .blog-block + .blog-block {
   border-top: 1px solid #e0e0e0;
   transition: border-color 0.2s ease;
 }
 
-/* Hover effects for border highlighting - only change color */
-.blog-block:hover + .blog-block {
-  border-top-color: #acacac;
-}
-
-/* For middle blocks, also highlight the border above */
-.blog-block:hover {
-  border-top: 1px solid #acacac;
-}
-
-/* Ensure first block never gets a top border */
-.blog-block:first-child:hover {
-  border-top: none !important;
-}
 
 .blog-block-content {
   flex: 1;
