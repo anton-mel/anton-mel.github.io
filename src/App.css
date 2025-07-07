@@ -2,7 +2,7 @@
   --accent: #008080;
   --accent-hover: #005a5a;
 
-  --content-w: 920px;
+  --content-w: 820px;
   --light-bg: #ffffff;
   --light-text: #1c1c1d;
   --light-border: #e0e0e0;
@@ -110,7 +110,7 @@ body {
 
 .main-section {
   flex: 1;
-  margin-left: 320px;
+  margin-left: 270px;
   background-color: var(--light-bg);
   color: var(--light-text);
   transition: background-color 0.3s ease;
@@ -118,7 +118,7 @@ body {
 }
 
 .side-panel {
-  width: 300px;
+  width: 240px;
   flex-shrink: 0;
   padding-top: 20px;
   position: fixed;
@@ -253,14 +253,19 @@ a:hover {
 }
 
 .avatar {
-  width: 250px;
-  height: 250px;
+  width: 200px;
+  height: 200px;
   /* background: #f0f0f0; */
-  /* border-radius: 50%; */
-  /* border: 1px solid var(--dark-border); */
-  /* padding: 5px; */
+  border-radius: 50%;
+  border: 1px solid #dedede;
+  padding: 5px;
   object-fit: cover;
+  cursor: pointer;
   transition: border-color 0.3s ease;
+}
+
+.avatar:hover {
+  border: 1px solid #aeaeae;
 }
 
 .personal-info {

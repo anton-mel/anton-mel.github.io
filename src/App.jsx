@@ -83,10 +83,10 @@ function App() {
                 <ul className="description">
                   <li>51 Prospect St, New Haven, CT</li>
                   {/* <li>Employer: <a href='#'>Efficient Computing Lab</a></li> */}
-                  <li>Contact: <a>anton.melnychuk [at] yale.edu</a></li>
+                  <li>anton.melnychuk [at] yale.edu</li>
                   <li>Matrix: @an.tony:matrix.org</li>
                   <li>GitHub: <a href='https://github.com/anton-mel'>anton-mel</a></li>
-                  <li>GPG: <a href='#' onClick={copyPGP} style={{cursor: 'pointer'}}>copy key</a></li>
+                  <li><a href='#' onClick={copyPGP} style={{cursor: 'pointer'}}>Copy GPG Key</a></li>
                 </ul>
               </div>
             </aside>
@@ -111,11 +111,11 @@ function App() {
 
                 <p>
                   I'm a rising senior at <a href="https://www.yale.edu/" target="_blank" rel="noopener noreferrer">Yale University</a>, majoring in Electrical and Computer Engineering with a Japanese
-                  Language Certificate from <a href="https://www.ogu.ac.jp/english/" target="_blank" rel="noopener noreferrer">Osaka Gakuin University</a>, Japan.
+                  Language Certificate prev. from <a href="https://www.ogu.ac.jp/english/" target="_blank" rel="noopener noreferrer">Osaka Gakuin University</a>, Japan.
                   <span style={{ display: "block", height: "1rem" }}></span>
-                  I'm most excited about hardware–system co-design for critical infrastructure like datacenters. I'm passionate about enhancing reliability (see Rust WeensyOS) with throughput and latency through custom RTL, SoCs, FPGAs, and ASICs (VLSI design), or building software-system infrastructures to solve general-purpose problems such as efficient consensus at scale (see Fast Raft paper), linearizability (NUMA-system locking at Huawei), real-time remote SoC FPGA-as-a-service acceleration (see ReconfigR), Linux kernel contributions (see Rust for Linux), LLM infra deployments on existing cloud platforms (AWS, Azure, GCP) and more. My work is supported by the <a href="https://www.yecl.org/" target="_blank" rel="noopener noreferrer">Efficient Computing Lab</a> and the <a href="https://csl.yale.edu/" target="_blank" rel="noopener noreferrer">Computer Systems Lab</a> at Yale.
+                  I'm most excited about hardware–system co-design for critical infrastructure and deep tech. I'm passionate about enhancing reliability, throughput, and accelerate latency through custom hardware (RTL/FPGA/VLSI) design or building software-system infrastructures to either solve general-purpose problems such as efficient consensus at scale, linearizability (NUMA-system locking at Huawei), as well as applications-specific cases as FPGA-as-a-service or distributed LLM systems. Throughout my work, I participate closely in Linux kernel contributions (Rust for Linux) and work closely with existing cloud platforms (AWS, Azure, GCP). My research is supported by the <a href="https://www.yecl.org/" target="_blank" rel="noopener noreferrer">Efficient Computing Lab</a> and the <a href="https://csl.yale.edu/" target="_blank" rel="noopener noreferrer">Computer Systems Lab</a> at Yale.
                   <span style={{ display: "block", height: "1rem" }}></span>
-                  I'm originally from a small village in western Ukraine. Although I haven't been back for a while, I continue to actively support Ukraine's humanitarian drone R&D efforts remotely 🇺🇦.
+                  I’m originally from a small village in western Ukraine, Lokachi. Growing up, I spent countless hours floppy-disk reinstalling Windows 98 after accidentally breaking it, and tinkering with my grandparents’ old Pentium 3. In my free time, I continue to actively support Ukraine’s humanitarian drone R&D efforts 🇺🇦.
                 </p>
 
                 <div className="hashtag-container">
@@ -148,10 +148,10 @@ function App() {
                   <div className="pub-btn-col"><a href="#" className="a-btn">PDF</a></div>
                   <div className="pub-text-col">ReconfigR: Remote & Runtime Multi-FPGA SoC Management (Ongoing).</div>
                 </li>
-                <li>
+                {/* <li>
                   <div className="pub-btn-col"><a target="_blank" href="https://qec25.yalepages.org/" className="a-btn">Link</a></div>
                   <div className="pub-text-col">Visisted QEC'25 Quantum Error Correction Symposium.</div>
-                </li>
+                </li> */}
                 <li>
                   <div className="pub-btn-col"><a target="_blank" href="https://www.usenix.org/conference/osdi25" className="a-btn">Link</a></div>
                   <div className="pub-text-col">Participated in ATC'25/OSDI'25 USENIX Symposium on Operating Systems in Boston.</div>
