@@ -154,7 +154,7 @@ function App() {
                 </li> */}
                 <li>
                   <div className="pub-btn-col"><a target="_blank" href="https://www.usenix.org/conference/osdi25" className="a-btn">Link</a></div>
-                  <div className="pub-text-col">Participated in ATC'25/OSDI'25 USENIX Symposium on Operating Systems in Boston.</div>
+                  <div className="pub-text-col">Participated in ATC'25/OSDI'25 USENIX Symposium on Operating Systems.</div>
                 </li>
                 <li>
                   <div className="pub-btn-col"><a href="#" className="a-btn recommended">Blog</a></div>
@@ -350,7 +350,7 @@ function App() {
                   <strong>Volunteered to support drone-based humanitarian R&D technology in Ukraine. </strong> 
                    Proposed and developed an edge-computing object-tracking mechanism by partitioning
                   reliable NNs across a drone-server interface using a custom protocol,
-                  reducing onboard workload, hardware requirements, and overall system cost; funded and deployed 125+ units in 2024.
+                  reducing onboard workload, hardware requirements, and overall system cost; deployed 125+ units in 2024.
                 </p>
               </article>
 
