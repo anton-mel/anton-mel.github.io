@@ -1,12 +1,14 @@
 import { useState, useEffect, useCallback } from 'react'
 import './App.css'
 import { FaMapMarkerAlt, FaUniversity, FaUserTie, FaBuilding, FaEnvelope, FaGithub, FaLinkedin, FaSun, FaMoon, FaChevronLeft, FaChevronRight, FaArrowUp } from 'react-icons/fa'
+import toast, { Toaster } from 'react-hot-toast'
 
 function App() {
   const [scrollProgress, setProgress] = useState(0);
   const [activeSection, setActive] = useState('about');
   const [showMoreProjects, setShowMoreProjects] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
+
 
   /* ------------- scroll handler (progress bar + active tab) ------------- */
   const handleScroll = useCallback(() => {
@@ -64,6 +66,7 @@ function App() {
 
   const copyPGP = () => {
     navigator.clipboard.writeText('4761ECDDC5CCC90BD358773C168630462D227233');
+    toast('Copied!');
   };
 
   return (
@@ -397,6 +400,19 @@ function App() {
           </div>
         </div>
       </footer> */}
+      <Toaster 
+        position="top-right"
+        toastOptions={{
+          style: {
+            background: 'var(--accent)',
+            color: '#fff',
+            fontSize: '13.5px',
+            padding: '3px 7px',
+            borderRadius: '4px',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)'
+          }
+        }}
+      />
     </>
   )
 }

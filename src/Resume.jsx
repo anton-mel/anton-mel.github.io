@@ -148,7 +148,8 @@ const Resume = () => {
             <div className="resume-info">
               <a 
                 href="https://github.com/anton-mel/CV/raw/main/resume.pdf" 
-                download="Anton_Melnychuk_Resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="download-btn"
               >
                 Download PDF

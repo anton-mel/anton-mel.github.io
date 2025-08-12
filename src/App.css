@@ -1149,6 +1149,8 @@ a:hover {
   color: var(--accent-hover);
 }
 
+
+
 /* Mobile responsive */
 @media screen and (max-width: 900px) {
   .resume-page {
