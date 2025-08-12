@@ -98,11 +98,11 @@ function App() {
                   {/* <hr style={{border: 'none', height: '1px', background: 'var(--accent)', opacity: 0.3, marginBottom: '1rem'}} /> */}
                   
                   <div className="nav-links-paper">
-                    <a href="#about">About <span className="dots"></span> <span className="number">#1</span></a>
-                    <a href="#publications">News <span className="dots"></span> <span className="number">#2</span></a>
-                    <a href="#projects">Projects <span className="dots"></span> <span className="number">#3</span></a>
-                    <a href="#courses">Courses <span className="dots"></span> <span className="number">#4</span></a>
-                    <a href="#volunteering">Volunteering <span className="dots"></span> <span className="number">#5</span></a>
+                    <a href="#about">About <span className="dots"></span></a>
+                    <a href="#publications">News <span className="dots"></span></a>
+                    <a href="#projects">Projects <span className="dots"></span></a>
+                    <a href="#courses">Courses <span className="dots"></span></a>
+                    <a href="#volunteering">Volunteering <span className="dots"></span></a>
                   </div>
                 </div>
               </div>

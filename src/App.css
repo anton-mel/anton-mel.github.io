@@ -347,7 +347,7 @@ a:hover {
 .nav-links-paper .dots {
   flex: 1;
   border-bottom: 1.5px dotted #d4d4d4;
-  margin: 0 4px;
+  margin-left: 4px;
   height: 1.5px;
   align-self: flex-end;
   margin-bottom: 5px;
