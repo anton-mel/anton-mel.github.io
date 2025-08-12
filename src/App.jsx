@@ -102,7 +102,7 @@ function App() {
                   
                   <div className="nav-links-paper">
                     <a href="#about">About <span className="dots"></span></a>
-                    <a href="#publications">News <span className="dots"></span></a>
+                    <a href="#publications">Recent News <span className="dots"></span></a>
                     <a href="#projects">Projects <span className="dots"></span></a>
                     <a href="#courses">Courses <span className="dots"></span></a>
                     <a href="#volunteering">Volunteering <span className="dots"></span></a>
@@ -153,7 +153,7 @@ function App() {
             </section>
             {/* ───────── Publications / News ───────── */}
             <section className="main-section" id="publications">
-              <h1 className="page-title">News</h1>
+              <h1 className="page-title">Recent News</h1>
 
               <div className="pub-year">[2025]</div>
               <ul className="pub-list">
@@ -171,7 +171,7 @@ function App() {
                 </li> */}
                 <li>
                   <div className="pub-btn-col"><a target="_blank" href="https://www.usenix.org/conference/osdi25" className="a-btn">Link</a></div>
-                  <div className="pub-text-col">Participated in ATC'25/OSDI'25 USENIX Symposium on Operating Systems.</div>
+                  <div className="pub-text-col">Participated in ATC/OSDI '25 (USENIX Symposium on Operating Systems) and QEC '25 (Quantum Error Correction) research conferences.</div>
                 </li>
                 {/* <li>
                   <div className="pub-btn-col"><a href="#" className="a-btn recommended">Blog</a></div>
