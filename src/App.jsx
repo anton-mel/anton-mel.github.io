@@ -76,7 +76,7 @@ function App() {
           <div className="content-wrapper">
             <aside className="side-panel">
               <div className="avatar-container">
-                <img src="public/profile.jpg" alt="Anton Melnychuk" className="avatar" />
+                <img src="public/profile.png" alt="Anton Melnychuk" className="avatar" />
               </div>
               <div className="personal-info">
                 <h1>Anton Melnychuk</h1>
@@ -85,9 +85,26 @@ function App() {
                   {/* <li>Employer: <a href='#'>Efficient Computing Lab</a></li> */}
                   <li>anton.melnychuk [at] yale.edu</li>
                   <li>Matrix: @an.tony:matrix.org</li>
-                  <li>GitHub: <a href='https://github.com/anton-mel'>anton-mel</a></li>
-                  <li><a href='#' onClick={copyPGP} style={{cursor: 'pointer'}}>Copy GPG Key</a></li>
+                  <li><a onClick={copyPGP} style={{cursor: 'pointer'}}>Copy my GPG Key 🔐</a></li>
                 </ul>
+                
+                <div>
+                  <ul className="nav-links">
+                    <li><a href="https://github.com/anton-mel">GitHub</a></li>
+                    <li><a href="https://linkedin.com/in/anton-melnychuk">LinkedIn</a></li>
+                    <li><a href="/resume">CV</a></li>
+                  </ul>
+                  
+                  {/* <hr style={{border: 'none', height: '1px', background: 'var(--accent)', opacity: 0.3, marginBottom: '1rem'}} /> */}
+                  
+                  <div className="nav-links-paper">
+                    <a href="#about">About <span className="dots"></span> <span className="number">#1</span></a>
+                    <a href="#publications">News <span className="dots"></span> <span className="number">#2</span></a>
+                    <a href="#projects">Projects <span className="dots"></span> <span className="number">#3</span></a>
+                    <a href="#courses">Courses <span className="dots"></span> <span className="number">#4</span></a>
+                    <a href="#volunteering">Volunteering <span className="dots"></span> <span className="number">#5</span></a>
+                  </div>
+                </div>
               </div>
             </aside>
             {/* Biography -------------------------------------------------- */}
@@ -110,12 +127,9 @@ function App() {
                 </div> */}
 
                 <p>
-                  I'm a rising senior at <a href="https://www.yale.edu/" target="_blank" rel="noopener noreferrer">Yale University</a>, majoring in Electrical and Computer Engineering with a Japanese
-                  Language Certificate prev. from <a href="https://www.ogu.ac.jp/english/" target="_blank" rel="noopener noreferrer">Osaka Gakuin University</a>, Japan.
+                  I'm a rising senior at <a href="https://www.yale.edu/" target="_blank" rel="noopener noreferrer">Yale University</a>, majoring in Electrical and Computer Engineering.
                   <span style={{ display: "block", height: "1rem" }}></span>
-                  I'm most excited about hardware–system co-design for critical infrastructure and deep tech. I'm passionate about enhancing reliability, throughput, and accelerate latency through custom hardware (RTL/FPGA/VLSI) design or building software-system infrastructures to either solve general-purpose problems such as efficient consensus at scale, linearizability (NUMA-system locking at Huawei), as well as applications-specific cases as FPGA-as-a-service or distributed LLM systems. Throughout my work, I participate closely in Linux kernel contributions (Rust for Linux) and work closely with existing cloud platforms (AWS, Azure, GCP). My research is supported by the <a href="https://www.yecl.org/" target="_blank" rel="noopener noreferrer">Efficient Computing Lab</a> and the <a href="https://csl.yale.edu/" target="_blank" rel="noopener noreferrer">Computer Systems Lab</a> at Yale.
-                  <span style={{ display: "block", height: "1rem" }}></span>
-                  I’m originally from a small village in western Ukraine, Lokachi. Growing up, I spent countless hours floppy-disk reinstalling Windows 98 after accidentally breaking it, and tinkering with my grandparents’ old Pentium 3. In my free time, I continue to actively support Ukraine’s humanitarian drone R&D efforts 🇺🇦.
+                  I'm most excited about hardware–system co-design for critical infrastructure. In particular, I'm passionate about enhancing reliability, throughput, and accelerate latency through custom hardware design and building scalable system infrastructures.
                 </p>
 
                 <div className="hashtag-container">
@@ -156,10 +170,10 @@ function App() {
                   <div className="pub-btn-col"><a target="_blank" href="https://www.usenix.org/conference/osdi25" className="a-btn">Link</a></div>
                   <div className="pub-text-col">Participated in ATC'25/OSDI'25 USENIX Symposium on Operating Systems.</div>
                 </li>
-                <li>
+                {/* <li>
                   <div className="pub-btn-col"><a href="#" className="a-btn recommended">Blog</a></div>
                   <div className="pub-text-col">Turning Point: Visa Hurdles & Update on <a href="https://career.huawei.com/reccampportal/portal5/index.html" target="_blank" rel="noopener noreferrer">Huawei Kernel R&D Internship</a> Plans.</div>
-                </li>
+                </li> */}
                 <li>
                   <div className="pub-btn-col"><a href="#" className="a-btn recommended">Blog</a></div>
                   <div className="pub-text-col">From In-Order to Out-of-Order: Speculative Execution in a Custom PARCv2 CPU.</div>
