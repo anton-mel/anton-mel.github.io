@@ -132,7 +132,7 @@ function App() {
                 <p>
                   I'm a rising senior at <a href="https://www.yale.edu/" target="_blank" rel="noopener noreferrer">Yale University</a>, majoring in Electrical and Computer Engineering.
                   <span style={{ display: "block", height: "1rem" }}></span>
-                  I'm most excited about hardware-software co-design for critical infrastructure. In particular, I'm passionate about hypothesis-driven research and development, working on cutting-edge systems through custom hardware design and building scalable architectures that improve reliability, throughput, and reduce latency.
+                  I'm most passionate about hypothesis-driven research and development for critical infrastructure, working on cutting-edge high-performance systems with strong robustness guarantees. Previous undergraduate interests include: FPGA-based quantum error correction, brain computer interfaces VLSI design, and verifiable Rust operating systems.
                 </p>
 
                 <div className="hashtag-container">
