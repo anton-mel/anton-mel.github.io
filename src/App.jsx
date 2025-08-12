@@ -132,7 +132,7 @@ function App() {
                 <p>
                   I'm a rising senior at <a href="https://www.yale.edu/" target="_blank" rel="noopener noreferrer">Yale University</a>, majoring in Electrical and Computer Engineering.
                   <span style={{ display: "block", height: "1rem" }}></span>
-                  I'm most excited about hardware-software co-design for critical infrastructure. In particular, I'm passionate about enhancing reliability, throughput, and accelerate latency through custom hardware design and building scalable system infrastructures.
+                  I'm most excited about hardware-software co-design for critical infrastructure. In particular, I'm passionate about enhancing reliability, throughput, and accelerate latency through custom hardware design or building scalable systems.
                 </p>
 
                 <div className="hashtag-container">
