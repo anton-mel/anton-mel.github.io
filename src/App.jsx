@@ -90,8 +90,8 @@ function App() {
                 
                 <div>
                   <ul className="nav-links">
-                    <li><a href="https://github.com/anton-mel">GitHub</a></li>
-                    <li><a href="https://linkedin.com/in/anton-melnychuk">LinkedIn</a></li>
+                    <li><a href="https://github.com/anton-mel" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+                    <li><a href="https://linkedin.com/in/antonmelnychuk" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
                     <li><a href="/resume">CV</a></li>
                   </ul>
                   
