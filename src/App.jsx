@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback } from 'react'
 import './App.css'
 import { FaMapMarkerAlt, FaUniversity, FaUserTie, FaBuilding, FaEnvelope, FaGithub, FaLinkedin, FaSun, FaMoon, FaChevronLeft, FaChevronRight, FaArrowUp } from 'react-icons/fa'
-import toast, { Toaster } from 'react-hot-toast'
+import SidePanel from './components/SidePanel'
+import Footer from './components/Footer'
 
 function App() {
   const [scrollProgress, setProgress] = useState(0);
@@ -64,11 +65,6 @@ function App() {
     history.replaceState(null, '', `#${id}`);
   };
 
-  const copyPGP = () => {
-    navigator.clipboard.writeText('4761ECDDC5CCC90BD358773C168630462D227233');
-    toast('Copied!');
-  };
-
   return (
     <>
       <div className="app">
@@ -77,39 +73,7 @@ function App() {
         </header>
         <main className="main-content">
           <div className="content-wrapper">
-            <aside className="side-panel">
-              <div className="avatar-container">
-                <img src="public/profile.png" alt="Anton Melnychuk" className="avatar" />
-              </div>
-              <div className="personal-info">
-                <h1>Anton Melnychuk</h1>
-                <ul className="description">
-                  <li>51 Prospect St, New Haven, CT</li>
-                  {/* <li>Employer: <a href='#'>Efficient Computing Lab</a></li> */}
-                  <li>anton.melnychuk [at] yale.edu</li>
-                  <li>Matrix: @an.tony:matrix.org</li>
-                  <li><a onClick={copyPGP} style={{cursor: 'pointer'}}>Copy my GPG Key 🔐</a></li>
-                </ul>
-                
-                <div>
-                  <ul className="nav-links">
-                    <li><a href="https://github.com/anton-mel" target="_blank" rel="noopener noreferrer">GitHub</a></li>
-                    <li><a href="https://linkedin.com/in/antonmelnychuk" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
-                    <li><a href="/resume">CV</a></li>
-                  </ul>
-                  
-                  {/* <hr style={{border: 'none', height: '1px', background: 'var(--accent)', opacity: 0.3, marginBottom: '1rem'}} /> */}
-                  
-                  <div className="nav-links-paper">
-                    <a href="#about">About <span className="dots"></span></a>
-                    <a href="#publications">Recent News <span className="dots"></span></a>
-                    <a href="#projects">Projects <span className="dots"></span></a>
-                    <a href="#courses">Courses <span className="dots"></span></a>
-                    <a href="#volunteering">Volunteering <span className="dots"></span></a>
-                  </div>
-                </div>
-              </div>
-            </aside>
+            <SidePanel />
             {/* Biography -------------------------------------------------- */}
             <section className="main-section" id="about">
               <div className="biography-content">
@@ -132,7 +96,7 @@ function App() {
                 <p>
                   I'm a rising senior at <a href="https://www.yale.edu/" target="_blank" rel="noopener noreferrer">Yale University</a>, majoring in Electrical and Computer Engineering.
                   <span style={{ display: "block", height: "1rem" }}></span>
-                  I'm most passionate about hypothesis-driven research and development for critical infrastructure, working on cutting-edge high-performance systems with strong robustness guarantees. Previous undergraduate interests include: FPGA-based quantum error correction, brain computer interfaces VLSI design, and verifiable Rust operating systems.
+                  I'm most passionate about hypothesis-driven research and development for critical infrastructure, working on state of the art high-performance systems with strong robustness guarantees. My previous undergraduate interests include: FPGA-based quantum error correction, brain computer interfaces RTL/VLSI design, and verifiable Rust operating systems.
                 </p>
 
                 <div className="hashtag-container">
@@ -160,6 +124,10 @@ function App() {
                 <li>
                   <div className="pub-btn-col"><a href="#" className="a-btn">PDF</a></div>
                   <div className="pub-text-col">Starting my Thesis Research in Brain-Computer Interfaces w\ <a href="https://www.cs.yale.edu/homes/abhishek/" target="_blank" rel="noopener noreferrer">Prof. Bhattacharjee</a>.</div>
+                </li>
+                <li>
+                  <div className="pub-btn-col"><a href="#" className="a-btn">PDF</a></div>
+                  <div className="pub-text-col">Introducing SPF+ distributed version of FPGA-based MicroBlossom QEC system.</div>
                 </li>
                 <li>
                   <div className="pub-btn-col"><a href="#" className="a-btn">PDF</a></div>
@@ -220,9 +188,6 @@ function App() {
                       <a href="https://github.com/anton-mel/FastRaft" target="_blank" rel="noopener noreferrer">Faster Reliable Network Consensus for Large & Dynamic Datacenters</a>
                     </div>
                     <div className="blog-block-meta">Nov 2024 – Dec 2024 &nbsp;|&nbsp; Distributed Systems, K8s, Go, AWS, gRPC, Terraform, Chaos Mesh</div>
-                    <div>
-                      <strong>First open-source implementation of the gRPC-based Fast-Raft protocol</strong>, a hierarchical consensus algorithm optimized for globally distributed highly-dynamic systems like mobile networks. Achieved a 2× speedup and a 5× increase in throughput best-case compared to traditional Raft and Paxos algorithms. Containerized cluster nodes and deployed them on AWS EKS using Terraform across three US regions. Performance improvements and fault tolerance were rigorously evaluated at scale using Chaos Mesh for fault injection and resilience testing.
-                    </div>
                   </div>
                 </div>
 
@@ -233,9 +198,6 @@ function App() {
                       <a href="https://github.com/anton-mel/linux" target="_blank" rel="noopener noreferrer">Rust for Linux — Adding Rust Driver Support</a>
                     </div>
                     <div className="blog-block-meta">Sep 2024 – Oct 2024&nbsp;|&nbsp; Writing Linux kernel, C-Rust Co-design, Device Drivers, FFI</div>
-                    <div>
-                      Contributed to the <em>Rust for Linux</em> initiative. Recompiled and set up a custom version of <strong>Linux to support Rust-based kernel drivers,</strong> contributing to the integration of Rust into the Linux kernel, with plans for eventual submission to the Linux Kernel Mailing List (LKML). Allowed system developers to write custom Linux loadable kernel modules for thread-safe file operations, minimizing <code>unsafe</code> blocks while ensuring compatibility with cross-compilation.
-                    </div>
                   </div>
                 </div>
 
@@ -246,15 +208,11 @@ function App() {
                       <a href="https://github.com/anton-mel/WeensyOS" target="_blank" rel="noopener noreferrer">WeensyOS in Rust</a>
                     </div>
                     <div className="blog-block-meta">May 2024 – Aug 2024 &nbsp;|&nbsp; Operating Systems, Booloader, Rust, Teaching, x86-64</div>
-                    <div>
-                      <strong>Redesigned core systems curriculum</strong> by re-engineering <em>WeensyOS</em>—a minimalist teaching kernel created by Prof. Eddie Kohler at Harvard and used across 6 Ivy League to teach core OS concepts <strong>(adapted at Yale from Spring 2024).</strong> It runs on bare-metal x86-64 machines (QEMU emulated CPUs) with POSIX compatibility and newly added microkernel design. Rust-WeensyOS aims for a complete segfault-free experience, inspired by Rust OS pioneers like <a href="https://www.redox-os.org/" target="_blank" rel="noopener noreferrer">RedoxOS</a>. Its previous version <strong>presents the first known-to-me attempt</strong> to statically offload major core kernel management services via two foreign function interfaces (FFI), as a proof of concept for the feasibility of transitioning portions of the Linux kernel to Rust.
-                    </div>
                   </div>
                 </div>
               </div>
 
               <a href="/blog" className="blog-block-readmore">More Projects <span style={{fontSize: '1.1em', marginLeft: '2px'}}>→</span></a>
-
 
               {/* <article className="project">
                     <h2 className="project-title">
@@ -322,9 +280,8 @@ function App() {
               <h2 className='ta-title'>Courses I've TA'ed</h2>
 
               <p className='ta-description'>
-                <strong>CPSC 323 – Systems Programming and Computer Organization</strong><br />
-                <em>Instructors – Prof. Lin Zhong and Prof. Jay Lim</em><br />
-                Teaching assistant for Yale core systems course with 400+ students. Redesigned two assignments, including a complete Rust rewrite of the WeensyOS kernel used in Homework 5 and the final project. Graded exams and held weekly office hours (7.5 hours).
+                <strong>CPSC 3230 – Systems Programming and Computer Organization</strong><br />
+                <em>Instructors – Prof. Lin Zhong and Prof. Jay Lim</em>
               </p>
 
               <h2 className='ta-title'>Relevant Coursework</h2>
@@ -362,14 +319,14 @@ function App() {
                     IronFlight.AI
                   </a>
                 </h2>
-                <p className="project-meta">Nov 2024 – Dec 2024 &nbsp;|&nbsp; Drone Embedded Developer</p>
+                <p className="project-meta">Nov 2024 – Dec 2024 &nbsp;|&nbsp; Embedded Developer</p>
                 <p>
                   <strong>Volunteered to support drone-based humanitarian R&D technology in Ukraine. </strong> 
-                   Proposed and developed an edge-computing object-tracking mechanism by partitioning
-                  reliable NNs across a drone-server interface using a custom protocol,
-                  reducing onboard workload, hardware requirements, and overall system cost; deployed 125+ units in 2024.
+                   Partitioned drone DNN workloads from STM32 MCU to a remote host with onboard FPV goggles.
                 </p>
               </article>
+ 
+              <Footer />
 
               {/* Ukraine Global Scholars
               <article className="project">
@@ -392,27 +349,6 @@ function App() {
           <FaArrowUp />
         </button>
       )}
-      {/* <footer className="footer">
-        <div className="footer-content">
-          <div className="footer-copyright">
-            © 2025 Anton Melnychuk. All rights reserved. <br/>
-            Site last updated 2025-04-29.
-          </div>
-        </div>
-      </footer> */}
-      <Toaster 
-        position="top-right"
-        toastOptions={{
-          style: {
-            background: 'var(--accent)',
-            color: '#fff',
-            fontSize: '13.5px',
-            padding: '3px 7px',
-            borderRadius: '4px',
-            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)'
-          }
-        }}
-      />
     </>
   )
 }

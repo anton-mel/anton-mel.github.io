@@ -8,4 +8,7 @@ export default defineConfig({
   server: {
     historyApiFallback: true,
   },
+  define: {
+    __BUILD_DATE__: JSON.stringify(new Date().toISOString().split('T')[0])
+  }
 })

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import SidePanel from './components/SidePanel';
+import Footer from './components/Footer';
 
 const Resume = () => {
   const [lastChecked, setLastChecked] = useState(new Date());
@@ -73,42 +75,16 @@ const Resume = () => {
     <div className="app">
       <main className="main-content">
         <div className="content-wrapper">
-          <aside className="side-panel">
-            <div className="avatar-container">
-              <img src="public/profile.png" alt="Anton Melnychuk" className="avatar" />
-            </div>
-            <div className="personal-info">
-              <h1>Anton Melnychuk</h1>
-              <ul className="description">
-                <li>51 Prospect St, New Haven, CT</li>
-                <li>anton.melnychuk [at] yale.edu</li>
-                <li>Matrix: @an.tony:matrix.org</li>
-                <li><a onClick={copyPGP} style={{cursor: 'pointer'}}>Copy my GPG Key 🔐</a></li>
-              </ul>
-              
-              <div>
-                <ul className="nav-links">
-                  <li><a href="https://github.com/anton-mel">GitHub</a></li>
-                  <li><a href="https://linkedin.com/in/anton-melnychuk">LinkedIn</a></li>
-                  <li><a href="/resume">CV</a></li>
-                </ul>
-                
-                <div className="nav-links-paper">
-                  <a href="/#about">About <span className="dots"></span> <span className="number">#1</span></a>
-                  <a href="/#publications">Recent News <span className="dots"></span> <span className="number">#2</span></a>
-                  <a href="/#projects">Projects <span className="dots"></span> <span className="number">#3</span></a>
-                  <a href="/#courses">Courses <span className="dots"></span> <span className="number">#4</span></a>
-                  <a href="/#volunteering">Volunteering <span className="dots"></span> <span className="number">#5</span></a>
-                </div>
-              </div>
-            </div>
-          </aside>
-
+          <SidePanel />
+          
           {/* Resume Section */}
           <section className="main-section" id="resume">
             <div className="resume-header">
               <Link to="/" className="back-link">← Back to Home</Link>
               <h1>Resume</h1>
+              <p style={{fontSize: '13.5px', color: '#666', marginTop: '10px', marginBottom: '0'}}>
+                If the resume is not loaded, please reload the page or download using the button below.
+              </p>
             </div>
 
             {/* PDF Viewer */}
@@ -172,6 +148,8 @@ const Resume = () => {
                   </p>
               </div>
             </div>
+            
+            <Footer />
           </section>
         </div>
       </main>
