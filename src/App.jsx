@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import './App.css'
-import { FaMapMarkerAlt, FaUniversity, FaUserTie, FaBuilding, FaEnvelope, FaGithub, FaLinkedin, FaSun, FaMoon, FaChevronLeft, FaChevronRight, FaArrowUp } from 'react-icons/fa'
+import { FaArrowUp, FaExternalLinkAlt } from 'react-icons/fa'
 import SidePanel from './components/SidePanel'
 import Footer from './components/Footer'
 
@@ -186,6 +186,7 @@ function App() {
                   <div className="blog-block-content">
                     <div className="blog-block-title">
                       <a href="https://github.com/anton-mel/FastRaft" target="_blank" rel="noopener noreferrer">Faster Reliable Network Consensus for Large & Dynamic Datacenters</a>
+                      <FaExternalLinkAlt style={{ marginLeft: '8px', fontSize: '0.8em', opacity: 0.7 }} />
                     </div>
                     <div className="blog-block-meta">Nov 2024 – Dec 2024 &nbsp;|&nbsp; Distributed Systems, K8s, Go, AWS, gRPC, Terraform, Chaos Mesh</div>
                   </div>
@@ -195,7 +196,8 @@ function App() {
                 <div className="blog-block">
                   <div className="blog-block-content">
                     <div className="blog-block-title">
-                      <a href="https://github.com/anton-mel/linux" target="_blank" rel="noopener noreferrer">Rust for Linux — Adding Rust Driver Support</a>
+                      <a href="https://github.com/anton-mel/linux" target="_blank" rel="noopener noreferrer">Rust for Linux — Adding Rust Driver Support to Linux</a>
+                      <FaExternalLinkAlt style={{ marginLeft: '8px', fontSize: '0.8em', opacity: 0.7 }} />
                     </div>
                     <div className="blog-block-meta">Sep 2024 – Oct 2024&nbsp;|&nbsp; Writing Linux kernel, C-Rust Co-design, Device Drivers, FFI</div>
                   </div>
@@ -205,7 +207,8 @@ function App() {
                 <div className="blog-block">
                   <div className="blog-block-content">
                     <div className="blog-block-title">
-                      <a href="https://github.com/anton-mel/WeensyOS" target="_blank" rel="noopener noreferrer">WeensyOS in Rust</a>
+                      <a href="https://github.com/anton-mel/WeensyOS" target="_blank" rel="noopener noreferrer">Introducing WeensyOS in Rust</a>
+                      <FaExternalLinkAlt style={{ marginLeft: '8px', fontSize: '0.8em', opacity: 0.7 }} />
                     </div>
                     <div className="blog-block-meta">May 2024 – Aug 2024 &nbsp;|&nbsp; Operating Systems, Booloader, Rust, Teaching, x86-64</div>
                   </div>
