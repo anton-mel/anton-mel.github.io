@@ -1,6 +1,5 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { FaHome, FaArrowLeft } from 'react-icons/fa';
 import './App.css';
 
 export default function BlogPost() {
@@ -235,16 +234,16 @@ export default function BlogPost() {
         <main className="main-content">
           <div className="content-wrapper">
             <div className="not-found-container">
-              <h1 className="not-found-title">Post Not Found</h1>
+              <h1 className="not-found-title">Page Not Found</h1>
               <p className="not-found-message">
-                The blog post you're looking for doesn't exist or may have been moved.
+                The page you're looking for doesn't exist or may have been moved.
               </p>
               <div className="not-found-actions">
                 <Link to="/blog" className="not-found-btn">
-                  <FaArrowLeft /> Back to Projects
+                  Back to Projects
                 </Link>
                 <Link to="/" className="not-found-btn secondary">
-                  <FaHome /> Go Home
+                  Home
                 </Link>
               </div>
             </div>

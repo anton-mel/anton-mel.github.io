@@ -816,7 +816,7 @@ a:hover {
 }
 
 .not-found-title {
-  font-size: 36px;
+  font-size: 24px;
   font-weight: bold;
   color: var(--accent);
   line-height: 0;
@@ -825,48 +825,45 @@ a:hover {
 .not-found-message {
   font-size: 13.5px;
   color: #666;
-  margin-bottom: 1.5rem;
+  width: 300px;
+  margin-bottom: 1.2rem;
   line-height: 1.6;
 }
 
 .not-found-actions {
   display: flex;
-  gap: 1rem;
+  gap: 10px;
   justify-content: center;
   flex-wrap: wrap;
 }
 
 .not-found-btn {
-  display: inline-flex;
+  text-align: center;
+  background: #fff;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 4px;
   font-size: 13.5px;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 4px 10px;
-  background: var(--accent);
-  color: white;
+  font-weight: 400;
   text-decoration: none;
-  border-radius: 8px;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
   transition: all 0.2s ease;
-  border: 2px solid var(--accent);
 }
 
 .not-found-btn:hover {
-  background: var(--accent-hover);
-  border-color: var(--accent-hover);
-  color: white;
+  background: var(--accent);
+  color: #ffffff;
+  text-decoration: none;
   transform: translateY(-2px);
 }
 
 .not-found-btn.secondary {
-  background: transparent;
-  color: var(--accent);
-  border-color: var(--accent);
-}
-
-.not-found-btn.secondary:hover {
   background: var(--accent);
-  color: white;
-  transform: translateY(-2px);
+  color: #fff;
+  text-decoration: none;
 }
 
 .blog-block-meta {
