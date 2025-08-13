@@ -1,12 +1,20 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaArrowUp } from 'react-icons/fa';
 import toast, { Toaster } from 'react-hot-toast';
 import './App.css';
 import Footer from './components/Footer';
+import Projects from './components/Projects';
 
 const Blog = () => {
   const [showScrollTop, setShowScrollTop] = React.useState(false);
+  const navigate = useNavigate();
+
+  const handleProjectClick = (project) => {
+    console.log('Blog.jsx handleProjectClick called with:', project);
+    console.log('Navigating to:', `/blog/${project.blogSlug}`);
+    navigate(`/blog/${project.blogSlug}`);
+  };
 
   // Show scroll-to-top button if scrolled more than 0px
   React.useEffect(() => {
@@ -69,46 +77,11 @@ const Blog = () => {
                 <h1>Projects & Research</h1>
               </div>
               
-              <div>
-                {/* Fast-Raft */}
-                <div className="blog-block">
-                  <div className="blog-block-content">
-                    <div className="blog-block-title">
-                      <a href="https://github.com/anton-mel/FastRaft" target="_blank" rel="noopener noreferrer">Faster Reliable Network Consensus for Large & Dynamic Datacenters</a>
-                    </div>
-                    <div className="blog-block-meta">Nov 2024 – Dec 2024 &nbsp;|&nbsp; Distributed Systems, K8s, Go, AWS, gRPC, Terraform, Chaos Mesh</div>
-                    <div>
-                      <strong>First open-source implementation of the gRPC-based Fast-Raft protocol</strong>, a hierarchical consensus algorithm optimized for globally distributed highly-dynamic systems like mobile networks. Achieved a 2× speedup and a 5× increase in throughput best-case compared to traditional Raft and Paxos algorithms. Containerized cluster nodes and deployed them on AWS EKS using Terraform across three US regions. Performance improvements and fault tolerance were rigorously evaluated at scale using Chaos Mesh for fault injection and resilience testing.
-                    </div>
-                  </div>
-                </div>
-
-                {/* Rust for Linux */}
-                <div className="blog-block">
-                  <div className="blog-block-content">
-                    <div className="blog-block-title">
-                      <a href="https://github.com/anton-mel/linux" target="_blank" rel="noopener noreferrer">Rust for Linux — Adding Rust Driver Support</a>
-                    </div>
-                    <div className="blog-block-meta">Sep 2024 – Oct 2024&nbsp;|&nbsp; Writing Linux kernel, C-Rust Co-design, Device Drivers, FFI</div>
-                    <div>
-                      Contributed to the <em>Rust for Linux</em> initiative. Recompiled and set up a custom version of <strong>Linux to support Rust-based kernel drivers,</strong> contributing to the integration of Rust into the Linux kernel, with plans for eventual submission to the Linux Kernel Mailing List (LKML). Allowed system developers to write custom Linux loadable kernel modules for thread-safe file operations, minimizing <code>unsafe</code> blocks while ensuring compatibility with cross-compilation.
-                    </div>
-                  </div>
-                </div>
-
-                {/* WeensyOS-Rust */}
-                <div className="blog-block">
-                  <div className="blog-block-content">
-                    <div className="blog-block-title">
-                      <a href="https://github.com/anton-mel/WeensyOS" target="_blank" rel="noopener noreferrer">WeensyOS in Rust</a>
-                    </div>
-                    <div className="blog-block-meta">May 2024 – Aug 2024 &nbsp;|&nbsp; Operating Systems, Booloader, Rust, Teaching, x86-64</div>
-                    <div>
-                      <strong>Redesigned core systems curriculum</strong> by re-engineering <em>WeensyOS</em>—a minimalist teaching kernel created by Prof. Eddie Kohler at Harvard and used across 6 Ivy League to teach core OS concepts <strong>(adapted at Yale from Spring 2024).</strong> It runs on bare-metal x86-64 machines (QEMU emulated CPUs) with POSIX compatibility and newly added microkernel design. Rust-WeensyOS aims for a complete segfault-free experience, inspired by Rust OS pioneers like <a href="https://www.redox-os.org/" target="_blank" rel="noopener noreferrer">RedoxOS</a>. Its previous version <strong>presents the first known-to-me attempt</strong> to statically offload major core kernel management services via two foreign function interfaces (FFI), as a proof of concept for the feasibility of transitioning portions of the Linux kernel to Rust.
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <Projects 
+                showFullDescriptions={true} 
+                onProjectClick={handleProjectClick} 
+                key="blog-projects"
+              />
               
               <Footer />
             </section>

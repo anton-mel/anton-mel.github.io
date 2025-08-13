@@ -742,6 +742,131 @@ a:hover {
   font-weight: 700;
   margin-bottom: 4px;
   color: var(--accent);
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.project-title-button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  color: inherit;
+  text-align: left;
+  flex: 1;
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: bold;
+  transition: color 0.2s ease;
+  outline: none;
+}
+
+.project-title-button:focus {
+  outline: none;
+}
+
+.project-title-button:active {
+  outline: none;
+}
+
+.project-title-button:hover {
+  color: var(--accent-hover);
+}
+
+.project-title-link {
+  flex: 1;
+  color: inherit;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.2s ease;
+}
+
+.project-title-link:hover {
+  color: var(--accent-hover);
+}
+
+.project-external-icon {
+  font-size: 0.8em;
+  opacity: 0.7;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* Not Found Page Styles */
+.not-found-container {
+  text-align: center;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  margin: 0 auto;
+}
+
+.not-found-icon {
+  font-size: 4rem;
+  color: var(--accent);
+  opacity: 0.8;
+}
+
+.not-found-title {
+  font-size: 36px;
+  font-weight: bold;
+  color: var(--accent);
+  line-height: 0;
+}
+
+.not-found-message {
+  font-size: 13.5px;
+  color: #666;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.not-found-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.not-found-btn {
+  display: inline-flex;
+  font-size: 13.5px;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 4px 10px;
+  background: var(--accent);
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  border: 2px solid var(--accent);
+}
+
+.not-found-btn:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+  color: white;
+  transform: translateY(-2px);
+}
+
+.not-found-btn.secondary {
+  background: transparent;
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.not-found-btn.secondary:hover {
+  background: var(--accent);
+  color: white;
+  transform: translateY(-2px);
 }
 
 .blog-block-meta {
@@ -995,14 +1120,13 @@ a:hover {
   .scroll-to-top-btn {
     right: 16px;
     bottom: 16px;
-    width: 50px;
-    height: 50px;
-    font-size: 1.2rem;
+    width: 40px;
+    height: 40px;
   }
   
   .scroll-to-top-btn svg {
-    width: 20px;
-    height: 20px;
+    width: 15px;
+    height: 15px;
   }
 }
 
@@ -1020,6 +1144,7 @@ a:hover {
 .back-link {
   color: var(--accent);
   text-decoration: none;
+  padding: 5px 0;
   font-size: 14px;
   font-weight: normal;
   margin-bottom: 1rem;
