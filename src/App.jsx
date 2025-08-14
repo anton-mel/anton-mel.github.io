@@ -97,10 +97,10 @@ function App() {
                 <p>
                   I'm a rising senior at <a href="https://www.yale.edu/" target="_blank" rel="noopener noreferrer">Yale University</a>, majoring in Electrical and Computer Engineering.
                   <span style={{ display: "block", height: "1rem" }}></span>
-                  I'm enthusiastic about <strong>hardware-software co-design</strong> and top-down R&D for <strong>high-performance</strong> systems with strong <strong>robustness</strong> guarantees. 
+                  I'm enthusiastic about hardware-software co-design and top-down R&D for high-performance systems with strong robustness guarantees. 
                   My previous undergraduate work-experience spans hypothesis-driven research, with valuable opportunity to collaborate with industries such as Huawei and AMD, from high-level systems such as custom consensus
                   algorithms or linearizability proofs, to low-level engineering problems in quantum, brain-computer interfaces, or operating systems.
-                  In the future, I aspire to contribute to <strong>large-scale</strong> infrastructure that serves millions.
+                  In the future, I aspire to contribute to large-scale infrastructure that serves millions.
                 </p>
 
                 <div className="hashtag-container">
