@@ -2,6 +2,7 @@
   --accent: #86674b;
   --accent-hover: #5d4734;
 
+  --side-panel-w: 230px;
   --content-w: 850px;
   --light-bg: #ffffff;
   --light-text: #1c1c1d;
@@ -119,7 +120,7 @@ body {
 }
 
 .side-panel {
-  width: 230px;
+  width: var(--side-panel-w);
   flex-shrink: 0;
   padding-top: 20px;
   position: fixed;
@@ -344,6 +345,22 @@ a:hover {
   color: #000 !important;
 }
 
+.nav-links-paper a.active {
+  color: #000 !important;
+}
+
+.footnote-symbol {
+  font-size: 0.8em;
+  vertical-align: super;
+  line-height: 1;
+  position: relative;
+}
+
+.footnote {
+  font-size: 10px;
+  color: #333;
+}
+
 .nav-links-paper .dots {
   flex: 1;
   border-bottom: 1.5px dotted #d4d4d4;
@@ -550,6 +567,7 @@ a:hover {
   align-items: center;
   display: flex;
   align-items: flex-start;
+  margin-bottom: 3px;
 }
 
 .pub-recommended {
@@ -643,6 +661,9 @@ a:hover {
 @media screen and (max-width: 900px) {
   .content-wrapper {
     padding: 0 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .sel-btn-box {
@@ -656,7 +677,7 @@ a:hover {
 
   .side-panel {
     position: static;
-    width: 100%;
+    width: 100% !important;
     padding: 1rem 0;
     margin-bottom: 1rem;
   }
@@ -678,7 +699,8 @@ a:hover {
   }
 
   .main-section {
-    margin-left: 0;
+    max-width: calc(var(--content-w) - var(--side-panel-w));
+    margin-left: 0 !important;
     padding: 0;
   }
 

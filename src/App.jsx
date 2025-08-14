@@ -97,7 +97,10 @@ function App() {
                 <p>
                   I'm a rising senior at <a href="https://www.yale.edu/" target="_blank" rel="noopener noreferrer">Yale University</a>, majoring in Electrical and Computer Engineering.
                   <span style={{ display: "block", height: "1rem" }}></span>
-                  I'm most passionate about hypothesis-driven research and development for critical infrastructure, working on state of the art high-performance systems with strong robustness guarantees. My previous undergraduate interests include: FPGA-based quantum error correction, brain computer interfaces RTL/VLSI design, and verifiable Rust operating systems.
+                  I'm enthusiastic about <strong>hardware-software co-design</strong> and top-down R&D for <strong>high-performance</strong> systems with strong <strong>robustness</strong> guarantees. 
+                  My previous undergraduate work-experience spans hypothesis-driven research, with valuable opportunity to collaborate with industries such as Huawei and AMD, from high-level systems such as custom consensus
+                  algorithms or linearizability proofs, to low-level engineering problems in quantum, brain-computer interfaces, or operating systems.
+                  In the future, I aspire to contribute to <strong>large-scale</strong> infrastructure that serves millions.
                 </p>
 
                 <div className="hashtag-container">
@@ -140,7 +143,7 @@ function App() {
                 </li> */}
                 <li>
                   <div className="pub-btn-col"><a target="_blank" href="https://www.usenix.org/conference/osdi25" className="a-btn">Link</a></div>
-                  <div className="pub-text-col">Participated in ATC/OSDI '25 (USENIX Symposium on Operating Systems) and QEC '25 (Quantum Error Correction) research conferences.</div>
+                  <div className="pub-text-col">Participated in <a href="https://www.usenix.org/conference/osdi25" target="_blank" rel="noopener noreferrer">ATC/OSDI '25</a> (USENIX Symposium on Operating Systems) and <a href="https://qec25.yalepages.org/" target="_blank" rel="noopener noreferrer">QEC '25</a> (Quantum Error Correction) research conferences.</div>
                 </li>
                 {/* <li>
                   <div className="pub-btn-col"><a href="#" className="a-btn recommended">Blog</a></div>
