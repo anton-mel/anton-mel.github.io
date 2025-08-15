@@ -41,7 +41,7 @@ const SidePanel = () => {
     <>
       <aside className="side-panel">
         <div className="avatar-container">
-          <img src="/profile.png" alt="Anton Melnychuk" className="avatar" />
+          <img src="/public/profile.png" alt="Anton Melnychuk" className="avatar" />
         </div>
         <div className="personal-info">
           <h1>Anton Melnychuk</h1>
