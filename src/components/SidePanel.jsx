@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 const SidePanel = () => {
   const [activeSection, setActiveSection] = useState('about');
@@ -41,7 +41,7 @@ const SidePanel = () => {
     <>
       <aside className="side-panel">
         <div className="avatar-container">
-          <img src="/public/profile.png" alt="Anton Melnychuk" className="avatar" />
+          <img src="/profile.png" alt="Anton Melnychuk" className="avatar" />
         </div>
         <div className="personal-info">
           <h1>Anton Melnychuk</h1>
@@ -70,19 +70,7 @@ const SidePanel = () => {
         </div>
       </aside>
       
-      <Toaster 
-        position="top-right"
-        toastOptions={{
-          style: {
-            background: 'var(--accent)',
-            color: '#fff',
-            fontSize: '13.5px',
-            padding: '3px 7px',
-            borderRadius: '4px',
-            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)'
-          }
-        }}
-      />
+      
     </>
   );
 };

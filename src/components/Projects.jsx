@@ -1,9 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaExternalLinkAlt } from 'react-icons/fa';
+import { FaExternalLinkAlt, FaGithub } from 'react-icons/fa';
 import { projects } from '../data/projects';
 
-const Projects = ({ showFullDescriptions = false, onProjectClick = null }) => {
+const Projects = ({ showFullDescriptions = false, onProjectClick = null, limit = null, lineClamp = null }) => {
   const navigate = useNavigate();
   
   const handleProjectClick = (project) => {    
@@ -18,7 +18,14 @@ const Projects = ({ showFullDescriptions = false, onProjectClick = null }) => {
 
   return (
     <div>
-      {projects.map((project) => (
+      {([...projects]
+        .sort((a, b) => {
+          const da = a.publishedAt || '';
+          const db = b.publishedAt || '';
+          return db.localeCompare(da);
+        })
+        .slice(0, limit || projects.length)
+      ).map((project) => (
         <div key={project.id} className="blog-block">
           <div className="blog-block-content">
             <div className="blog-block-title">
@@ -31,7 +38,11 @@ const Projects = ({ showFullDescriptions = false, onProjectClick = null }) => {
                   {project.title}
                 </a>
               )}
-              <FaExternalLinkAlt className="project-external-icon" />
+              {project.hasBlogPost ? (
+                <FaExternalLinkAlt className="project-external-icon" />
+              ) : (
+                <FaGithub className="project-external-icon" />
+              )}
             </div>
             <div className="blog-block-meta">
               {project.period} &nbsp;|&nbsp; {project.technologies}
@@ -40,7 +51,9 @@ const Projects = ({ showFullDescriptions = false, onProjectClick = null }) => {
               {showFullDescriptions ? (
                 <div dangerouslySetInnerHTML={{ __html: project.fullDescription }} />
               ) : (
-                project.shortDescription
+                <div style={lineClamp ? { display: '-webkit-box', WebkitLineClamp: lineClamp, WebkitBoxOrient: 'vertical', overflow: 'hidden' } : undefined}>
+                  {project.shortDescription}
+                </div>
               )}
             </div>
           </div>

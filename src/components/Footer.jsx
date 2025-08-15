@@ -6,7 +6,7 @@ function Footer() {
       <div className="footer-copyright">
         <small>© 2025 Anton Melnychuk. All rights reserved.</small>
         <br/>
-        <small>Site last updated {__BUILD_DATE__ || '2025-04-29'} (Vite).</small>
+        <small>Site last updated {__BUILD_DATE__ || '2025-04-29'} (vibe-coded).</small>
       </div>
     </div>
   );

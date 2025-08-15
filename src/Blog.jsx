@@ -1,13 +1,15 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaArrowUp } from 'react-icons/fa';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import './App.css';
 import Footer from './components/Footer';
 import Projects from './components/Projects';
+import SidePanel from './components/SidePanel';
 
 const Blog = () => {
   const [showScrollTop, setShowScrollTop] = React.useState(false);
+  const [scrollProgress, setScrollProgress] = React.useState(0);
   const navigate = useNavigate();
 
   const handleProjectClick = (project) => {
@@ -25,6 +27,18 @@ const Blog = () => {
     return () => window.removeEventListener('scroll', handleScrollBtn);
   }, []);
 
+  // Update top scroll progress bar
+  React.useEffect(() => {
+    const handleScroll = () => {
+      const total = document.documentElement.scrollHeight - window.innerHeight;
+      const current = window.scrollY;
+      setScrollProgress(total > 0 ? (current / total) * 100 : 0);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -37,38 +51,12 @@ const Blog = () => {
   return (
     <>
       <div className="app">
+        <header className="header">
+          <div className="scroll-progress" style={{ width: `${scrollProgress}%` }} />
+        </header>
         <main className="main-content">
           <div className="content-wrapper">
-            <aside className="side-panel">
-              <div className="avatar-container">
-                <img src="/profile.png" alt="Anton Melnychuk" className="avatar" />
-              </div>
-              <div className="personal-info">
-                <h1>Anton Melnychuk</h1>
-                <ul className="description">
-                  <li>51 Prospect St, New Haven, CT</li>
-                  <li>anton.melnychuk [at] yale.edu</li>
-                  <li>Matrix: @an.tony:matrix.org</li>
-                  <li><a onClick={copyPGP} style={{cursor: 'pointer'}}>Copy my GPG Key 🔐</a></li>
-                </ul>
-                
-                <div>
-                  <ul className="nav-links">
-                    <li><a href="https://github.com/anton-mel" target="_blank" rel="noopener noreferrer">GitHub</a></li>
-                    <li><a href="https://linkedin.com/in/antonmelnychuk" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
-                    <li><a href="/resume">CV</a></li>
-                  </ul>
-                  
-                  <div className="nav-links-paper">
-                    <a href="/#about">About <span className="dots"></span> <span className="number">#1</span></a>
-                    <a href="/#publications">Recent News <span className="dots"></span> <span className="number">#2</span></a>
-                    <a href="/blog">Projects <span className="dots"></span> <span className="number">#3</span></a>
-                    <a href="/#courses">Courses <span className="dots"></span> <span className="number">#4</span></a>
-                    <a href="/#volunteering">Volunteering <span className="dots"></span> <span className="number">#5</span></a>
-                  </div>
-                </div>
-              </div>
-            </aside>
+            <SidePanel />
 
             {/* Projects Section */}
             <section className="main-section" id="projects">
@@ -78,9 +66,10 @@ const Blog = () => {
               </div>
               
               <Projects 
-                showFullDescriptions={true} 
+                showFullDescriptions={false}
                 onProjectClick={handleProjectClick} 
                 key="blog-projects"
+                lineClamp={2}
               />
               
               <Footer />
@@ -94,20 +83,6 @@ const Blog = () => {
           <FaArrowUp />
         </button>
       )}
-      
-      <Toaster 
-        position="top-right"
-        toastOptions={{
-          style: {
-            background: 'var(--accent)',
-            color: '#fff',
-            fontSize: '13.5px',
-            padding: '3px 7px',
-            borderRadius: '4px',
-            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)'
-          }
-        }}
-      />
     </>
   );
 };

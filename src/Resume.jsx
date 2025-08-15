@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { FaArrowUp } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import SidePanel from './components/SidePanel';
 import Footer from './components/Footer';
@@ -9,6 +10,8 @@ const Resume = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [pdfViewerUrl, setPdfViewerUrl] = useState('');
   const [pdfLoadError, setPdfLoadError] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   // Function to check for updates from GitHub
   const checkForUpdates = async () => {
@@ -43,6 +46,27 @@ const Resume = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // Scroll-to-top visibility
+  useEffect(() => {
+    const handleScrollBtn = () => {
+      setShowScrollTop(window.scrollY > 0);
+    };
+    window.addEventListener('scroll', handleScrollBtn, { passive: true });
+    return () => window.removeEventListener('scroll', handleScrollBtn);
+  }, []);
+
+  // Top progress bar
+  useEffect(() => {
+    const handleScroll = () => {
+      const total = document.documentElement.scrollHeight - window.innerHeight;
+      const current = window.scrollY;
+      setScrollProgress(total > 0 ? (current / total) * 100 : 0);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   // Function to handle PDF loading
   const loadPdfViewer = () => {
     const pdfUrl = 'https://github.com/anton-mel/CV/raw/main/resume.pdf';
@@ -71,8 +95,16 @@ const Resume = () => {
     navigator.clipboard.writeText('4761ECDDC5CCC90BD358773C168630462D227233');
   };
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
+    <>
     <div className="app">
+      <header className="header">
+        <div className="scroll-progress" style={{ width: `${scrollProgress}%` }} />
+      </header>
       <main className="main-content">
         <div className="content-wrapper">
           <SidePanel />
@@ -154,6 +186,12 @@ const Resume = () => {
         </div>
       </main>
     </div>
+    {showScrollTop && (
+      <button className="scroll-to-top-btn" onClick={scrollToTop} aria-label="Scroll to top">
+        <FaArrowUp />
+      </button>
+    )}
+    </>
   );
 };
 
