@@ -99,7 +99,6 @@ function App() {
                   I'm a rising senior at <a href="https://www.yale.edu/" target="_blank" rel="noopener noreferrer">Yale University</a>, majoring in Electrical and Computer Engineering.
                   <span style={{ display: "block", height: "1rem" }}></span>
                   I'm enthusiastic about hardware-software co-design and top-down R&D for high-performance scalable systems with strong robustness guarantees. 
-                  My undergraduate internship experience centers on hypothesis-driven research, including collaborations with Huawei and AMD (Xilinx).
                   {/* <span style={{ display: "block", height: "1rem" }}></span>
                   Applications span from high-level systems such as consensus
                   algorithms and linearizability proofs to low-level engineering in quantum systems, brain-computer interfaces, and operating systems.
@@ -129,14 +128,14 @@ function App() {
 
               <div className="pub-year">[2025]</div>
               <ul className="pub-list">
-                <li>
+                {/* <li>
                   <div className="pub-btn-col"><a href="#" className="a-btn">PDF</a></div>
                   <div className="pub-text-col">Starting my Thesis Research w\ <a href="https://www.cs.yale.edu/homes/abhishek/" target="_blank" rel="noopener noreferrer">Prof. Bhattacharjee</a>.</div>
-                </li>
-                <li>
+                </li> */}
+                {/* <li>
                   <div className="pub-btn-col"><a href="https://github.com/Nathan5563/fpgafs" className="a-btn">Git</a></div>
                   <div className="pub-text-col">Introducing fpgaFS — a multi‑FPGA SoC management tool (with <a href="https://www.amd.com/en/corporate/xilinx-acquisition.html" target="_blank" rel="noopener noreferrer">AMD Xilinx</a>) for remote, VFS‑based runtime deployment to Versal/UltraScale+ FPGAs.</div>
-                </li>
+                </li> */}
                 {/* <li>
                   <div className="pub-btn-col"><a href="https://antonmel.com/public/helios.png" target="_blank" rel="noopener noreferrer" className="a-btn recommended">Blog</a></div>
                   <div className="pub-text-col">Introducing a distributed, multi‑FPGA extension of MicroBlossom (FPGA MWPM decoder) that shards the surface‑code lattice to preserve sub‑µs deterministic latency and enable larger code distances for real‑time quantum error correction.</div>
@@ -301,7 +300,7 @@ function App() {
                 </h2>
                 <p className="project-meta">Nov 2024 – Dec 2024 &nbsp;|&nbsp; Embedded Developer</p>
                 <p>
-                  <strong>Volunteered to support drone-based humanitarian R&D technology in Ukraine. </strong> 
+                  Volunteered to support drone-based humanitarian R&D technology in Ukraine.
                    Partitioned drone DNN workloads from STM32 MCU to a remote host with onboard FPV goggles.
                 </p>
               </article>

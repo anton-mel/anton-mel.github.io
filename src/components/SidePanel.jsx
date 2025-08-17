@@ -49,7 +49,6 @@ const SidePanel = () => {
             <li>51 Prospect St, New Haven, CT</li>
             <li>anton.melnychuk [at] yale.edu</li>
             <li>Matrix: @an.tony:matrix.org</li>
-            <li><a onClick={copyPGP} style={{cursor: 'pointer'}}>Copy my GPG Key 🔐</a></li>
           </ul>
           
           <div>
@@ -59,13 +58,13 @@ const SidePanel = () => {
               <li><a href="/resume">CV</a></li>
             </ul>
             
-            <div className="nav-links-paper">
+            {/* <div className="nav-links-paper">
               <a href="/#about" className={getActiveClass('about')}>About <span className="dots"></span> <span className="number">#1</span></a>
               <a href="/#publications" className={getActiveClass('publications')}>Recent News <span className="dots"></span> <span className="number">#2</span></a>
               <a href="/blog" className={getActiveClass('projects')}>Projects <span className="dots"></span> <span className="number">#3</span></a>
               <a href="/#courses" className={getActiveClass('courses')}>Courses <span className="dots"></span> <span className="number">#4</span></a>
               <a href="/#volunteering" className={getActiveClass('volunteering')}>Volunteering <span className="dots"></span> <span className="number">#5</span></a>
-            </div>
+            </div> */}
           </div>
         </div>
       </aside>
