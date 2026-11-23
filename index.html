@@ -71,7 +71,7 @@ a:hover { text-decoration-color: var(--ink); }
   right: 0;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   gap: 16px;
   padding-top: calc(env(safe-area-inset-top, 0px) + 22px);
   padding-bottom: 12px;
@@ -81,31 +81,32 @@ a:hover { text-decoration-color: var(--ink); }
 }
 .topbar > * { pointer-events: auto; }
 .brand {
-  min-width: 0;
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  column-gap: 9px;
+  position: relative;
+  display: inline-flex;
   align-items: center;
+  gap: 12px;
+  padding: 6px;
+  margin: -6px;
+  border-radius: 6px;
+  color: var(--ink);
+  text-decoration: none;
+  opacity: 0.88;
+  transition: opacity 0.18s ease;
 }
-.brand-mark { display: block; width: auto; height: 0.72em; font-size: 20px; fill: var(--ink); }
-.brand-name {
-  grid-column: 2;
-  margin: 0;
-  font-family: var(--font-display);
-  font-stretch: 116%;
-  font-weight: 600;
-  font-size: 20px;
-  line-height: 1.15;
-  letter-spacing: 0.005em;
-}
-.brand-sub {
-  grid-column: 2;
-  margin: 6px 0 0;
-  font: 500 10.5px/1.4 var(--font-mono);
+.brand-mark { display: block; width: auto; height: 30px; fill: currentColor; transition: transform 0.18s ease; }
+.brand-tip {
+  font: 500 10.5px/1 var(--font-mono);
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--ink-3);
+  color: var(--ink-2);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  white-space: nowrap;
 }
+.brand:hover, .brand:focus-visible { opacity: 1; }
+.brand:hover .brand-mark, .brand:focus-visible .brand-mark { transform: scale(1.08); }
+.brand:hover .brand-tip, .brand:focus-visible .brand-tip { opacity: 1; transform: none; }
 body.is-list .brand { visibility: hidden; }
 
 .viewswitch {
@@ -377,10 +378,7 @@ body.is-list .brand { visibility: hidden; }
     padding-left: max(16px, env(safe-area-inset-left, 0px));
     padding-right: max(16px, env(safe-area-inset-right, 0px));
   }
-  .brand-name { font-size: 17px; }
-  .brand-mark { font-size: 17px; }
-  .brand { column-gap: 8px; }
-  .brand-sub { font-size: 9.5px; letter-spacing: 0.14em; margin-top: 4px; }
+  .brand-mark { height: 26px; }
   .viewswitch button { padding: 9px 12px; }
   .stage { background: radial-gradient(ellipse 110% 60% at 50% 28%, var(--bg-glow), var(--bg) 70%); }
   .panel {
@@ -439,7 +437,6 @@ body.is-list .brand { visibility: hidden; }
   .hint-how { font-size: 12px; }
   body.sheet-open .hint { visibility: hidden; }
   .list { padding-top: 76px; }
-  .brand-sub .loc { display: none; }
   .row { flex-direction: column; align-items: flex-start; gap: 0; }
   .row > :first-child { flex: none; max-width: 100%; }
   .meta { white-space: normal; }
@@ -459,11 +456,10 @@ body.is-list .brand { visibility: hidden; }
 </div>
 
 <header class="topbar" id="topbar">
-  <div class="brand">
+  <a class="brand" href="https://github.com/anton-mel" target="_blank" rel="noopener" aria-label="Anton Melnychuk on GitHub">
     <svg class="brand-mark" viewBox="-58 0 116 100" aria-hidden="true" focusable="false"><polygon points="0,0 58,100 9,78 22,77.5 0,36.5 -22,77.5 -9,78 -58,100"/></svg>
-    <p class="brand-name">Anton Melnychuk</p>
-    <p class="brand-sub">EECS · Yale 2026<span class="loc"> · Santa Clara, CA</span></p>
-  </div>
+    <span class="brand-tip" aria-hidden="true">GitHub ↗</span>
+  </a>
   <div class="viewswitch" role="group" aria-label="View">
     <button type="button" id="viewChip" data-mode="chip" aria-pressed="true">Chip</button>
     <button type="button" id="viewList" data-mode="list" aria-pressed="false">List</button>
@@ -998,9 +994,6 @@ const RESUME = {
       MARK.forEach(([x, y], i) => (i ? g.lineTo : g.moveTo).call(g, mx + x * ms, my + y * ms));
       g.closePath();
       g.fill();
-      g.textAlign = "right";
-      const [rx, ry] = P(5.0, 4.72);
-      g.fillText("SANTA CLARA, CA", rx, ry);
       g.textAlign = "left";
       const [tx, ty] = P(-5.62, -5.62);
       g.beginPath();
