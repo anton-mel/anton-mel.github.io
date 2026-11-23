@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Anton Melnychuk · Résumé</title>
+<meta name="description" content="Anton Melnychuk: RTL, physical design, board bring-up and GPU inference systems.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg?v=4">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="site.css?v=4">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand" role="img" aria-label="Anton Melnychuk">
+    <svg class="brand-mark" viewBox="-58 0 116 100" aria-hidden="true" focusable="false"><polygon points="0,0 58,100 9,78 22,77.5 0,36.5 -22,77.5 -9,78 -58,100"/></svg>
+  </div>
+  <nav class="viewswitch" aria-label="View">
+    <a href="./">Chip</a>
+    <a href="resume.html" aria-current="page">List</a>
+  </nav>
+</header>
+
+<main class="list" id="list"></main>
+
+<script src="resume-data.js?v=4"></script>
+<script>
+(() => {
+  const R = window.RESUME;
+  const SECTIONS = [
+    { id: "education", tag: "U1", name: "Education" },
+    { id: "projects", tag: "U2", name: "Projects" },
+    { id: "skills", tag: "U3", name: "Skills" }
+  ];
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const rich = (s) => esc(s)
+    .replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g, (m, t, u) => `<a href="${u}" target="_blank" rel="noopener">${t}</a>`)
+    .replace(/(\d) (?=(?:µA|µs|MHz|mm|nm|mW|KB|V\b))/g, "$1 ");
+  const list = (items) => items && items.length ? `<ul class="bullets">${items.map((b) => `<li>${rich(b)}</li>`).join("")}</ul>` : "";
+  const entryHTML = (e) => {
+    const head = `<div class="row"><h3>${esc(e.name)}${e.note ? ` <span class="note">(${esc(e.note)})</span>` : ""}</h3>${e.place ? `<span class="meta">${esc(e.place)}</span>` : ""}</div>`;
+    const lines = (e.lines || []).map((l) => `<div class="row"><span class="line-text">${rich(l.text)}</span>${l.date ? `<span class="meta">${esc(l.date)}</span>` : ""}</div>`).join("");
+    const course = e.coursework ? `<p class="course"><span class="k">Selected Coursework</span>${esc(e.coursework.join(", "))}.</p>` : "";
+    const subs = (e.subs || []).map((u) => `<div class="sub"><div class="row"><span class="sub-title"><strong>${esc(u.name)}</strong>${u.role ? `, <em>${esc(u.role)}</em>` : ""}</span>${u.date ? `<span class="meta">${esc(u.date)}</span>` : ""}</div>${list(u.bullets)}</div>`).join("");
+    return `<article class="entry">${head}${lines}${course}${list(e.bullets)}${subs}</article>`;
+  };
+  const body = (id) => {
+    if (id === "skills") return `<dl class="skills">${R.skills.map((s) => `<div><dt>${esc(s.label)}</dt><dd><span class="track">${rich(s.items)}</span></dd></div>`).join("")}</dl>`;
+    return `<div class="entries">${R[id].map(entryHTML).join("")}</div>`;
+  };
+  const contact = `<ul class="contact" id="contact">${R.contact.map((c) => `<li><span class="k">${esc(c.label)}</span><span class="v">${c.href ? `<a href="${esc(c.href)}"${c.href.startsWith("http") ? ' target="_blank" rel="noopener"' : ""}>${esc(c.text)}</a>` : esc(c.text)}</span>${c.copy ? `<button type="button" class="copy" data-copy="${esc(c.text)}">Copy</button>` : "<span></span>"}</li>`).join("")}</ul>`;
+  document.getElementById("list").innerHTML = `
+    <header class="list-intro">
+      <p class="eyebrow">Résumé</p>
+      <h1>${esc(R.name)}</h1>
+      <p class="lede">${esc(R.summary)}</p>
+      ${contact}
+    </header>
+    ${SECTIONS.map((s) => `
+      <section class="list-sec" id="sec-${s.id}" aria-labelledby="h-${s.id}">
+        <div class="sec-head"><span class="tag">${s.tag}</span><h2 id="h-${s.id}">${s.name}</h2><span class="rule"></span></div>
+        ${body(s.id)}
+      </section>`).join("")}`;
+
+  document.addEventListener("click", (e) => {
+    const cp = e.target.closest("[data-copy]");
+    if (!cp) return;
+    const done = (ok) => {
+      cp.textContent = ok ? "Copied" : "Selected";
+      setTimeout(() => { cp.textContent = "Copy"; }, 1600);
+    };
+    const selectIt = () => {
+      const v = cp.parentElement.querySelector(".v");
+      const range = document.createRange();
+      range.selectNodeContents(v);
+      const sel = getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+    };
+    try {
+      navigator.clipboard.writeText(cp.dataset.copy).then(() => done(true), () => { selectIt(); done(false); });
+    } catch (err) {
+      selectIt();
+      done(false);
+    }
+  });
+  const fitSkills = () => document.querySelectorAll(".skills dd").forEach((dd) => {
+    const track = dd.firstElementChild;
+    const over = track.scrollWidth - dd.clientWidth;
+    dd.classList.toggle("fits", over <= 1);
+    track.style.setProperty("--shift", `${-Math.max(0, over + 14)}px`);
+    track.style.setProperty("--dur", `${Math.max(1.1, (over + 14) / 70).toFixed(2)}s`);
+  });
+  fitSkills();
+  window.addEventListener("resize", fitSkills);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitSkills);
+
+  const STAR = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 .8l2.2 4.6 5 .7-3.6 3.5.9 5L8 12.2 3.5 14.6l.9-5L.8 6.1l5-.7z"/></svg>';
+  document.querySelectorAll('#list a[href^="https://github.com/"]').forEach((a) => {
+    const m = a.getAttribute("href").match(/^https:\/\/github\.com\/([\w.-]+)\/([\w.-]+)\/?$/);
+    if (!m) return;
+    const repo = `${m[1]}/${m[2]}`;
+    let cached = null;
+    try { cached = JSON.parse(sessionStorage.getItem(`stars:${repo}`) || "null"); } catch (e) {}
+    (cached !== null ? Promise.resolve(cached) : fetch(`https://api.github.com/repos/${repo}`).then((r) => (r.ok ? r.json() : null)).then((j) => {
+      const n = j && typeof j.stargazers_count === "number" ? j.stargazers_count : null;
+      try { if (n !== null) sessionStorage.setItem(`stars:${repo}`, JSON.stringify(n)); } catch (e) {}
+      return n;
+    }).catch(() => null)).then((n) => {
+      if (n === null) return;
+      const b = document.createElement("a");
+      b.className = "repo-stars";
+      b.href = `https://github.com/${repo}/stargazers`;
+      b.target = "_blank";
+      b.rel = "noopener";
+      b.setAttribute("aria-label", `${n} GitHub stars`);
+      b.innerHTML = `${STAR}${n.toLocaleString()}`;
+      a.after(b);
+    });
+  });
+
+  if (location.hash) {
+    const el = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    if (el) el.scrollIntoView();
+  }
+})();
+</script>
+</body>
+</html>

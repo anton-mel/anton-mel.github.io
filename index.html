@@ -5,876 +5,399 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="google-site-verification" content="L63FHaMbqRN_atDg05sOjKinIlQdndG-FrVHtvPMBH8">
 <title>Anton Melnychuk</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-58 0 116 100'%3E%3Cstyle%3Epolygon%7Bfill:%23161618%7D@media (prefers-color-scheme:dark)%7Bpolygon%7Bfill:%23ededeb%7D%7D%3C/style%3E%3Cpolygon points='0,0 58,100 9,78 22,77.5 0,36.5 -22,77.5 -9,78 -58,100'/%3E%3C/svg%3E">
-<meta name="description" content="Anton Melnychuk: RTL, physical design, board bring-up and GPU systems.">
+<meta name="description" content="Anton Melnychuk: RTL, physical design, board bring-up and GPU inference systems. Interactive 3D demos of silicon and boards.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg?v=4">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..700&family=Chakra+Petch:wght@500;600&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&family=Share+Tech+Mono&display=swap">
+<link rel="stylesheet" href="site.css?v=4">
 <style>
-:root {
-  --bg: #0a0a0b;
-  --bg-glow: #1a1a1c;
-  --surface: #121213;
-  --surface-2: #19191b;
-  --ink-on: #5c5c58;
-  --panel: rgba(14, 14, 15, 0.86);
-  --line: #262628;
-  --line-2: #3b3b3e;
-  --ink: #f3f3f1;
-  --ink-2: #c3c3c0;
-  --ink-3: #82827f;
-  --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
-  --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  --sheet-h: 46vh;
-  color-scheme: dark;
-}
-body.sheet-open { --sheet-h: 86vh; }
-@supports (height: 1dvh) {
-  :root { --sheet-h: 46dvh; }
-  body.sheet-open { --sheet-h: 86dvh; }
-}
-
-[hidden] { display: none !important; }
-html, body { height: 100%; }
-body {
-  background: var(--bg);
-  color: var(--ink);
-  font-family: var(--font-body);
-  font-size: 15px;
-  line-height: 1.55;
-  -webkit-font-smoothing: antialiased;
-  -webkit-text-size-adjust: 100%;
-  overflow: hidden;
-}
-body.is-list { overflow: visible; height: auto; }
-button { font: inherit; color: inherit; }
-:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
-a { color: inherit; text-decoration: underline; text-decoration-color: var(--line-2); text-decoration-thickness: 1px; text-underline-offset: 3px; }
-a:hover { text-decoration-color: var(--ink); }
-.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-
+html { height: 100%; }
+body.demo { overflow: hidden; height: 100%; }
 .stage {
   position: fixed;
   inset: 0;
-  background: radial-gradient(ellipse 75% 70% at 38% 48%, var(--bg-glow), var(--bg) 72%);
+  background: radial-gradient(ellipse 70% 70% at 50% 48%, var(--bg-glow), var(--bg) 72%);
 }
 .stage canvas { display: block; width: 100%; height: 100%; touch-action: none; cursor: grab; outline: none; }
-.stage canvas.is-hot { cursor: pointer; }
 .stage canvas.is-dragging { cursor: grabbing; }
 
-.topbar {
-  position: fixed;
-  z-index: 30;
-  top: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  padding-top: calc(env(safe-area-inset-top, 0px) + 22px);
-  padding-bottom: 12px;
-  padding-left: max(28px, env(safe-area-inset-left, 0px));
-  padding-right: max(28px, env(safe-area-inset-right, 0px));
-  pointer-events: none;
-}
-.topbar > * { pointer-events: auto; }
-.brand {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  padding: 6px;
-  margin: -6px;
-  border-radius: 6px;
-  color: var(--ink);
-  text-decoration: none;
-  opacity: 0.88;
-  transition: opacity 0.18s ease;
-}
-.brand-mark { display: block; width: auto; height: 30px; fill: currentColor; transition: transform 0.18s ease; }
-.brand-tip {
-  font: 500 10.5px/1 var(--font-mono);
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--ink-2);
-  opacity: 0;
-  transform: translateX(-4px);
-  transition: opacity 0.18s ease, transform 0.18s ease;
-  white-space: nowrap;
-}
-.brand:hover, .brand:focus-visible { opacity: 1; }
-.brand:hover .brand-mark, .brand:focus-visible .brand-mark { transform: scale(1.08); }
-.brand:hover .brand-tip, .brand:focus-visible .brand-tip { opacity: 1; transform: none; }
-body.is-list .brand { visibility: hidden; }
-
-.viewswitch {
-  display: flex;
-  flex: none;
-  border: 1px solid var(--line-2);
-  border-radius: 5px;
-  overflow: hidden;
-  background: var(--surface);
-}
-.viewswitch button {
-  appearance: none;
-  border: 0;
-  background: transparent;
-  color: var(--ink-3);
-  font: 500 11px/1 var(--font-mono);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  padding: 10px 15px;
-  cursor: pointer;
-}
-.viewswitch button + button { border-left: 1px solid var(--line-2); }
-.viewswitch button:hover { color: var(--ink); }
-.viewswitch button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
-.viewswitch button:disabled { opacity: 0.4; cursor: not-allowed; }
-
 .panel {
+  --tick: var(--ink-3);
+  --t: 12px;
   position: fixed;
   z-index: 20;
   top: calc(env(safe-area-inset-top, 0px) + 84px);
   right: max(28px, calc(env(safe-area-inset-right, 0px) + 16px));
-  width: min(430px, 40vw);
+  width: min(360px, 30vw);
   max-height: calc(100% - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 112px);
-  display: flex;
-  flex-direction: column;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  overflow: hidden;
-  -webkit-backdrop-filter: blur(18px);
-  backdrop-filter: blur(18px);
-}
-.sheet-handle { display: none; }
-.blocknav {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1px;
-  background: var(--line);
-  border-bottom: 1px solid var(--line);
-  flex: none;
-}
-.blocknav button {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-width: 0;
-  border: 0;
-  background: var(--surface);
-  color: var(--ink-2);
-  font: 500 10.5px/1 var(--font-mono);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding: 12px 12px;
-  text-align: left;
-  cursor: pointer;
-  white-space: nowrap;
-}
-.blocknav button .t { color: var(--ink-3); }
-.blocknav button:hover { color: var(--ink); background: var(--surface-2); }
-.blocknav button[aria-current="true"] { background: var(--ink); color: var(--bg); }
-.blocknav button[aria-current="true"] .t { color: var(--ink-on); }
-.panel-body {
-  flex: 1 1 auto;
-  min-height: 0;
   overflow: auto;
-  overscroll-behavior: contain;
-  padding: 24px 28px 30px;
-  scrollbar-width: thin;
-  scrollbar-color: var(--line-2) transparent;
+  padding: 20px 22px;
+  font-family: "Share Tech Mono", var(--font-mono);
+  background:
+    linear-gradient(var(--tick), var(--tick)) 0 0 / var(--t) 1px no-repeat,
+    linear-gradient(var(--tick), var(--tick)) 0 0 / 1px var(--t) no-repeat,
+    linear-gradient(var(--tick), var(--tick)) 100% 0 / var(--t) 1px no-repeat,
+    linear-gradient(var(--tick), var(--tick)) 100% 0 / 1px var(--t) no-repeat,
+    linear-gradient(var(--tick), var(--tick)) 0 100% / var(--t) 1px no-repeat,
+    linear-gradient(var(--tick), var(--tick)) 0 100% / 1px var(--t) no-repeat,
+    linear-gradient(var(--tick), var(--tick)) 100% 100% / var(--t) 1px no-repeat,
+    linear-gradient(var(--tick), var(--tick)) 100% 100% / 1px var(--t) no-repeat;
+  scrollbar-width: none;
 }
-.panel-body > .view { animation: rise 0.22s ease-out; }
-@keyframes rise { from { opacity: 0.3; transform: translateY(4px); } }
-
-.eyebrow {
+.panel .head { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-bottom: 14px; border-bottom: 1px solid var(--line-2); }
+.panel .ttl {
   margin: 0;
-  font: 500 10.5px/1.4 var(--font-mono);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-}
-.sec-title {
-  margin: 8px 0 0;
-  font-family: var(--font-display);
-  font-stretch: 112%;
+  font-family: "Chakra Petch", var(--font-display);
   font-weight: 600;
-  font-size: 30px;
-  line-height: 1.08;
-  letter-spacing: -0.005em;
-  text-wrap: balance;
-}
-.lede { margin: 12px 0 0; color: var(--ink-2); font-size: 14.5px; max-width: 62ch; }
-.pinbar {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 12px;
-  font: 500 10px/1 var(--font-mono);
-  letter-spacing: 0.16em;
+  font-size: 22px;
+  line-height: 1;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--ink-3);
-}
-.pinbar button {
-  border: 1px solid var(--line-2);
-  border-radius: 4px;
-  background: transparent;
-  color: var(--ink-2);
-  font: inherit;
-  letter-spacing: inherit;
-  padding: 5px 8px;
-  cursor: pointer;
-}
-.pinbar button:hover { color: var(--ink); border-color: var(--ink-3); }
-@media (hover: none) { .pinbar { display: none; } }
-
-.entries { display: grid; gap: 22px; margin-top: 22px; }
-.entry { display: grid; gap: 3px; min-width: 0; }
-.sub { margin-top: 12px; margin-left: 2px; padding-left: 14px; border-left: 1px solid var(--line-2); min-width: 0; }
-.sub-title { color: var(--ink-2); font-size: 14.5px; line-height: 1.45; }
-.sub-title strong { color: var(--ink); font-weight: 600; }
-.sub-title em { font-style: normal; }
-.row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 1px 14px; }
-.row > :first-child { flex: 1 1 15em; min-width: 0; }
-.entry h3 { margin: 0; font-size: 16px; font-weight: 600; line-height: 1.35; color: var(--ink); }
-.entry h3 .note { font-weight: 400; color: var(--ink-3); }
-.line-text { color: var(--ink-2); font-size: 14px; line-height: 1.45; }
-.meta {
-  font: 400 11.5px/1.6 var(--font-mono);
-  color: var(--ink-3);
-  letter-spacing: 0.02em;
-  font-variant-numeric: tabular-nums;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.bullets { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 7px; }
-.bullets li { position: relative; padding-left: 17px; color: var(--ink-2); font-size: 14px; line-height: 1.55; }
-.bullets li::before {
-  content: "";
-  position: absolute;
-  left: 2px;
-  top: 0.6em;
-  width: 5px;
-  height: 5px;
-  border: 1px solid var(--ink-3);
-  border-radius: 50%;
-}
-.course { margin: 8px 0 0; color: var(--ink-2); font-size: 14px; }
-.course .k { display: block; font: 500 10px/1.4 var(--font-mono); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 3px; }
-
-.skills { margin: 22px 0 0; display: grid; gap: 16px; }
-.skills div { display: grid; gap: 4px; min-width: 0; }
-.skills dt { font: 500 10.5px/1.4 var(--font-mono); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3); }
-.skills dd { margin: 0; color: var(--ink-2); font-size: 14px; }
-
-.contact { list-style: none; margin: 22px 0 0; padding: 0; border-top: 1px solid var(--line); }
-.contact li {
-  display: grid;
-  grid-template-columns: 5.8rem minmax(0, 1fr) auto;
-  gap: 12px;
+.panel .tools { display: flex; flex: none; gap: 4px; }
+.panel .tools button, a.stars {
+  appearance: none;
+  display: inline-flex;
   align-items: center;
-  padding: 13px 0;
-  border-bottom: 1px solid var(--line);
-}
-.contact .k { font: 500 10.5px/1.4 var(--font-mono); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3); }
-.contact .v { min-width: 0; overflow-wrap: anywhere; color: var(--ink); font-size: 14.5px; }
-.copy {
+  gap: 5px;
+  height: 24px;
   border: 1px solid var(--line-2);
-  border-radius: 4px;
+  border-radius: 0;
   background: transparent;
   color: var(--ink-2);
-  font: 500 10px/1 var(--font-mono);
+  font: 400 12px/1 "Share Tech Mono", var(--font-mono);
+  padding: 0 7px;
+  cursor: pointer;
+  text-decoration: none;
+}
+.panel .tools button:hover, a.stars:hover { color: var(--ink); border-color: var(--ink-3); }
+.stars svg { width: 10px; height: 10px; fill: currentColor; }
+.specs { margin: 12px 0 0; padding: 0 0 12px; border-bottom: 1px solid var(--line-2); }
+.specs div { display: flex; align-items: baseline; gap: 8px; padding: 4px 0; }
+.specs dt {
+  flex: none;
+  font: 500 10.5px/1.5 "Chakra Petch", var(--font-mono);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  padding: 7px 9px;
-  cursor: pointer;
+  color: var(--ink-3);
+  white-space: nowrap;
 }
-.copy:hover { color: var(--ink); border-color: var(--ink-3); }
-
-.index { list-style: none; margin: 22px 0 0; padding: 0; border-top: 1px solid var(--line); }
-.index button {
-  width: 100%;
-  display: grid;
-  grid-template-columns: 2.2rem minmax(0, 1fr);
-  gap: 2px 10px;
-  align-items: baseline;
-  padding: 13px 0;
-  background: none;
-  border: 0;
-  border-bottom: 1px solid var(--line);
-  text-align: left;
-  cursor: pointer;
-}
-.index .t { font: 500 11px/1.4 var(--font-mono); color: var(--ink-3); letter-spacing: 0.06em; }
-.index .n { font-weight: 600; font-size: 15px; color: var(--ink); }
-.index .s { grid-column: 2; color: var(--ink-3); font-size: 13px; line-height: 1.45; }
-.index button:hover .n { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
-.quick { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 16px 0 0; padding: 0; list-style: none; font: 400 12px/1.5 var(--font-mono); color: var(--ink-2); }
-.quick li { min-width: 0; overflow-wrap: anywhere; }
-
-.hint {
+.specs i { flex: 1 1 auto; min-width: 14px; border-bottom: 1px dotted var(--line-2); transform: translateY(-3px); }
+.specs dd { flex: 0 1 auto; min-width: 0; margin: 0; color: var(--ink); font-size: 13.5px; line-height: 1.5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.specs dd a { color: inherit; text-decoration: none; border-bottom: 1px dotted var(--ink-3); }
+.specs dd a:hover { border-bottom-color: var(--ink); }
+.repo { margin: 12px 0 0; font-size: 12px; letter-spacing: 0.04em; }
+.repo a { color: var(--ink-3); text-decoration: none; }
+.repo a:hover { color: var(--ink); }
+.enum {
   position: fixed;
-  z-index: 10;
-  left: 0;
-  right: calc(min(430px, 40vw) + 44px);
+  z-index: 15;
+  left: max(28px, env(safe-area-inset-left, 0px));
   bottom: calc(env(safe-area-inset-bottom, 0px) + 24px);
   display: grid;
-  justify-items: center;
-  gap: 8px;
-  text-align: center;
-  pointer-events: none;
-  padding-left: max(16px, env(safe-area-inset-left, 0px));
-  padding-right: 16px;
+  gap: 0;
+  padding: 10px 0 10px;
+  border-left: 1px solid var(--line-2);
+  font: 400 12px/1 "Share Tech Mono", var(--font-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
-.hint-now { font: 500 11px/1 var(--font-mono); letter-spacing: 0.28em; text-transform: uppercase; color: var(--ink); }
-.hint-how { font-size: 12.5px; color: var(--ink-3); }
-
-.list {
-  max-width: 780px;
-  margin: 0 auto;
-  padding-block: 96px 80px;
-  padding-left: max(16px, env(safe-area-inset-left, 0px));
-  padding-right: max(16px, env(safe-area-inset-right, 0px));
-}
-.list-intro h1 {
-  margin: 10px 0 0;
-  font-family: var(--font-display);
-  font-stretch: 118%;
-  font-weight: 600;
-  font-size: clamp(34px, 7vw, 54px);
-  line-height: 1.02;
-  letter-spacing: -0.01em;
-  text-wrap: balance;
-}
-.list-intro .lede { font-size: 15.5px; }
-.list-intro .contact { margin-top: 24px; }
-.notice { margin: 18px 0 0; padding: 12px 14px; border: 1px solid var(--line-2); border-radius: 5px; color: var(--ink-2); font-size: 13.5px; }
-.list-sec { margin-top: 52px; }
-.sec-head { display: flex; align-items: center; gap: 12px; }
-.sec-head .tag {
-  flex: none;
-  font: 500 10.5px/1 var(--font-mono);
-  letter-spacing: 0.08em;
+.enum::before, .enum::after { content: ""; position: absolute; left: -1px; width: 8px; height: 1px; background: var(--line-2); }
+.enum::before { top: 0; }
+.enum::after { bottom: 0; }
+.enum button {
+  appearance: none;
+  position: relative;
+  display: grid;
+  grid-template-columns: 2.6em auto;
+  align-items: center;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
   color: var(--ink-3);
-  border: 1px solid var(--line-2);
-  border-radius: 3px;
-  padding: 4px 6px;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  text-align: left;
+  padding: 7px 14px;
+  cursor: pointer;
 }
-.sec-head h2 { margin: 0; flex: none; font-family: var(--font-display); font-stretch: 112%; font-weight: 600; font-size: 22px; line-height: 1.2; }
-.sec-head .rule { flex: 1; height: 1px; background: var(--line); }
-.list .entries { margin-top: 20px; gap: 26px; }
-.list .entry h3 { font-size: 16.5px; }
-.list .bullets li, .list .line-text, .list .skills dd, .list .course { font-size: 15px; }
-.list-foot { margin-top: 56px; padding-top: 16px; border-top: 1px solid var(--line); font: 400 11px/1.5 var(--font-mono); letter-spacing: 0.08em; color: var(--ink-3); }
-@media (min-width: 640px) {
-  .list .skills div { grid-template-columns: 11rem minmax(0, 1fr); gap: 16px; align-items: baseline; }
+.enum button::before { content: ""; position: absolute; left: -1px; top: 4px; bottom: 4px; width: 2px; background: transparent; }
+.enum button:hover { color: var(--ink-2); }
+.enum button[aria-current="true"] { color: var(--ink); }
+.enum button[aria-current="true"]::before { background: var(--ink); }
+.enum .n { color: var(--ink-3); }
+.enum button[aria-current="true"] .n { color: var(--ink-2); }
+.xview {
+  position: absolute;
+  z-index: 12;
+  left: 50%;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 24px);
+  transform: translateX(-50%);
+  display: flex;
+  border: 1px solid var(--line-2);
+  background: rgba(10, 10, 11, 0.6);
+  font: 400 12px/1 "Share Tech Mono", var(--font-mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.xview button {
+  appearance: none;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink-3);
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  padding: 9px 14px;
+  cursor: pointer;
+}
+.xview button + button { border-left: 1px solid var(--line-2); }
+.xview button:hover { color: var(--ink); }
+.xview button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.panel .view { animation: rise 0.25s ease-out; }
+@keyframes rise { from { opacity: 0.2; transform: translateY(4px); } }
+.loading { position: fixed; z-index: 5; left: 0; right: 0; top: 44%; margin: 0; text-align: center; font: 500 11px/1 var(--font-mono); letter-spacing: 0.24em; text-transform: uppercase; color: var(--ink-3); pointer-events: none; }
+
+@media (min-width: 761px) {
+  .panel, .loading, .xview, .enum { zoom: 0.72; }
 }
 
 @media (max-width: 760px) {
-  .topbar {
-    padding-top: calc(env(safe-area-inset-top, 0px) + 14px);
-    padding-left: max(16px, env(safe-area-inset-left, 0px));
-    padding-right: max(16px, env(safe-area-inset-right, 0px));
-  }
-  .brand-mark { height: 26px; }
-  .viewswitch button { padding: 9px 12px; }
-  .stage { background: radial-gradient(ellipse 110% 60% at 50% 28%, var(--bg-glow), var(--bg) 70%); }
+  body.demo { overflow: auto; height: auto; }
+  .enum { display: none; }
+  .stage { position: relative; height: 62svh; min-height: 360px; background: radial-gradient(ellipse 110% 70% at 50% 45%, var(--bg-glow), var(--bg) 72%); }
+  .loading { right: 0; top: 30svh; }
   .panel {
-    top: auto;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    position: static;
     width: auto;
     max-height: none;
-    height: calc(var(--sheet-h) + env(safe-area-inset-bottom, 0px));
-    border-radius: 14px 14px 0 0;
-    border-left: 0;
-    border-right: 0;
-    border-bottom: 0;
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-    transition: height 0.32s cubic-bezier(0.2, 0.8, 0.2, 1);
+    margin: 22px 16px calc(env(safe-area-inset-bottom, 0px) + 28px);
+    padding: 18px 16px;
   }
-  .sheet-handle {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex: none;
-    height: 26px;
-    border: 0;
-    background: transparent;
-    cursor: pointer;
-  }
-  .sheet-handle .grip { width: 38px; height: 4px; border-radius: 2px; background: var(--line-2); }
-  .blocknav {
-    display: flex;
-    gap: 6px;
-    background: transparent;
-    overflow-x: auto;
-    scrollbar-width: none;
-    padding: 2px max(16px, env(safe-area-inset-right, 0px)) 12px max(16px, env(safe-area-inset-left, 0px));
-  }
-  .blocknav::-webkit-scrollbar { display: none; }
-  .blocknav button {
-    flex: none;
-    border: 1px solid var(--line-2);
-    border-radius: 4px;
-    background: transparent;
-    padding: 9px 10px;
-  }
-  .blocknav button:hover { background: transparent; }
-  .panel-body {
-    padding: 18px max(16px, env(safe-area-inset-right, 0px)) 28px max(16px, env(safe-area-inset-left, 0px));
-  }
-  .sec-title { font-size: 25px; }
-  .hint {
-    right: 0;
-    bottom: calc(var(--sheet-h) + env(safe-area-inset-bottom, 0px) + 12px);
-    transition: bottom 0.32s cubic-bezier(0.2, 0.8, 0.2, 1);
-  }
-  .hint-now { display: none; }
-  .hint-how { font-size: 12px; }
-  body.sheet-open .hint { visibility: hidden; }
-  .list { padding-top: 76px; }
-  .row { flex-direction: column; align-items: flex-start; gap: 0; }
-  .row > :first-child { flex: none; max-width: 100%; }
-  .meta { white-space: normal; }
-  .contact li { grid-template-columns: minmax(0, 1fr) auto; row-gap: 3px; padding: 11px 0; }
-  .contact .k { grid-column: 1 / -1; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
 </style>
-
 </head>
-<body>
+<body class="demo">
 <div class="stage" id="stage">
-  <canvas id="scene" role="img" aria-label="Chip package with five labeled die blocks, one per résumé section"></canvas>
+  <canvas id="scene" role="img" aria-label="3D exploded views of hardware projects"></canvas>
+  <div class="xview" id="xview" role="group" aria-label="View mode"><button type="button" data-x="0">Assembled</button><button type="button" data-x="1">Exploded</button><button type="button" data-x="top">Top 2D</button></div>
 </div>
+<p class="loading" id="loading">Loading</p>
 
-<header class="topbar" id="topbar">
-  <a class="brand" href="https://github.com/anton-mel" target="_blank" rel="noopener" aria-label="Anton Melnychuk on GitHub">
+<header class="topbar">
+  <div class="brand" role="img" aria-label="Anton Melnychuk">
     <svg class="brand-mark" viewBox="-58 0 116 100" aria-hidden="true" focusable="false"><polygon points="0,0 58,100 9,78 22,77.5 0,36.5 -22,77.5 -9,78 -58,100"/></svg>
-    <span class="brand-tip" aria-hidden="true">GitHub ↗</span>
-  </a>
-  <div class="viewswitch" role="group" aria-label="View">
-    <button type="button" id="viewChip" data-mode="chip" aria-pressed="true">Chip</button>
-    <button type="button" id="viewList" data-mode="list" aria-pressed="false">List</button>
   </div>
+  <nav class="viewswitch" aria-label="View">
+    <a href="./" aria-current="page">Chip</a>
+    <a href="resume.html">List</a>
+  </nav>
 </header>
 
-<aside class="panel" id="panel" aria-label="Section details">
-  <button class="sheet-handle" id="sheetHandle" type="button" aria-expanded="false"><span class="grip"></span><span class="sr">Expand panel</span></button>
-  <nav class="blocknav" id="blocknav" aria-label="Die blocks"></nav>
-  <div class="panel-body" id="panelBody"></div>
-</aside>
 
-<div class="hint" id="hint" aria-hidden="true">
-  <span class="hint-now" id="hintNow"></span>
-  <span class="hint-how" id="hintHow"></span>
-</div>
+<aside class="panel" id="panel" aria-label="Demo details" aria-live="polite"></aside>
+<nav class="enum" id="enum" aria-label="Demos"></nav>
 
-<main class="list" id="list" hidden></main>
-
-<script>
-const RESUME = {
-  name: "Anton Melnychuk",
-  summary: "Hardware and systems engineer: RTL, physical design, board bring-up and GPU inference systems. B.S. in Electrical Engineering & Computer Science, Yale University, May 2026.",
-  contact: [
-    { label: "Email", text: "anton.melnychuk2@gmail.com", href: "mailto:anton.melnychuk2@gmail.com", copy: true },
-    { label: "GitHub", text: "github.com/anton-mel", href: "https://github.com/anton-mel" },
-    { label: "LinkedIn", text: "linkedin.com/in/antonmelnychuk", href: "https://www.linkedin.com/in/antonmelnychuk/" },
-    { label: "Location", text: "Santa Clara, CA" }
-  ],
-  education: [
-    {
-      name: "Yale University",
-      place: "New Haven, CT",
-      lines: [
-        { text: "B.S. in Electrical Engineering & Computer Science, GPA 3.7/4.0", date: "May 2026" },
-        { text: "Admitted to Ph.D. in Computer Science, Sterling Prize Fellowship", date: "2026 (withdrew)" }
-      ],
-      coursework: ["Computer Architecture", "VLSI Design", "Operating Systems", "Computer Networks", "AI Infra Systems"]
-    }
-  ],
-  experience: [
-    {
-      name: "Stealth Startup",
-      note: "Yale spin-out",
-      place: "San Jose, CA",
-      lines: [{ text: "Member of Technical Staff", date: "Sep. 2026 – Present" }],
-      bullets: [
-        "Building [Pie](https://github.com/pie-project/pie), an open-source LLM inference engine that runs Hugging Face models on all major platforms.",
-        "Scaled inference across GPUs with tensor/expert parallelism, NVLink/PCIe collectives and KV-cache transfer over RDMA."
-      ]
-    },
-    {
-      name: "Async VLSI Lab",
-      place: "New Haven, CT",
-      lines: [{ text: "Researcher" }],
-      subs: [
-        {
-          name: "Closed-Loop Seizure Neurostimulator",
-          role: "Project Lead",
-          date: "Jul. 2025 – Present",
-          bullets: [
-            "Led a NeuroPace RNS-class closed-loop seizure [neurostimulator](https://github.com/VerifyHalo/RESPNS-PCB): architecture, verification and ongoing in vivo testing.",
-            "Tested a 32-ch NEO seizure detector on Artix-7 (100.8 MHz) with SVA and random tests; Intan DAQ input over SPI/LVDS.",
-            "Designed an 8-layer HDI rigid-flex implant PCB modeled at 147 µA, ~40 days/charge (Princeton poster ’26).",
-            "Built a per-rail power model with Monte Carlo; picked nA-quiescent parts; power-gated the stimulator from 4.7 mA to 7 µA."
-          ]
-        },
-        {
-          name: "Tensor Addressable Bridge",
-          role: "with Microsoft Research Asia",
-          date: "Mar. 2026 – May 2026",
-          bullets: [
-            "Contributed to [FengHuang](https://github.com/anton-mel/fenghuang)’s bridge RTL (crossbar, in-memory AllReduce); Yosys: 1.6 mm², 169 MHz on IHP 130 nm.",
-            "Modeled next-layer weight prefetch from LPDDR6 to size GPUs by FLOPs, not HBM: Qwen3-235B on 4 H100s instead of 8."
-          ]
-        }
-      ]
-    },
-    {
-      name: "Riverlane Ltd.",
-      place: "Cambridge, MA",
-      lines: [{ text: "Quantum Research Intern", date: "May 2026 – Aug. 2026" }],
-      bullets: [
-        "Paired GPU AI pre-decoders (NVIDIA Ising) with a Union-Find decoder on Xilinx FPGAs at sub-1 µs latency.",
-        "Streamed syndromes FPGA-to-L40 via GPUDirect RDMA P2P over PCIe, using existing DMA IP (AXI4 bursts, AXI4-Lite).",
-        "Roofline-modeled Union-Find on GPU vs. wafer-scale: Cerebras-style mesh decodes distance 95 in real time (APS Conf. ’27)."
-      ]
-    },
-    {
-      name: "Yale ECE Department",
-      place: "New Haven, CT",
-      lines: [
-        { text: "Teaching Assistant, CPSC 3230 Systems Programming & Computer Organization (2 sem.)", date: "Jan. 2025 – Dec. 2025" },
-        { text: "Teaching Assistant, CPSC 4200/ECE 4201 Computer Architecture", date: "Jan. 2026 – May 2026" }
-      ]
-    }
-  ],
-  projects: [
-    {
-      name: "Longhorn Silicon",
-      lines: [{ text: "Architecture & RTL-to-GDS (team of 3)", date: "Jul. 2026 – Present" }],
-      bullets: [
-        "Co-designed and verified [Lambda](https://github.com/LonghornSilicon)’s 4-bit KV-cache RTL feeding its 8×8 systolic array: ~3.8× less LPDDR5X traffic.",
-        "Fixed a trial-PnR routing stall (LibreLane/OpenROAD, Sky130) by sharing one FP16 divider: 4.5× fewer cells, bit-exact.",
-        "Building one PE of a TPU-style 65,536-MAC array: Q8.8, weight-stationary, double-buffered weights, spec to GDS."
-      ]
-    },
-    {
-      name: "MOS 6502 CPU",
-      lines: [{ text: "Full-Custom Physical Design (team of 3)", date: "Oct. 2025 – Dec. 2025" }],
-      bullets: [
-        "Laid out a simplified [MOS 6502](https://github.com/anton-mel/6502MOS) (Apple II, NES) full-custom in Magic: 6.8k transistors, 0.11 mm², 180 nm SCMOS.",
-        "Wrote microcode for its ROM-based control unit; passes IRSIM switch-level tests at 77 MHz, 4.1 mW (1.8 V).",
-        "Designed and hand-assembled a KiCad test board (VGA video out, ~512 KB SRAM) to bring up IHP SG13G2 6502 silicon."
-      ]
-    },
-    {
-      name: "Out-of-Order PARCv2 CPU",
-      lines: [{ text: "RTL Microarchitecture (team of 2)", date: "Jan. 2025 – May 2025" }],
-      bullets: [
-        "Extended a bypassed 5-stage [PARCv2 pipeline](https://github.com/anton-mel/OoO-PARCv2) in Verilog to 2-wide superscalar issue with a scoreboard; up to 25% faster.",
-        "Built a 16-entry reorder buffer for in-order commit and ROB bypassing, removing out-of-order WAW hazards.",
-        "Added branch speculation (ROB squash on mispredict, speculative scoreboard updates), verified with directed hazard tests."
-      ]
-    },
-    {
-      name: "SoC FPGA File System",
-      lines: [{ text: "Linux Drivers & Boot", date: "Sep. 2024 – Aug. 2025" }],
-      bullets: [
-        "Exposed Xilinx FPGA reconfiguration as files: writing a configfs overlay loads a new bitstream and its drivers live.",
-        "Built A/B-partitioned SD-card boot on PetaLinux for safe updates; systemd brings up the remote-control drivers."
-      ]
-    }
-  ],
-  skills: [
-    { label: "Languages", items: "SystemVerilog/Verilog, VHDL, C/C++, CUDA, Rust, Python, Tcl, Perl." },
-    { label: "RTL & verification", items: "microcode, AXI4/AXI4-Lite, SPI/LVDS, crossbars & arbiters, CDC, UVM, SVA, self-checking testbenches." },
-    { label: "Simulation & lint", items: "Questa/ModelSim, Vivado XSim, Verilator (lint), Icarus Verilog, cocotb, IRSIM." },
-    { label: "Synthesis & PD", items: "Cadence Genus, Yosys, OpenROAD/LibreLane, STA/timing closure, Magic VLSI, Virtuoso, DRC/LVS sign-off." },
-    { label: "PCB & lab", items: "KiCad, HDI/rigid-flex, ERC/DRC, board bring-up, oscilloscope, logic analyzer, soldering/rework." },
-    { label: "Systems", items: "PCIe/DMA, HBM/LPDDR5X, SerDes/UCIe, AMD Zynq/Versal, Vivado, PetaLinux, Nsight, Docker, Kubernetes, Linux." },
-    { label: "Training", items: "Accelerated Networking for AI Infrastructure, NVIDIA GTC 2026." }
-  ]
-};
-</script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/environments/RoomEnvironment.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/loaders/DRACOLoader.js"></script>
 <script>
+const DEMOS = [
+  {
+    id: "mos6502",
+    kind: "die",
+    src: "assets/die6502.json",
+    title: "MOS 6502",
+    specs: [
+      ["Process", "180 nm SCMOS · 1.8 V"],
+      ["Transistors", "6,760"],
+      ["Die", "333 × 334 µm"],
+      ["Area", "0.11 mm²"],
+      ["Fmax", "76.9 MHz"],
+      ["Power", "4.1 mW"],
+      ["ISA", "LDA STA ADC SBC EOR JMP"],
+      ["GDS", "14 layers · 66k rects"]
+    ],
+    repo: "anton-mel/6502MOS",
+    stars: 14,
+    credits: [["pradyunSolai", "https://github.com/pradyunSolai"], ["Momozavur", "https://github.com/Momozavur"]]
+  },
+  {
+    id: "respns",
+    kind: "package",
+    src: "assets/respns_package.json",
+    decals: { top: "assets/respns_top.webp", bottom: "assets/respns_bottom.webp" },
+    title: "RESPNS",
+    specs: [
+      ["Board", "8L HDI rigid-flex"],
+      ["Avg draw", "147 µA modeled"],
+      ["Battery", "~40 days/charge"],
+      ["Sensing", "4× MAX30003"],
+      ["Stimulator", "Intan RHS2116"],
+      ["Stim standby", "7 µA, power-gated"],
+      ["MCU", "EFR32BG22 BLE"],
+      ["Charging", "BQ51013B"],
+      ["PMIC", "nPM1100"],
+      ["BOM", "~$600 per prototype"]
+    ],
+    repo: "VerifyHalo/RESPNS-PCB",
+    stars: 0
+  },
+  {
+    id: "bringup",
+    kind: "board",
+    src: "assets/bringup6502.glb",
+    decals: { top: "assets/bringup_top.webp", bottom: "assets/bringup_bottom.webp" },
+    title: "6502 Bring-up",
+    specs: [
+      ["Board", "100 × 80 mm · 2 layers"],
+      ["DUT", "DIP-40 ZIF · 1.8 V rail"],
+      ["Memory", "32 KB SRAM · 128 KB flash"],
+      ["Video", "VGA · monochrome"],
+      ["Host", "Raspberry Pi Pico"],
+      ["Level shift", "4× LVC8T245 · LVC1T45"],
+      ["Routing", "1,458 segments · 183 vias"],
+      ["ERC / DRC", "0 / 0"],
+      ["Status", "design · not fabricated"]
+    ],
+    repo: "anton-mel/6502MOS",
+    stars: 14,
+    palette: {
+      mat_30: { c: 0x1c1c1f, m: 0.15, r: 0.6 },
+      mat_14: { c: 0x1b1c1f, m: 0.1, r: 0.55 },
+      mat_16: { c: 0xd8d5cc, m: 0.05, r: 0.55 },
+      mat_12: { c: 0xd4ad52, m: 0.95, r: 0.28 },
+      mat_17: { c: 0xd4ad52, m: 0.95, r: 0.28 },
+      mat_19: { c: 0xd4ad52, m: 0.95, r: 0.3 },
+      mat_1: { c: 0xd4ad52, m: 0.95, r: 0.3 },
+      mat_18: { c: 0x76b900, m: 0, r: 0.4, e: 0x76b900 },
+      mat_7: { c: 0x76b900, m: 0, r: 0.4, e: 0x5f9400 },
+      mat_20: { c: 0x0f1012, m: 0.1, r: 0.5 },
+      mat_21: { c: 0x3a3b3e, m: 0.2, r: 0.5 },
+      mat_6: { c: 0x6f6c66, m: 0.1, r: 0.6 },
+      mat_10: { c: 0xa9a9a5, m: 0.9, r: 0.35 },
+      mat_27: { c: 0x2a2a2c, m: 0.2, r: 0.6 }
+    }
+  }
+];
+
 (() => {
-  const R = RESUME;
   const $ = (s) => document.querySelector(s);
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const reduceMQ = matchMedia("(prefers-reduced-motion: reduce)");
   const phoneMQ = matchMedia("(max-width: 760px)");
-  const fineMQ = matchMedia("(hover: hover) and (pointer: fine)");
+  const STAR = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 .8l2.2 4.6 5 .7-3.6 3.5.9 5L8 12.2 3.5 14.6l.9-5L.8 6.1l5-.7z"/></svg>';
 
-  const BLOCKS = [
-    { id: "education", tag: "U1", name: "Education", x: [0.74, 2.75], z: [0.59, 1.75], pattern: "rows" },
-    { id: "experience", tag: "U2", name: "Experience", x: [-2.75, 0], z: [-2.75, 0.45], pattern: "rows" },
-    { id: "projects", tag: "U3", name: "Projects", x: [0.14, 2.75], z: [-2.75, 0.45], pattern: "macro" },
-    { id: "skills", tag: "U4", name: "Skills", x: [-2.75, 0.6], z: [0.59, 1.75], pattern: "grid" },
-    { id: "contact", tag: "U5", name: "Contact", x: [-2.75, 2.75], z: [1.89, 2.75], pattern: "io" }
-  ];
-  const BY_ID = Object.fromEntries(BLOCKS.map((b) => [b.id, b]));
-  const links = R.contact.filter((c) => c.href);
-  const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
-  const META = {
-    education: R.education.map((e) => e.name).join(" · "),
-    experience: plural(R.experience.length, "entry", "entries"),
-    projects: plural(R.projects.length, "project", "projects"),
-    skills: plural(R.skills.length, "group", "groups"),
-    contact: links.map((c) => c.label).join(" · ")
-  };
-  const SUMMARY = {
-    education: R.education.map((e) => `${e.name}, ${e.lines[0].text}, ${e.lines[0].date}`).join("; "),
-    experience: R.experience.map((e) => e.name).join(" · "),
-    projects: R.projects.map((p) => p.name).join(" · "),
-    skills: R.skills.map((s) => s.label).join(" · "),
-    contact: links.map((c) => c.text).join(" · ")
-  };
-
-  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-  const rich = (s) => esc(s)
-    .replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g, (m, t, u) => `<a href="${u}" target="_blank" rel="noopener">${t}</a>`)
-    .replace(/(\d) (?=(?:µA|µs|MHz|mm|nm|mW|KB|V\b))/g, "$1 ");
-
-  const entryHTML = (e) => {
-    const head = `<div class="row"><h3>${esc(e.name)}${e.note ? ` <span class="note">(${esc(e.note)})</span>` : ""}</h3>${e.place ? `<span class="meta">${esc(e.place)}</span>` : ""}</div>`;
-    const lines = (e.lines || []).map((l) => `<div class="row"><span class="line-text">${rich(l.text)}</span>${l.date ? `<span class="meta">${esc(l.date)}</span>` : ""}</div>`).join("");
-    const course = e.coursework ? `<p class="course"><span class="k">Selected Coursework</span>${esc(e.coursework.join(", "))}.</p>` : "";
-    const list = (items) => items && items.length ? `<ul class="bullets">${items.map((b) => `<li>${rich(b)}</li>`).join("")}</ul>` : "";
-    const subs = (e.subs || []).map((u) => `<div class="sub"><div class="row"><span class="sub-title"><strong>${esc(u.name)}</strong>${u.role ? `, <em>${esc(u.role)}</em>` : ""}</span>${u.date ? `<span class="meta">${esc(u.date)}</span>` : ""}</div>${list(u.bullets)}</div>`).join("");
-    return `<article class="entry">${head}${lines}${course}${list(e.bullets)}${subs}</article>`;
-  };
-
-  const contactHTML = () => `<ul class="contact">${R.contact.map((c) => `<li><span class="k">${esc(c.label)}</span><span class="v">${c.href ? `<a href="${esc(c.href)}"${c.href.startsWith("http") ? ' target="_blank" rel="noopener"' : ""}>${esc(c.text)}</a>` : esc(c.text)}</span>${c.copy ? `<button type="button" class="copy" data-copy="${esc(c.text)}">Copy</button>` : "<span></span>"}</li>`).join("")}</ul>`;
-
-  const bodyHTML = (id) => {
-    if (id === "education") return `<div class="entries">${R.education.map(entryHTML).join("")}</div>`;
-    if (id === "experience") return `<div class="entries">${R.experience.map(entryHTML).join("")}</div>`;
-    if (id === "projects") return `<div class="entries">${R.projects.map(entryHTML).join("")}</div>`;
-    if (id === "skills") return `<dl class="skills">${R.skills.map((s) => `<div><dt>${esc(s.label)}</dt><dd>${rich(s.items)}</dd></div>`).join("")}</dl>`;
-    if (id === "contact") return contactHTML();
-    return "";
-  };
-
-  const overviewHTML = () => `
-    <div class="view">
-      <p class="eyebrow">Package · ${BLOCKS.length} blocks</p>
-      <h2 class="sec-title">Overview</h2>
-      <p class="lede">${esc(R.summary)}</p>
-      <ul class="index">${BLOCKS.map((b) => `<li><button type="button" data-go="${b.id}"><span class="t">${b.tag}</span><span class="n">${b.name}</span><span class="s">${esc(SUMMARY[b.id])}</span></button></li>`).join("")}</ul>
-    </div>`;
-
-  const panelHTML = (id) => {
-    if (id === "overview") return overviewHTML();
-    const b = BY_ID[id];
-    const pin = state.pinned === id
-      ? `<div class="pinbar"><span>Pinned</span><button type="button" data-unpin>Unpin</button></div>`
-      : `<div class="pinbar"><span>Click the block to pin</span></div>`;
-    return `<div class="view"><p class="eyebrow">${b.tag} · ${esc(META[id])}</p><h2 class="sec-title">${b.name}</h2>${pin}${bodyHTML(id)}</div>`;
-  };
-
-  const listHTML = (notice) => `
-    <header class="list-intro">
-      <p class="eyebrow">Résumé</p>
-      <h1>${esc(R.name)}</h1>
-      <p class="lede">${esc(R.summary)}</p>
-      ${notice ? `<p class="notice">${esc(notice)}</p>` : ""}
-      ${contactHTML()}
-    </header>
-    ${BLOCKS.filter((b) => b.id !== "contact").map((b) => `
-      <section class="list-sec" id="sec-${b.id}" aria-labelledby="h-${b.id}">
-        <div class="sec-head"><span class="tag">${b.tag}</span><h2 id="h-${b.id}">${b.name}</h2><span class="rule"></span></div>
-        ${bodyHTML(b.id)}
-      </section>`).join("")}
-    <p class="list-foot">${esc(R.name)} · ${esc(links.map((c) => c.text).join(" · "))}</p>`;
-
-  const state = { mode: "chip", pinned: null, hovered: null, shown: "overview" };
-  let scene3d = null;
-
-  const panelBody = $("#panelBody");
-  const nav = $("#blocknav");
-  const list = $("#list");
-  const hintNow = $("#hintNow");
-  const hintHow = $("#hintHow");
-
-  nav.innerHTML = [`<button type="button" data-go="overview">Overview</button>`]
-    .concat(BLOCKS.map((b) => `<button type="button" data-go="${b.id}"><span class="t">${b.tag}</span>${b.name}</button>`))
-    .join("");
-  list.innerHTML = listHTML("");
-
-  function setHash(name) {
-    try {
-      const url = location.pathname + location.search + (name ? `#${name}` : "");
-      history.replaceState(null, "", url);
-    } catch (e) {}
+  const starCache = {};
+  function stars(repo) {
+    if (starCache[repo]) return starCache[repo];
+    let cached = null;
+    try { cached = JSON.parse(sessionStorage.getItem(`stars:${repo}`) || "null"); } catch (e) {}
+    starCache[repo] = cached !== null ? Promise.resolve(cached) : fetch(`https://api.github.com/repos/${repo}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((j) => {
+        const n = j && typeof j.stargazers_count === "number" ? j.stargazers_count : null;
+        try { if (n !== null) sessionStorage.setItem(`stars:${repo}`, JSON.stringify(n)); } catch (e) {}
+        return n;
+      })
+      .catch(() => null);
+    return starCache[repo];
   }
 
-  function updateHints() {
-    const touch = !fineMQ.matches;
-    const active = state.hovered || (state.shown !== "overview" ? state.shown : null);
-    hintNow.textContent = active ? `${BY_ID[active].tag} · ${BY_ID[active].name}` : "Hover the die to explore";
-    hintHow.textContent = touch ? "Tap a block · Drag to orbit · Pinch to zoom" : "Click a block to pin it · Drag to orbit · Scroll to zoom";
-  }
-
+  const state = { active: 0, exploded: false, top: false };
   function renderPanel() {
-    panelBody.innerHTML = panelHTML(state.shown);
-    panelBody.scrollTop = 0;
-    nav.querySelectorAll("button").forEach((btn) => {
-      const on = btn.dataset.go === state.shown;
-      btn.setAttribute("aria-current", on ? "true" : "false");
-      if (on && phoneMQ.matches) {
-        const left = btn.offsetLeft - (nav.clientWidth - btn.offsetWidth) / 2;
-        nav.scrollTo({ left: Math.max(0, left), behavior: reduceMQ.matches ? "auto" : "smooth" });
+    const d = DEMOS[state.active];
+    $("#panel").innerHTML = `<div class="view">
+      <div class="head"><h2 class="ttl">${esc(d.title)}</h2><div class="tools">${DEMOS.length > 1 ? `<button type="button" data-step="-1" aria-label="Previous demo">&lt;</button><button type="button" data-step="1" aria-label="Next demo">&gt;</button>` : ""}<a class="stars" href="https://github.com/${d.repo}/stargazers" target="_blank" rel="noopener" aria-label="${d.stars || 0} GitHub stars">${STAR}<span>${(d.stars || 0).toLocaleString()}</span></a></div></div>
+      <dl class="specs">${d.specs.map(([k, v]) => `<div><dt>${esc(k)}</dt><i aria-hidden="true"></i><dd title="${esc(v)}">${esc(v)}</dd></div>`).join("")}${d.credits ? `<div><dt>Contributors</dt><i aria-hidden="true"></i><dd>${d.credits.map(([n, u]) => `<a href="${u}" target="_blank" rel="noopener">${esc(n)}</a>`).join(" · ")}</dd></div>` : ""}</dl>
+      <p class="repo"><a href="https://github.com/${d.repo}" target="_blank" rel="noopener">github.com/${esc(d.repo)} ↗</a></p>
+    </div>`;
+    fitSpecs();
+    stars(d.repo).then((c) => {
+      if (c === null || DEMOS[state.active] !== d) return;
+      const st = $("#panel .stars");
+      st.querySelector("span").textContent = c.toLocaleString();
+      st.setAttribute("aria-label", `${c} GitHub stars`);
+    });
+  }
+  function renderEnum() {
+    $("#enum").innerHTML = DEMOS.map((d, i) => `<button type="button" data-go="${i}" aria-current="${i === state.active}"><span class="n">${String(i + 1).padStart(2, "0")}</span><span>${esc(d.title)}</span></button>`).join("");
+  }
+  $("#enum").addEventListener("click", (e) => {
+    const b = e.target.closest("button[data-go]");
+    if (b) go(Number(b.dataset.go));
+  });
+  function fitSpecs() {
+    document.querySelectorAll("#panel .specs dd").forEach((dd) => {
+      dd.style.fontSize = "";
+      let fs = parseFloat(getComputedStyle(dd).fontSize);
+      while (dd.scrollWidth > dd.clientWidth + 0.5 && fs > 10.5) {
+        fs -= 0.5;
+        dd.style.fontSize = `${fs}px`;
       }
     });
   }
-
-  function refresh(force) {
-    const next = state.hovered || state.pinned || state.shown;
-    if (next !== state.shown || force) {
-      state.shown = next;
-      renderPanel();
-    }
-    updateHints();
+  window.addEventListener("resize", fitSpecs);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitSpecs);
+  let scene3d = null;
+  function go(i) {
+    const n = DEMOS.length;
+    state.active = ((i % n) + n) % n;
+    renderPanel();
+    renderEnum();
     if (scene3d) scene3d.sync();
   }
-
-  function pin(id) {
-    state.pinned = id;
-    state.shown = id;
-    refresh(true);
-    setHash(id);
-  }
-
-  function showOverview() {
-    state.pinned = null;
-    state.hovered = null;
-    state.shown = "overview";
-    refresh(true);
-    setHash("");
-  }
-
-  function unpin() {
-    if (!state.pinned) return;
-    state.pinned = null;
-    refresh(true);
-    setHash("");
-  }
-
-  document.addEventListener("click", (e) => {
-    const go = e.target.closest("[data-go]");
-    if (go) {
-      if (go.dataset.go === "overview") showOverview();
-      else pin(go.dataset.go);
-      return;
-    }
-    if (e.target.closest("[data-unpin]")) {
-      unpin();
-      return;
-    }
-    const cp = e.target.closest("[data-copy]");
-    if (cp) {
-      const text = cp.dataset.copy;
-      const done = (ok) => {
-        cp.textContent = ok ? "Copied" : "Selected";
-        setTimeout(() => { cp.textContent = "Copy"; }, 1600);
-      };
-      const selectIt = () => {
-        const v = cp.parentElement.querySelector(".v");
-        if (!v) return;
-        const range = document.createRange();
-        range.selectNodeContents(v);
-        const sel = getSelection();
-        sel.removeAllRanges();
-        sel.addRange(range);
-      };
-      try {
-        navigator.clipboard.writeText(text).then(() => done(true), () => { selectIt(); done(false); });
-      } catch (err) {
-        selectIt();
-        done(false);
-      }
-    }
+  $("#panel").addEventListener("click", (e) => {
+    const b = e.target.closest("button[data-step]");
+    if (b) go(state.active + Number(b.dataset.step));
   });
-
-  const viewChip = $("#viewChip");
-  const viewList = $("#viewList");
-
-  function setMode(mode, remember) {
-    if (mode === "chip" && !scene3d) mode = "list";
-    state.mode = mode;
-    const isList = mode === "list";
-    document.body.classList.toggle("is-list", isList);
-    list.hidden = !isList;
-    $("#stage").hidden = isList;
-    $("#panel").hidden = isList;
-    $("#hint").hidden = isList;
-    viewChip.setAttribute("aria-pressed", String(!isList));
-    viewList.setAttribute("aria-pressed", String(isList));
-    if (isList) {
-      if (scene3d) scene3d.stop();
-      window.scrollTo(0, 0);
-      setHash("list");
-    } else {
-      scene3d.start();
-      setHash(state.pinned || "");
-    }
-    if (remember) {
-      try { localStorage.setItem("am-view", mode); } catch (e) {}
-    }
+  function renderX() {
+    document.querySelectorAll("#xview button").forEach((b) => {
+      const on = b.dataset.x === "top" ? state.top : !state.top && (b.dataset.x === "1") === state.exploded;
+      b.setAttribute("aria-pressed", String(on));
+    });
   }
-
-  viewChip.addEventListener("click", () => setMode("chip", true));
-  viewList.addEventListener("click", () => setMode("list", true));
-
-  const handle = $("#sheetHandle");
-  handle.addEventListener("click", () => {
-    const open = !document.body.classList.contains("sheet-open");
-    document.body.classList.toggle("sheet-open", open);
-    handle.setAttribute("aria-expanded", String(open));
-    handle.querySelector(".sr").textContent = open ? "Collapse panel" : "Expand panel";
-    if (scene3d) scene3d.relayout();
+  function setExplode(on) {
+    state.exploded = on;
+    state.top = false;
+    renderX();
+    if (scene3d) scene3d.sync();
+  }
+  function setTop() {
+    state.top = true;
+    renderX();
+    if (scene3d) scene3d.sync();
+  }
+  function toggleExplode() {
+    setExplode(!state.exploded);
+  }
+  $("#xview").addEventListener("click", (e) => {
+    const b = e.target.closest("button[data-x]");
+    if (!b) return;
+    if (b.dataset.x === "top") setTop();
+    else setExplode(b.dataset.x === "1");
   });
-  $("#panel").addEventListener("transitionend", (e) => {
-    if (e.propertyName === "height" && scene3d) scene3d.relayout();
-  });
-
   document.addEventListener("keydown", (e) => {
-    if (e.key !== "Escape") return;
-    if (document.body.classList.contains("sheet-open")) handle.click();
-    else if (state.pinned) unpin();
-  });
-
-  const readHash = () => {
-    try { return decodeURIComponent(location.hash.slice(1)); } catch (e) { return ""; }
-  };
-  window.addEventListener("hashchange", () => {
-    const h = readHash();
-    if (h === "list") {
-      if (state.mode !== "list") setMode("list");
-    } else if (BY_ID[h]) {
-      if (state.mode !== "chip" && scene3d) setMode("chip");
-      pin(h);
-    }
+    if (e.key === "ArrowRight") go(state.active + 1);
+    if (e.key === "ArrowLeft") go(state.active - 1);
   });
 
   function init3D() {
     const T = window.THREE;
-    if (!T || !T.OrbitControls || !T.RoomEnvironment) throw new Error("3D library unavailable");
-    const probeGL = document.createElement("canvas");
-    if (!(probeGL.getContext("webgl2") || probeGL.getContext("webgl"))) throw new Error("WebGL unavailable");
+    if (!T || !T.OrbitControls || !T.RoomEnvironment || !T.GLTFLoader) throw new Error("3D library unavailable");
+    const probe = document.createElement("canvas");
+    if (!(probe.getContext("webgl2") || probe.getContext("webgl"))) throw new Error("WebGL unavailable");
     if (T.ColorManagement) T.ColorManagement.legacyMode = false;
 
+    const stage = $("#stage");
     const canvas = $("#scene");
     const renderer = new T.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: "high-performance" });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
@@ -883,395 +406,712 @@ const RESUME = {
     renderer.toneMappingExposure = 1.0;
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = T.PCFSoftShadowMap;
+    renderer.shadowMap.autoUpdate = false;
     renderer.setClearColor(0x000000, 0);
-    const aniso = Math.min(8, renderer.capabilities.getMaxAnisotropy());
 
     const scene = new T.Scene();
     const pmrem = new T.PMREMGenerator(renderer);
     scene.environment = pmrem.fromScene(new T.RoomEnvironment(), 0.04).texture;
+    const camera = new T.PerspectiveCamera(state.top ? 9 : 28, 1, 0.1, 400);
 
-    const camera = new T.PerspectiveCamera(30, 1, 0.5, 300);
-    const target = new T.Vector3(0, 0.5, 0.1);
-
-    scene.add(new T.HemisphereLight(0xffffff, 0x0a0a0b, 0.45));
-    const key = new T.DirectionalLight(0xffffff, 2.1);
-    key.position.set(-7, 15, 9);
+    scene.add(new T.HemisphereLight(0xffffff, 0x0a0a0b, 0.5));
+    const key = new T.DirectionalLight(0xffffff, 2.0);
+    key.position.set(-6, 16, 8);
     key.castShadow = true;
     key.shadow.mapSize.set(2048, 2048);
-    Object.assign(key.shadow.camera, { left: -11, right: 11, top: 11, bottom: -11, near: 1, far: 50 });
+    Object.assign(key.shadow.camera, { left: -9, right: 9, top: 9, bottom: -9, near: 1, far: 50 });
     key.shadow.bias = -0.0004;
     key.shadow.normalBias = 0.02;
     scene.add(key);
-    const rim = new T.DirectionalLight(0xffffff, 0.7);
-    rim.position.set(8, 6, -10);
+    const rim = new T.DirectionalLight(0xffffff, 0.8);
+    rim.position.set(9, 5, -9);
     scene.add(rim);
-
-    const ground = new T.Mesh(new T.PlaneGeometry(80, 80), new T.ShadowMaterial({ opacity: 0.55 }));
+    const accent = new T.DirectionalLight(0x76b900, 0.75);
+    accent.position.set(-10, 3, -6);
+    scene.add(accent);
+    const ground = new T.Mesh(new T.PlaneGeometry(120, 120), new T.ShadowMaterial({ opacity: 0.5, depthWrite: false }));
     ground.rotation.x = -Math.PI / 2;
+    ground.position.y = -0.02;
     ground.receiveShadow = true;
     scene.add(ground);
 
-    const MONO = '"IBM Plex Mono", ui-monospace, Menlo, monospace';
-    const makeCanvas = (w, h) => {
-      const c = document.createElement("canvas");
-      c.width = w;
-      c.height = h;
-      return c;
-    };
-    const makeTex = (c) => {
-      const t = new T.CanvasTexture(c);
-      t.encoding = T.sRGBEncoding;
-      t.anisotropy = aniso;
-      return t;
-    };
-    const spaced = (g, text, x, y, spacing) => {
-      const chars = [...text];
-      const widths = chars.map((ch) => g.measureText(ch).width);
-      const total = widths.reduce((a, b) => a + b, 0) + spacing * (chars.length - 1);
-      let cx = x - total / 2;
-      chars.forEach((ch, i) => {
-        g.fillText(ch, cx, y);
-        cx += widths[i] + spacing;
+    const ease = (t) => t * t * (3 - 2 * t);
+    const lerp = (a, b, t) => a + (b - a) * t;
+    const boxGeo = new T.BoxGeometry(1, 1, 1).translate(0, 0.5, 0);
+
+    function makeItem(def, index) {
+      const root = new T.Group();
+      const holder = new T.Group();
+      root.add(holder);
+      root.visible = false;
+      scene.add(root);
+      return { def, index, root, holder, ready: false, e: 0, te: 0, apply: () => {}, bounds: null };
+    }
+    function resetRoot(item) {
+      item.root.position.set(0, 0, 0);
+      item.root.rotation.set(0, 0, 0);
+      item.root.scale.setScalar(1);
+      item.holder.position.set(0, 0, 0);
+      item.root.updateMatrixWorld(true);
+    }
+
+    function buildDie(item, data) {
+      resetRoot(item);
+      const S = 6 / Math.max(data.w, data.h);
+      const W2 = data.w / 2;
+      const H2 = data.h / 2;
+      const raw = {};
+      data.layers.forEach((L) => {
+        const bin = atob(L.data);
+        const buf = new Uint16Array(bin.length / 2);
+        for (let i = 0; i < buf.length; i++) buf[i] = bin.charCodeAt(2 * i) | (bin.charCodeAt(2 * i + 1) << 8);
+        raw[L.name] = buf;
       });
-      return total;
-    };
-    const measureSpaced = (g, text, spacing) => [...text].reduce((a, ch) => a + g.measureText(ch).width, 0) + spacing * (text.length - 1);
-
-    const SUB = 12;
-    const subCanvas = makeCanvas(2048, 2048);
-    const subTex = makeTex(subCanvas);
-    subTex.repeat.set(1 / SUB, 1 / SUB);
-    subTex.offset.set(0.5, 0.5);
-    const contacts = [];
-    for (let i = 0; i < 23; i++) contacts.push(-4.4 + i * 0.4);
-
-    function paintSubstrate() {
-      const g = subCanvas.getContext("2d");
-      const k = subCanvas.width / SUB;
-      const P = (x, z) => [(x + SUB / 2) * k, (z + SUB / 2) * k];
-      g.fillStyle = "#18181a";
-      g.fillRect(0, 0, subCanvas.width, subCanvas.height);
-      g.lineCap = "round";
-      g.lineJoin = "round";
-      const sides = [
-        (a, d) => [a, d],
-        (a, d) => [a, -d],
-        (a, d) => [d, a],
-        (a, d) => [-d, a]
-      ];
-      sides.forEach((map) => {
-        contacts.forEach((t, i) => {
-          const p = -2.6 + (5.2 * i) / (contacts.length - 1);
-          const a0 = 3.3;
-          const a1 = a0 + Math.abs(t - p);
-          const pts = [[p, 3.2], [p, a0], [t, a1], [t, 5.3]].map(([a, d]) => P(...map(a, d)));
-          g.strokeStyle = "#232326";
-          g.lineWidth = 0.05 * k;
-          g.beginPath();
-          g.moveTo(...pts[0]);
-          pts.slice(1).forEach((pt) => g.lineTo(...pt));
-          g.stroke();
-          if (i % 3 === 1) {
-            const [vx, vy] = pts[2];
-            g.fillStyle = "#2a2a2d";
-            g.beginPath();
-            g.arc(vx, vy, 0.07 * k, 0, Math.PI * 2);
-            g.fill();
+      const mat = (color, metal, rough) => new T.MeshStandardMaterial({ color, metalness: metal, roughness: rough, envMapIntensity: metal > 0.5 ? 0.75 : 0.45 });
+      const m4 = new T.Matrix4();
+      const inst = (names, material, minW) => {
+        const total = names.reduce((a, n) => a + (raw[n] ? raw[n].length / 4 : 0), 0);
+        const mesh = new T.InstancedMesh(boxGeo, material, total);
+        let k = 0;
+        names.forEach((n) => {
+          const a = raw[n];
+          if (!a) return;
+          for (let i = 0; i < a.length; i += 4) {
+            const w = Math.max((a[i + 2] - a[i]) * S, minW);
+            const d = Math.max((a[i + 3] - a[i + 1]) * S, minW);
+            const cx = ((a[i] + a[i + 2]) / 2 - W2) * S;
+            const cz = -((a[i + 1] + a[i + 3]) / 2 - H2) * S;
+            m4.makeScale(w, 1, d).setPosition(cx, 0, cz);
+            mesh.setMatrixAt(k++, m4);
           }
         });
+        mesh.instanceMatrix.needsUpdate = true;
+        mesh.frustumCulled = false;
+        mesh.receiveShadow = true;
+        const g = new T.Group();
+        g.add(mesh);
+        item.holder.add(g);
+        return { g, mesh };
+      };
+      const LEVELS = [
+        { key: "well", names: ["nwell"], t: 0.008, mat: mat(0x121214, 0.1, 0.9) },
+        { key: "active", names: ["active"], t: 0.016, mat: mat(0x24272b, 0.3, 0.6), same: true },
+        { key: "poly", names: ["poly"], t: 0.018, mat: mat(0x7a4a32, 0.6, 0.42), shadow: true },
+        { key: "m1", names: ["metal1"], t: 0.026, mat: mat(0x7c7e83, 0.95, 0.3), shadow: true },
+        { key: "m2", names: ["metal2"], t: 0.028, mat: mat(0xa4a6ab, 0.95, 0.26), shadow: true },
+        { key: "m3", names: ["metal3"], t: 0.032, mat: mat(0xb99a5c, 0.97, 0.24), shadow: true },
+        { key: "m4", names: ["metal4"], t: 0.036, mat: mat(0xd1b373, 0.97, 0.22), shadow: true },
+        { key: "m5", names: ["metal5"], t: 0.04, mat: mat(0xead39c, 0.97, 0.2), shadow: true }
+      ];
+      const viaMat = mat(0xa98e58, 0.9, 0.35);
+      const levels = [];
+      let slot = -1;
+      LEVELS.forEach((L) => {
+        if (!L.same) slot++;
+        const { g, mesh } = inst(L.names, L.mat, 0.004);
+        mesh.castShadow = !!L.shadow;
+        levels.push({ ...L, g, slot, y: 0 });
       });
-      g.fillStyle = "#1d1d20";
-      const [ux, uy] = P(-3.3, -3.3);
-      g.fillRect(ux, uy, 6.6 * k, 6.6 * k);
-      g.fillStyle = "#8d8d89";
-      g.textBaseline = "middle";
-      g.font = `500 ${0.24 * k}px ${MONO}`;
-      const markH = 0.62;
-      const ms = (markH * k) / 100;
-      const [mx, my] = P(-5.0 + 0.58 * markH, 4.72 - markH / 2);
-      const MARK = [[0, 0], [58, 100], [9, 78], [22, 77.5], [0, 36.5], [-22, 77.5], [-9, 78], [-58, 100]];
-      g.beginPath();
-      MARK.forEach(([x, y], i) => (i ? g.lineTo : g.moveTo).call(g, mx + x * ms, my + y * ms));
-      g.closePath();
-      g.fill();
-      g.textAlign = "left";
-      const [tx, ty] = P(-5.62, -5.62);
-      g.beginPath();
-      g.moveTo(tx, ty);
-      g.lineTo(tx + 0.42 * k, ty);
-      g.lineTo(tx, ty + 0.42 * k);
-      g.closePath();
-      g.fill();
-      g.strokeStyle = "#6f6f6c";
-      g.lineWidth = 0.025 * k;
-      [[5.4, -5.4], [5.4, 5.4], [-5.4, 5.4]].forEach(([x, z]) => {
-        const [cx, cy] = P(x, z);
-        g.beginPath();
-        g.arc(cx, cy, 0.14 * k, 0, Math.PI * 2);
-        g.stroke();
+      const BY = Object.fromEntries(levels.map((l) => [l.key, l]));
+      const VIAS = [
+        { names: ["contact"], from: "active", to: "m1" },
+        { names: ["pcontact"], from: "poly", to: "m1" },
+        { names: ["via1"], from: "m1", to: "m2" },
+        { names: ["via2"], from: "m2", to: "m3" },
+        { names: ["via3"], from: "m3", to: "m4" },
+        { names: ["via4"], from: "m4", to: "m5" }
+      ].map((v) => ({ ...v, ...inst(v.names, viaMat, 0.006) }));
+
+      const slab = new T.Mesh(new T.BoxGeometry(6.24, 0.24, 6.24).translate(0, -0.12, 0), new T.MeshStandardMaterial({ color: 0x0b0b0c, roughness: 0.28, metalness: 0.6, envMapIntensity: 0.9 }));
+      slab.castShadow = true;
+      slab.receiveShadow = true;
+      item.holder.add(slab);
+      const LIFT = 0.44;
+      item.holder.position.y = LIFT;
+      const gold = new T.MeshStandardMaterial({ color: 0xd4ad52, metalness: 0.96, roughness: 0.26, envMapIntensity: 1.1 });
+      const pkg = new T.Mesh(new T.BoxGeometry(7.6, 0.16, 7.6).translate(0, -0.32, 0), new T.MeshStandardMaterial({ color: 0x101012, roughness: 0.4, metalness: 0.35, envMapIntensity: 0.7 }));
+      pkg.castShadow = true;
+      pkg.receiveShadow = true;
+      item.holder.add(pkg);
+      const padsG = new T.Group();
+      const wires = new T.Group();
+      item.holder.add(padsG, wires);
+      const PADS = data.pads || [];
+      const padMesh = new T.InstancedMesh(boxGeo, gold, PADS.length);
+      const fingerMesh = new T.InstancedMesh(boxGeo, gold, PADS.length);
+      padMesh.frustumCulled = false;
+      fingerMesh.frustumCulled = false;
+      padMesh.castShadow = true;
+      fingerMesh.receiveShadow = true;
+      const m4p = new T.Matrix4();
+      const PKG_TOP = -0.24;
+      const EDGE = 3.0;
+      const TOP_A = levels[levels.length - 1].slot * 0.03 + levels[levels.length - 1].t;
+      PADS.forEach(([a, b, c, d], i) => {
+        const pw = Math.max((c - a) * S, 0.12);
+        const pd = Math.max((d - b) * S, 0.12);
+        const px = ((a + c) / 2 - W2) * S;
+        const pz = -((b + d) / 2 - H2) * S;
+        padMesh.setMatrixAt(i, m4p.makeScale(pw, 0.03, pd).setPosition(px, 0, pz));
+        const dists = [px + EDGE, EDGE - px, pz + EDGE, EDGE - pz];
+        const side = dists.indexOf(Math.min(...dists));
+        const n = [[-1, 0], [1, 0], [0, -1], [0, 1]][side];
+        const tx = n[0] === 0 ? px * 1.1 : n[0] * 3.42;
+        const tz = n[1] === 0 ? pz * 1.1 : n[1] * 3.42;
+        const fw = n[0] === 0 ? 0.1 : 0.28;
+        const fd = n[0] === 0 ? 0.28 : 0.1;
+        fingerMesh.setMatrixAt(i, m4p.makeScale(fw, 0.018, fd).setPosition(tx, PKG_TOP, tz));
+        const p0 = new T.Vector3(px, TOP_A + 0.03, pz);
+        const p3 = new T.Vector3(tx - n[0] * 0.08, PKG_TOP + 0.018, tz - n[1] * 0.08);
+        const curve = new T.CubicBezierCurve3(p0, new T.Vector3(px + n[0] * 0.08, TOP_A + 0.42, pz + n[1] * 0.08), new T.Vector3(p3.x - n[0] * 0.18, PKG_TOP + 0.36, p3.z - n[1] * 0.18), p3);
+        const wire = new T.Mesh(new T.TubeGeometry(curve, 18, 0.0075, 6, false), gold);
+        wires.add(wire);
       });
-      subTex.needsUpdate = true;
+      padMesh.instanceMatrix.needsUpdate = true;
+      fingerMesh.instanceMatrix.needsUpdate = true;
+      padsG.add(padMesh);
+      item.holder.add(fingerMesh);
+
+      const SPAN = levels[levels.length - 1].slot;
+      const gapAt = (e) => lerp(0.03, 0.5, ease(e));
+      item.apply = (e) => {
+        const gap = gapAt(e);
+        levels.forEach((L) => {
+          L.y = L.slot * gap;
+          L.g.position.y = L.y;
+          L.g.scale.y = L.t;
+        });
+        VIAS.forEach((V) => {
+          const lo = BY[V.from];
+          const hi = BY[V.to];
+          const h = Math.max(0.0004, Math.min(hi.y - (lo.y + lo.t), 0.05));
+          V.g.position.y = hi.y - h;
+          V.g.scale.y = h;
+        });
+        const top = BY.m5.y + BY.m5.t;
+        padsG.position.y = top;
+        wires.visible = e < 0.02;
+      };
+      item.bounds = (e) => new T.Box3(new T.Vector3(-3.82, LIFT - 0.4, -3.82), new T.Vector3(3.82, SPAN * gapAt(e) + 0.08 + LIFT, 3.82));
+      item.apply(0);
     }
 
-    function roundedRect(w, h, r) {
-      const s = new T.Shape();
-      const x = -w / 2;
-      const y = -h / 2;
-      s.moveTo(x + r, y);
-      s.lineTo(x + w - r, y);
-      s.quadraticCurveTo(x + w, y, x + w, y + r);
-      s.lineTo(x + w, y + h - r);
-      s.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-      s.lineTo(x + r, y + h);
-      s.quadraticCurveTo(x, y + h, x, y + h - r);
-      s.lineTo(x, y + r);
-      s.quadraticCurveTo(x, y, x + r, y);
-      return s;
-    }
-
-    const bt = 0.04;
-    const subGeo = new T.ExtrudeGeometry(roundedRect(SUB - 0.08, SUB - 0.08, 0.45), {
-      depth: 0.36, bevelEnabled: true, bevelThickness: bt, bevelSize: 0.04, bevelSegments: 3, curveSegments: 8
-    });
-    subGeo.rotateX(-Math.PI / 2);
-    const substrate = new T.Mesh(subGeo, [
-      new T.MeshStandardMaterial({ map: subTex, roughness: 0.62, metalness: 0.0, envMapIntensity: 0.35 }),
-      new T.MeshStandardMaterial({ color: 0x232325, roughness: 0.5, metalness: 0.1, envMapIntensity: 0.5 })
-    ]);
-    substrate.position.y = bt;
-    substrate.castShadow = true;
-    substrate.receiveShadow = true;
-    scene.add(substrate);
-    const SUB_TOP = 0.36 + 2 * bt;
-
-    const metal = new T.MeshStandardMaterial({ color: 0xc4c4c0, metalness: 1, roughness: 0.3, envMapIntensity: 1.1 });
-    const m4 = new T.Matrix4();
-    const edgeGeo = new T.BoxGeometry(0.18, 0.02, 0.5);
-    const padMetal = new T.MeshStandardMaterial({ color: 0x8f8f8b, metalness: 1, roughness: 0.42, envMapIntensity: 0.8 });
-    const edgePads = new T.InstancedMesh(edgeGeo, padMetal, contacts.length * 4);
-    let n = 0;
-    contacts.forEach((t) => {
-      edgePads.setMatrixAt(n++, m4.makeTranslation(t, SUB_TOP + 0.01, 5.55));
-      edgePads.setMatrixAt(n++, m4.makeTranslation(t, SUB_TOP + 0.01, -5.55));
-      edgePads.setMatrixAt(n++, m4.makeRotationY(Math.PI / 2).setPosition(5.55, SUB_TOP + 0.01, t));
-      edgePads.setMatrixAt(n++, m4.makeRotationY(Math.PI / 2).setPosition(-5.55, SUB_TOP + 0.01, t));
-    });
-    edgePads.instanceMatrix.needsUpdate = true;
-    scene.add(edgePads);
-
-    const underfill = new T.Mesh(new T.BoxGeometry(6.42, 0.05, 6.42), new T.MeshStandardMaterial({ color: 0x1f1f22, roughness: 0.9 }));
-    underfill.position.y = SUB_TOP + 0.025;
-    underfill.receiveShadow = true;
-    scene.add(underfill);
-
-    const DIE = 6.1;
-    const DIE_H = 0.2;
-    const dieCanvas = makeCanvas(1024, 1024);
-    const dieTex = makeTex(dieCanvas);
-    (function paintDie() {
-      const g = dieCanvas.getContext("2d");
-      const k = dieCanvas.width / DIE;
-      g.fillStyle = "#2b2b2e";
-      g.fillRect(0, 0, dieCanvas.width, dieCanvas.height);
-      g.strokeStyle = "#57575b";
-      g.lineWidth = 0.03 * k;
-      g.strokeRect(0.06 * k, 0.06 * k, (DIE - 0.12) * k, (DIE - 0.12) * k);
-      g.lineWidth = 0.01 * k;
-      g.strokeRect(0.11 * k, 0.11 * k, (DIE - 0.22) * k, (DIE - 0.22) * k);
-      dieTex.needsUpdate = true;
-    })();
-    const dieSide = new T.MeshStandardMaterial({ color: 0x2a2a2d, roughness: 0.3, metalness: 0.5 });
-    const dieTop = new T.MeshStandardMaterial({ map: dieTex, roughness: 0.26, metalness: 0.45, envMapIntensity: 1.0 });
-    const die = new T.Mesh(new T.BoxGeometry(DIE, DIE_H, DIE), [dieSide, dieSide, dieTop, dieSide, dieSide, dieSide]);
-    die.position.y = SUB_TOP + 0.05 + DIE_H / 2;
-    die.castShadow = true;
-    die.receiveShadow = true;
-    scene.add(die);
-    const DIE_TOP = SUB_TOP + 0.05 + DIE_H;
-
-    const bondPos = [];
-    for (let i = 0; i < 31; i++) bondPos.push(-2.7 + i * 0.18);
-    const bond = new T.InstancedMesh(new T.BoxGeometry(0.09, 0.014, 0.09), metal, bondPos.length * 4);
-    n = 0;
-    bondPos.forEach((t) => {
-      [[t, 2.9], [t, -2.9], [2.9, t], [-2.9, t]].forEach(([x, z]) => bond.setMatrixAt(n++, m4.makeTranslation(x, DIE_TOP + 0.007, z)));
-    });
-    bond.instanceMatrix.needsUpdate = true;
-    scene.add(bond);
-
-    const ceramic = new T.MeshStandardMaterial({ color: 0xcbcbc6, roughness: 0.75, envMapIntensity: 0.6 });
-    const capBody = new T.BoxGeometry(0.26, 0.2, 0.21);
-    const capEnd = new T.BoxGeometry(0.09, 0.212, 0.222);
-    const caps = [];
-    [-1.6, -0.8, 0, 0.8, 1.6].forEach((x) => { caps.push([x, 3.85, 0]); caps.push([x, -3.85, 0]); });
-    [-1.2, 0, 1.2].forEach((z) => { caps.push([3.85, z, 1]); caps.push([-3.85, z, 1]); });
-    caps.forEach(([x, z, rot]) => {
-      const grp = new T.Group();
-      const body = new T.Mesh(capBody, ceramic);
-      body.castShadow = true;
-      grp.add(body);
-      [-0.175, 0.175].forEach((dx) => {
-        const end = new T.Mesh(capEnd, metal);
-        end.position.x = dx;
-        end.castShadow = true;
-        grp.add(end);
-      });
-      grp.position.set(x, SUB_TOP + 0.106, z);
-      if (rot) grp.rotation.y = Math.PI / 2;
-      scene.add(grp);
-    });
-
-    const BLOCK_H = 0.12;
-    const COL_BASE = new T.Color(0xd6d6d2);
-    const COL_ON = new T.Color(0xffffff);
-    const COL_DIM = new T.Color(0x8c8c89);
-    const blocks = BLOCKS.map((b) => {
-      const w = b.x[1] - b.x[0];
-      const d = b.z[1] - b.z[0];
-      const canvasB = makeCanvas(Math.round(w * 200), Math.round(d * 200));
-      const tex = makeTex(canvasB);
-      const top = new T.MeshStandardMaterial({ map: tex, emissiveMap: tex, emissive: 0x000000, roughness: 0.62, metalness: 0.0, envMapIntensity: 0.55, color: COL_BASE.clone() });
-      const side = new T.MeshStandardMaterial({ color: COL_BASE.clone().multiplyScalar(0.7), roughness: 0.5, envMapIntensity: 0.5 });
-      const geo = new T.BoxGeometry(w, BLOCK_H, d);
-      const mesh = new T.Mesh(geo, [side, side, top, side, side, side]);
-      const y0 = DIE_TOP + BLOCK_H / 2;
-      mesh.position.set((b.x[0] + b.x[1]) / 2, y0, (b.z[0] + b.z[1]) / 2);
-      mesh.castShadow = true;
-      mesh.receiveShadow = true;
-      mesh.userData.id = b.id;
-      const edgeMat = new T.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0 });
-      const edges = new T.LineSegments(new T.EdgesGeometry(geo), edgeMat);
-      edges.scale.setScalar(1.002);
-      mesh.add(edges);
-      scene.add(mesh);
-      return { ...b, w, d, canvas: canvasB, tex, top, side, edgeMat, mesh, y0, lift: 0, tLift: 0, col: COL_BASE.clone(), tCol: COL_BASE.clone(), glow: 0, tGlow: 0, line: 0, tLine: 0 };
-    });
-    const pickables = blocks.map((b) => b.mesh);
-
-    function paintBlock(b) {
-      const PX = 200;
-      const w = b.canvas.width;
-      const h = b.canvas.height;
-      const g = b.canvas.getContext("2d");
-      g.clearRect(0, 0, w, h);
-      g.fillStyle = "#e7e7e3";
-      g.fillRect(0, 0, w, h);
-      const ink = "rgba(24, 24, 26, 0.06)";
-      g.fillStyle = ink;
-      if (b.pattern === "rows") {
-        const rh = 0.075 * PX;
-        for (let y = rh * 0.5; y < h; y += rh * 2) g.fillRect(0, y, w, rh);
-      } else if (b.pattern === "macro") {
-        const pad = 0.16 * PX;
-        const gap = 0.12 * PX;
-        const mw = (w - 2 * pad - gap) / 2;
-        const mh = (h - 2 * pad - gap) / 2;
-        for (let i = 0; i < 2; i++) for (let j = 0; j < 2; j++) {
-          const x = pad + i * (mw + gap);
-          const y = pad + j * (mh + gap);
-          g.fillStyle = ink;
-          for (let s = x; s < x + mw - 2; s += 0.05 * PX) g.fillRect(s, y, 0.022 * PX, mh);
-          g.strokeStyle = "rgba(24, 24, 26, 0.16)";
-          g.lineWidth = 2;
-          g.strokeRect(x, y, mw, mh);
+    function buildBoard(item, gltf) {
+      resetRoot(item);
+      const model = gltf.scene;
+      const top = model.children.length === 1 && model.children[0].children.length > 1 ? model.children[0] : model;
+      const isComp = (o) => /^[A-Z]{1,3}\d+[A-Z]?(_\d+)?$/.test(o.name || "");
+      item.holder.add(model);
+      model.updateMatrixWorld(true);
+      const all = new T.Box3().setFromObject(model);
+      const boardBox = new T.Box3();
+      top.children.forEach((c) => { if (!isComp(c)) boardBox.expandByObject(c); });
+      const ref = boardBox.isEmpty() ? all : boardBox;
+      const size = all.getSize(new T.Vector3());
+      const s = 7 / Math.max(size.x, size.z);
+      const cx = (all.min.x + all.max.x) / 2;
+      const cy = (ref.min.y + ref.max.y) / 2;
+      const cz = (all.min.z + all.max.z) / 2;
+      model.scale.setScalar(s);
+      model.position.set(-cx * s, -cy * s, -cz * s);
+      if (item.def.decals) {
+        const tl = new T.TextureLoader();
+        const aniso = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+        const dw = ref.max.x - ref.min.x;
+        const dd = ref.max.z - ref.min.z;
+        const decal = (url, y, back) => {
+          const tex = tl.load(url, () => { dirty = true; });
+          tex.encoding = T.sRGBEncoding;
+          tex.anisotropy = aniso;
+          const m = new T.MeshStandardMaterial({ map: tex, transparent: true, roughness: 0.55, metalness: 0.15, envMapIntensity: 0.4, side: back ? T.BackSide : T.FrontSide, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -4, polygonOffsetUnits: -4 });
+          const plane = new T.Mesh(new T.PlaneGeometry(dw, dd).rotateX(-Math.PI / 2), m);
+          plane.position.set((ref.min.x + ref.max.x) / 2, y, (ref.min.z + ref.max.z) / 2);
+          plane.receiveShadow = true;
+          model.add(plane);
+        };
+        decal(item.def.decals.top, ref.max.y + 1e-6, false);
+        decal(item.def.decals.bottom, ref.min.y - 1e-6, true);
+      }
+      const P = item.def.palette || {};
+      const seen = new Set();
+      model.traverse((o) => {
+        if (!o.isMesh) return;
+        const m = o.material;
+        o.receiveShadow = true;
+        o.castShadow = !(m && (m.map || m.transparent));
+        if (!m || !m.color || m.map || seen.has(m)) return;
+        seen.add(m);
+        const spec = P[m.name];
+        if (spec) {
+          m.color.setHex(spec.c);
+          if (spec.m !== undefined) m.metalness = spec.m;
+          if (spec.r !== undefined) m.roughness = spec.r;
+          if (spec.o !== undefined) {
+            m.transparent = spec.o < 1;
+            m.opacity = spec.o;
+          }
+          if (spec.e) {
+            m.emissive = new T.Color(spec.e);
+            m.emissiveIntensity = 1.2;
+          }
+        } else {
+          const hsl = {};
+          m.color.getHSL(hsl);
+          if (hsl.s > 0.12) m.color.setHSL(0, 0, Math.min(0.82, Math.max(0.08, hsl.l * 1.15)));
         }
-      } else if (b.pattern === "grid") {
-        const s = 0.17 * PX;
-        for (let x = s * 0.5; x < w - s * 0.5; x += s) for (let y = s * 0.5; y < h - s * 0.5; y += s) g.fillRect(x, y, s * 0.55, s * 0.55);
-      } else if (b.pattern === "io") {
-        const cw = 0.2 * PX;
-        for (let x = 0.12 * PX; x < w - cw; x += cw * 1.3) {
-          g.fillRect(x, 0.07 * PX, cw, 0.16 * PX);
-          g.fillRect(x, h - 0.23 * PX, cw, 0.16 * PX);
+        m.envMapIntensity = 0.9;
+      });
+      model.updateMatrixWorld(true);
+      const parentScale = top === model ? s : s * top.scale.y;
+      const comps = [];
+      top.children.forEach((c) => {
+        if (!isComp(c)) return;
+        const b = new T.Box3().setFromObject(c);
+        if (b.isEmpty()) return;
+        const mid = b.getCenter(new T.Vector3());
+        comps.push({ node: c, baseY: c.position.y, dir: mid.y >= 0 ? 1 : -1 });
+      });
+      const LIFT = 0.95;
+      const below = (cy - all.min.y) * s;
+      const above = (all.max.y - cy) * s;
+      const HY = LIFT + below + 0.3;
+      item.holder.position.y = HY;
+      item.apply = (e) => {
+        const k = ease(e) * LIFT;
+        comps.forEach((c) => { c.node.position.y = c.baseY + (c.dir * k) / parentScale; });
+      };
+      const hx = (size.x * s) / 2;
+      const hz = (size.z * s) / 2;
+      item.bounds = (e) => {
+        const k = ease(e) * LIFT;
+        return new T.Box3(new T.Vector3(-hx, HY - below - k, -hz), new T.Vector3(hx, HY + above + k, hz));
+      };
+      item.apply(0);
+    }
+
+    function buildPackage(item, data) {
+      resetRoot(item);
+      const [l0, l1, l2] = data.lo;
+      const [s0, s1, s2] = data.span;
+      const cx = l0 + s0 / 2;
+      const cy = l1 + s1 / 2;
+      const S = 7 / Math.max(s0, s1);
+      const std = (color, metalness, roughness, extra) => new T.MeshStandardMaterial({ color, metalness, roughness, envMapIntensity: 0.9, flatShading: true, ...extra });
+      const clear = (opacity) => new T.MeshPhysicalMaterial({ color: 0xdbe6ea, metalness: 0, roughness: 0.04, clearcoat: 1, clearcoatRoughness: 0.05, transparent: true, opacity, depthWrite: false, envMapIntensity: 1.7 });
+      const brushed = (() => {
+        const c = document.createElement("canvas");
+        c.width = 512;
+        c.height = 512;
+        const g = c.getContext("2d");
+        g.fillStyle = "#8a8a8a";
+        g.fillRect(0, 0, 512, 512);
+        let seed = 7;
+        const rnd = () => ((seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296);
+        for (let i = 0; i < 2600; i++) {
+          const y = rnd() * 512;
+          const v = Math.round(110 + rnd() * 70);
+          g.fillStyle = `rgba(${v}, ${v}, ${v}, ${0.18 + rnd() * 0.3})`;
+          g.fillRect(rnd() * 512 - 100, y, 120 + rnd() * 420, 0.6 + rnd() * 1.1);
+        }
+        const t = new T.CanvasTexture(c);
+        t.wrapS = T.RepeatWrapping;
+        t.wrapT = T.RepeatWrapping;
+        t.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+        return t;
+      })();
+      const MAT = {
+        titanium: std(0x7b7e83, 0.86, 0.48, { roughnessMap: brushed, bumpMap: brushed, bumpScale: 0.0025, envMapIntensity: 0.62 }),
+        ferrule: std(0x75787d, 0.82, 0.58, { envMapIntensity: 0.7 }),
+        header: clear(0.32),
+        contact: std(0xd8d8d4, 0.95, 0.28),
+        antenna: std(0xc9a24e, 0.95, 0.3),
+        alumina: std(0xecece8, 0.05, 0.55),
+        battery: std(0x3b3b3f, 0.65, 0.35),
+        pcb: std(0x1c1c1f, 0.15, 0.6),
+        chip: std(0x141416, 0.2, 0.45),
+        coil: std(0xb87a4b, 0.92, 0.3),
+        flex: std(0x707070, 0.3, 0.5),
+        passive: std(0xcfcfca, 0.05, 0.6),
+        ferrite: std(0x28282a, 0.2, 0.7),
+        gold: std(0xd4ad52, 0.96, 0.26)
+      };
+      const OFF = { ferrule: [0, 0, -10], can: [0, 0, 0], header: [18, 0, 0], cell: [0, 0, 10], lower: [0, 3, 18], upper: [0, 6, 27], inside: [0, 3, 18], coil: [0, 9, 36], cover: [0, 12, 45] };
+      const fold = data.fold;
+      let cellBounds = null;
+      const groupOf = (m) => {
+        if (m.group !== "inside" || !fold) return m.group;
+        if (m.name === "battery") return "cell";
+        if (/lower/.test(m.name)) return "lower";
+        if (/upper|hinge/.test(m.name)) return "upper";
+        const ref = m.name.startsWith("part_") ? m.name.slice(5) : "";
+        return fold.panel_of[ref] === "U" ? "upper" : "lower";
+      };
+      const groups = {};
+      const boxes = {};
+      const dec = (b64, wide) => {
+        const bin = atob(b64);
+        const u8 = new Uint8Array(bin.length);
+        for (let i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
+        return wide ? new Uint32Array(u8.buffer) : new Uint16Array(u8.buffer);
+      };
+      data.meshes.forEach((m) => {
+        if (m.name === "battery") {
+          const q0 = dec(m.pos, false);
+          const mn = [Infinity, Infinity, Infinity];
+          const mx = [-Infinity, -Infinity, -Infinity];
+          for (let i = 0; i < q0.length; i += 3) for (let j = 0; j < 3; j++) {
+            const v = data.lo[j] + (q0[i + j] / 65535) * data.span[j];
+            mn[j] = Math.min(mn[j], v);
+            mx[j] = Math.max(mx[j], v);
+          }
+          cellBounds = { mn, mx };
+          return;
+        }
+        const q = dec(m.pos, false);
+        const pos = new Float32Array(q.length);
+        for (let i = 0; i < q.length; i += 3) {
+          pos[i] = (l0 + (q[i] / 65535) * s0 - cx) * S;
+          pos[i + 1] = (l2 + (q[i + 2] / 65535) * s2) * S;
+          pos[i + 2] = -(l1 + (q[i + 1] / 65535) * s1 - cy) * S;
+        }
+        const geo = new T.BufferGeometry();
+        geo.setAttribute("position", new T.BufferAttribute(pos, 3));
+        geo.setIndex(new T.BufferAttribute(dec(m.idx, m.wide), 1));
+        geo.computeVertexNormals();
+        geo.computeBoundingBox();
+        const mat = m.name.startsWith("feedthrough_pin") || m.name.startsWith("contact_") ? MAT.gold : m.group === "ferrule" ? MAT.ferrule : MAT[m.mat] || MAT.passive;
+        if (mat === MAT.titanium) {
+          const uv = new Float32Array((pos.length / 3) * 2);
+          for (let i = 0, k = 0; i < pos.length; i += 3, k += 2) {
+            uv[k] = pos[i] * 0.9;
+            uv[k + 1] = pos[i + 2] * 0.9 + pos[i + 1] * 0.9;
+          }
+          geo.setAttribute("uv", new T.BufferAttribute(uv, 2));
+        }
+        const mesh = new T.Mesh(geo, mat);
+        mesh.castShadow = !mat.transparent;
+        mesh.receiveShadow = true;
+        if (mat.transparent) {
+          mesh.renderOrder = 2;
+          if (m.group === "header") mesh.add(new T.LineSegments(new T.EdgesGeometry(geo, 35), new T.LineBasicMaterial({ color: 0xe8f0f2, transparent: true, opacity: 0.35, depthWrite: false })));
+        }
+        const g = groupOf(m);
+        if (!groups[g]) {
+          groups[g] = new T.Group();
+          boxes[g] = new T.Box3();
+          item.holder.add(groups[g]);
+        }
+        groups[g].add(mesh);
+        boxes[g].union(geo.boundingBox);
+      });
+      if (cellBounds) {
+        const { mn, mx } = cellBounds;
+        const w = (mx[0] - mn[0]) * S;
+        const d = (mx[1] - mn[1]) * S;
+        const h = (mx[2] - mn[2]) * S;
+        const r = Math.min(w, d) * 0.14;
+        const rr = (ww, dd, rad) => {
+          const sh = new T.Shape();
+          const x = -ww / 2;
+          const y = -dd / 2;
+          sh.moveTo(x + rad, y);
+          sh.lineTo(x + ww - rad, y);
+          sh.quadraticCurveTo(x + ww, y, x + ww, y + rad);
+          sh.lineTo(x + ww, y + dd - rad);
+          sh.quadraticCurveTo(x + ww, y + dd, x + ww - rad, y + dd);
+          sh.lineTo(x + rad, y + dd);
+          sh.quadraticCurveTo(x, y + dd, x, y + dd - rad);
+          sh.lineTo(x, y + rad);
+          sh.quadraticCurveTo(x, y, x + rad, y);
+          return sh;
+        };
+        const bev = h * 0.12;
+        const body = new T.ExtrudeGeometry(rr(w - 2 * bev, d - 2 * bev, r), { depth: h - 2 * bev, bevelEnabled: true, bevelThickness: bev, bevelSize: bev, bevelSegments: 4, curveSegments: 10 });
+        body.rotateX(-Math.PI / 2);
+        body.translate(0, bev, 0);
+        const steel = new T.MeshStandardMaterial({ color: 0xa5a8ad, metalness: 0.92, roughness: 0.34, envMapIntensity: 1.1 });
+        const cell = new T.Group();
+        const bodyMesh = new T.Mesh(body, steel);
+        bodyMesh.castShadow = true;
+        bodyMesh.receiveShadow = true;
+        cell.add(bodyMesh);
+        const seamPts = rr(w - h * 0.5, d - h * 0.5, r * 0.8).getPoints(48).map((p) => new T.Vector3(p.x, h + 0.0015, -p.y));
+        cell.add(new T.LineLoop(new T.BufferGeometry().setFromPoints(seamPts), new T.LineBasicMaterial({ color: 0x5d6064 })));
+        const lc = document.createElement("canvas");
+        lc.width = 1024;
+        lc.height = Math.round(1024 * d / w);
+        const lg = lc.getContext("2d");
+        const L = lc.width;
+        const paintLabel = () => {
+          lg.clearRect(0, 0, lc.width, lc.height);
+          lg.fillStyle = "rgba(38, 40, 44, 0.92)";
+          lg.textBaseline = "middle";
+          lg.font = `600 ${Math.round(L * 0.07)}px "Chakra Petch", sans-serif`;
+          lg.fillText("LI-ION", L * 0.1, lc.height * 0.36);
+          lg.font = `500 ${Math.round(L * 0.045)}px "Share Tech Mono", monospace`;
+          lg.fillText("200 mAh · IMPLANT GRADE", L * 0.1, lc.height * 0.56);
+          lg.fillText("RESPNS REV C", L * 0.1, lc.height * 0.7);
+          lg.font = `600 ${Math.round(L * 0.08)}px "Chakra Petch", sans-serif`;
+          lg.fillText("+", L * 0.84, lc.height * 0.5);
+        };
+        paintLabel();
+        const ltex = new T.CanvasTexture(lc);
+        ltex.encoding = T.sRGBEncoding;
+        ltex.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+        const label = new T.Mesh(new T.PlaneGeometry(w * 0.86, d * 0.8).rotateX(-Math.PI / 2), new T.MeshStandardMaterial({ map: ltex, transparent: true, metalness: 0.6, roughness: 0.5, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -2 }));
+        label.position.y = h + 0.002;
+        cell.add(label);
+        const pinR = h * 0.09;
+        const washer = new T.Mesh(new T.CylinderGeometry(pinR * 2.4, pinR * 2.4, h * 0.05, 24), new T.MeshStandardMaterial({ color: 0xecebe6, roughness: 0.5 }));
+        washer.position.set(w * 0.42, h + h * 0.025, 0);
+        const pin = new T.Mesh(new T.CylinderGeometry(pinR, pinR, h * 0.09, 20), new T.MeshStandardMaterial({ color: 0xd8d8d4, metalness: 0.95, roughness: 0.25 }));
+        pin.position.set(w * 0.42, h + h * 0.045, 0);
+        cell.add(washer, pin);
+        cell.position.set(((mn[0] + mx[0]) / 2 - cx) * S, mn[2] * S, -((mn[1] + mx[1]) / 2 - cy) * S);
+        if (!groups.cell) {
+          groups.cell = new T.Group();
+          boxes.cell = new T.Box3();
+          item.holder.add(groups.cell);
+        }
+        groups.cell.add(cell);
+        boxes.cell.union(new T.Box3(new T.Vector3(cell.position.x - w / 2, cell.position.y, cell.position.z - d / 2), new T.Vector3(cell.position.x + w / 2, cell.position.y + h * 1.4, cell.position.z + d / 2)));
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => {
+          paintLabel();
+          ltex.needsUpdate = true;
+          dirty = true;
+        });
+      }
+      if (groups.can && boxes.can) {
+        const MARK = [[0, 0], [58, 100], [9, 78], [22, 77.5], [0, 36.5], [-22, 77.5], [-9, 78], [-58, 100]];
+        const PW = 36;
+        const PD = 18;
+        const lc = document.createElement("canvas");
+        lc.width = 2048;
+        lc.height = Math.round(2048 * PD / PW);
+        const lg = lc.getContext("2d");
+        const ink = "rgba(42, 44, 48, 0.9)";
+        const paintLid = () => {
+          const Wc = lc.width;
+          const Hc = lc.height;
+          lg.clearRect(0, 0, Wc, Hc);
+          lg.fillStyle = ink;
+          const x0 = Wc * 0.08;
+          const capH = Hc * 0.2;
+          const mk = capH / 100;
+          lg.beginPath();
+          MARK.forEach(([x, y], n) => (n ? lg.lineTo : lg.moveTo).call(lg, x0 + 58 * mk + x * mk, Hc * 0.22 + y * mk));
+          lg.closePath();
+          lg.fill();
+          lg.textBaseline = "alphabetic";
+          lg.font = `600 ${Math.round(capH * 1.32)}px "Chakra Petch", sans-serif`;
+          if ("letterSpacing" in lg) lg.letterSpacing = `${Math.round(capH * 0.12)}px`;
+          lg.fillText("RESPNS", x0 + 116 * mk + Wc * 0.03, Hc * 0.42);
+          lg.font = `400 ${Math.round(Hc * 0.075)}px "Share Tech Mono", monospace`;
+          if ("letterSpacing" in lg) lg.letterSpacing = `${Math.round(Hc * 0.012)}px`;
+          lg.fillText("CLOSED-LOOP NEUROSTIMULATOR", x0, Hc * 0.6);
+          lg.fillText("MODEL RC-1    REV C", x0, Hc * 0.72);
+          lg.fillText("SN RC-000127", x0, Hc * 0.84);
+          lg.fillRect(x0, Hc * 0.5, Wc * 0.84, Math.max(2, Hc * 0.006));
+        };
+        paintLid();
+        const ltex = new T.CanvasTexture(lc);
+        ltex.encoding = T.sRGBEncoding;
+        ltex.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+        const mark = new T.Mesh(new T.PlaneGeometry(PW * S, PD * S).rotateX(-Math.PI / 2), new T.MeshStandardMaterial({ map: ltex, transparent: true, metalness: 0.7, roughness: 0.62, envMapIntensity: 0.6, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -4, polygonOffsetUnits: -4 }));
+        mark.position.set((23 - cx) * S, 6.8 * S + 0.0008, -(14 - cy) * S);
+        groups.can.add(mark);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => {
+          paintLid();
+          ltex.needsUpdate = true;
+          dirty = true;
+        });
+      }
+      if (fold && item.def.decals) {
+        const tl = new T.TextureLoader();
+        const aniso = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+        const tex = {};
+        ["top", "bottom"].forEach((k) => {
+          tex[k] = tl.load(item.def.decals[k], () => { dirty = true; });
+          tex[k].encoding = T.sRGBEncoding;
+          tex[k].anisotropy = aniso;
+        });
+        const shape = new T.Shape(fold.outline.map(([x, y]) => new T.Vector2(x, y)));
+        const base = new T.ShapeGeometry(shape);
+        const face = (panel, z, side, back) => {
+          const [ru, rv] = fold.uv[panel];
+          const src = base.attributes.position;
+          const pos = new Float32Array(src.count * 3);
+          const uv = new Float32Array(src.count * 2);
+          for (let i = 0; i < src.count; i++) {
+            const x = src.getX(i);
+            const y = src.getY(i);
+            pos[i * 3] = (x - cx) * S;
+            pos[i * 3 + 1] = z * S;
+            pos[i * 3 + 2] = -(y - cy) * S;
+            uv[i * 2] = ru[0] * x + ru[1] * y + ru[2];
+            uv[i * 2 + 1] = rv[0] * x + rv[1] * y + rv[2];
+          }
+          const geo = new T.BufferGeometry();
+          geo.setAttribute("position", new T.BufferAttribute(pos, 3));
+          geo.setAttribute("uv", new T.BufferAttribute(uv, 2));
+          geo.setIndex(base.index.clone());
+          geo.computeVertexNormals();
+          const mat = new T.MeshStandardMaterial({ map: tex[side], transparent: true, roughness: 0.5, metalness: 0.25, envMapIntensity: 0.7, side: back ? T.BackSide : T.FrontSide, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -4, polygonOffsetUnits: -4 });
+          const mesh = new T.Mesh(geo, mat);
+          mesh.receiveShadow = true;
+          groups[panel === "L" ? "lower" : "upper"].add(mesh);
+        };
+        const t = fold.thickness;
+        if (groups.lower) {
+          face("L", fold.lower_z + t + 0.005, "top", false);
+          face("L", fold.lower_z - 0.005, "bottom", true);
+        }
+        if (groups.upper) {
+          face("U", fold.upper_z - 0.005, "top", true);
+          face("U", fold.upper_z + t + 0.005, "bottom", false);
         }
       }
-      g.strokeStyle = "rgba(24, 24, 26, 0.28)";
-      g.lineWidth = 3;
-      g.strokeRect(1.5, 1.5, w - 3, h - 3);
-
-      const label = b.name.toUpperCase();
-      const meta = META[b.id].toUpperCase();
-      let fs = 0.25 * PX;
-      g.font = `600 ${fs}px ${MONO}`;
-      const maxW = w - 0.5 * PX;
-      let lw = measureSpaced(g, label, fs * 0.16);
-      if (lw > maxW) {
-        fs *= maxW / lw;
-        g.font = `600 ${fs}px ${MONO}`;
-        lw = measureSpaced(g, label, fs * 0.16);
+      if (groups.coil) {
+        const turns = new T.Group();
+        const lineMat = new T.LineBasicMaterial({ color: 0xd39a66, transparent: true, opacity: 0.9 });
+        const O = [1.2, 1.2, 44.6, 26.8, 4.8];
+        const I = [3.2, 3.2, 42.6, 24.8, 2.8];
+        const z = 7.53;
+        for (let k = 0; k < 14; k++) {
+          const f = (k + 0.5) / 14;
+          const [x0, y0, x1, y1, r] = O.map((v, j) => v + (I[j] - v) * f);
+          const pts = [];
+          const corner = (ccx, ccy, a0) => {
+            for (let n = 0; n <= 8; n++) {
+              const t = ((a0 + (90 * n) / 8) * Math.PI) / 180;
+              pts.push(new T.Vector3((ccx + r * Math.cos(t) - cx) * S, z * S, -(ccy + r * Math.sin(t) - cy) * S));
+            }
+          };
+          corner(x1 - r, y0 + r, -90);
+          corner(x1 - r, y1 - r, 0);
+          corner(x0 + r, y1 - r, 90);
+          corner(x0 + r, y0 + r, 180);
+          pts.push(pts[0].clone());
+          turns.add(new T.Line(new T.BufferGeometry().setFromPoints(pts), lineMat));
+        }
+        groups.coil.add(turns);
       }
-      const ms = 0.105 * PX;
-      g.font = `500 ${ms}px ${MONO}`;
-      const mw2 = Math.min(measureSpaced(g, meta, ms * 0.12), maxW);
-      const cx = w / 2;
-      const cy = h / 2 - ms * 0.55;
-      const plateW = Math.max(lw, mw2) + 0.24 * PX;
-      const plateH = fs + ms * 2.2 + 0.12 * PX;
-      g.fillStyle = "#e7e7e3";
-      g.fillRect(cx - plateW / 2, cy - fs * 0.62 - 0.06 * PX, plateW, plateH);
-      g.textBaseline = "middle";
-      g.fillStyle = "#151517";
-      g.font = `600 ${fs}px ${MONO}`;
-      spaced(g, label, cx, cy, fs * 0.16);
-      g.fillStyle = "rgba(21, 21, 23, 0.62)";
-      g.font = `500 ${ms}px ${MONO}`;
-      spaced(g, meta, cx, cy + fs * 0.62 + ms * 0.9, ms * 0.12);
-
-      const ts = 0.11 * PX;
-      g.font = `600 ${ts}px ${MONO}`;
-      const tw = g.measureText(b.tag).width;
-      const m = 0.1 * PX;
-      g.fillStyle = "#1a1a1c";
-      g.fillRect(m, m, tw + ts * 0.9, ts * 1.6);
-      g.fillStyle = "#e7e7e3";
-      g.textAlign = "left";
-      g.fillText(b.tag, m + ts * 0.45, m + ts * 0.82);
-      b.tex.needsUpdate = true;
+      const LIFT = 10 * S + 0.35;
+      item.holder.position.y = LIFT;
+      const off = (g, e) => {
+        const o = OFF[g] || [0, 0, 0];
+        const k = ease(e);
+        return new T.Vector3(o[0] * S * k, o[2] * S * k, -o[1] * S * k);
+      };
+      item.apply = (e) => {
+        Object.keys(groups).forEach((g) => groups[g].position.copy(off(g, e)));
+      };
+      item.bounds = (e) => {
+        const b = new T.Box3();
+        Object.keys(boxes).forEach((g) => b.union(boxes[g].clone().translate(off(g, e))));
+        b.min.y += LIFT;
+        b.max.y += LIFT;
+        return b;
+      };
+      item.setTop = (on) => {
+        ["cover", "coil"].forEach((g) => { if (groups[g]) groups[g].visible = !on; });
+      };
+      item.apply(0);
     }
 
-    function paintAll() {
-      paintSubstrate();
-      blocks.forEach(paintBlock);
-      dirty = true;
+    const items = DEMOS.map(makeItem);
+    const loader = new T.GLTFLoader();
+    if (T.DRACOLoader) {
+      const draco = new T.DRACOLoader();
+      draco.setDecoderPath("https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/libs/draco/");
+      loader.setDRACOLoader(draco);
+    }
+    function load(item) {
+      if (item.loading) return item.loading;
+      item.loading = (item.def.kind === "die"
+        ? fetch(item.def.src).then((r) => r.json()).then((data) => buildDie(item, data))
+        : item.def.kind === "package"
+          ? fetch(item.def.src).then((r) => r.json()).then((data) => buildPackage(item, data))
+          : new Promise((res, rej) => loader.load(item.def.src, (g) => res(buildBoard(item, g)), undefined, rej))
+      ).then(() => {
+        item.ready = true;
+        shadowsDirty = true;
+        dirty = true;
+        layoutNow();
+        if (item.index === state.active) {
+          $("#loading").hidden = true;
+          retarget(true);
+        }
+      }).catch(() => {
+        if (item.index === state.active) $("#loading").textContent = "Could not load this demo";
+      });
+      return item.loading;
+    }
+
+    const SPREAD = 12.5;
+    const DEPTH = 1.5;
+    const BASE_THETA = 0.42;
+    const BASE_PHI = 1.0;
+    const RIGHT = new T.Vector3(Math.cos(BASE_THETA), 0, -Math.sin(BASE_THETA));
+    const BACK = new T.Vector3(-Math.sin(BASE_THETA), 0, -Math.cos(BASE_THETA));
+    let pos = state.active;
+    function layoutNow() {
+      if (typeof camera !== "undefined" && typeof controls !== "undefined") {
+        const th = Math.atan2(camera.position.x - controls.target.x, camera.position.z - controls.target.z);
+        RIGHT.set(Math.cos(th), 0, -Math.sin(th));
+        BACK.set(-Math.sin(th), 0, -Math.cos(th));
+      }
+      items.forEach((it) => {
+        const k = it.index - pos;
+        const a = Math.min(Math.abs(k), 1.4);
+        it.root.visible = it.ready && Math.abs(k) < 0.999;
+        it.root.position.copy(RIGHT).multiplyScalar(k * SPREAD).addScaledVector(BACK, a * DEPTH);
+        it.root.rotation.y = 0;
+        it.root.scale.setScalar(1 - Math.min(Math.abs(k), 1) * 0.25);
+      });
     }
 
     const controls = new T.OrbitControls(camera, canvas);
-    controls.target.copy(target);
     controls.enablePan = false;
     controls.enableDamping = !reduceMQ.matches;
     controls.dampingFactor = 0.08;
-    controls.rotateSpeed = 0.6;
-    controls.zoomSpeed = 0.8;
-    controls.minPolarAngle = 0.04;
-    controls.maxPolarAngle = 1.2;
+    controls.rotateSpeed = 0.55;
+    controls.zoomSpeed = 0.7;
+    controls.minPolarAngle = 0;
+    controls.maxPolarAngle = 1.42;
 
-    const corners = [];
-    [-6.1, 6.1].forEach((x) => [0, 0.9].forEach((y) => [-6.1, 6.1].forEach((z) => corners.push(new T.Vector3(x, y, z)))));
-    const probe = new T.PerspectiveCamera(30, 1, 0.5, 300);
-    const tmp = new T.Vector3();
-    const view = { phi: 0.8, theta: 0.3, fit: 30 };
+    let W = 1;
+    let H = 1;
+    let region = { x0: 0, x1: 1, y0: 0, y1: 1 };
+    let settle = 0;
+    const sph = new T.Spherical();
+    const tmpV = new T.Vector3();
+    const probeCam = new T.PerspectiveCamera(28, 1, 0.1, 400);
 
-    function dirFrom(phi, theta) {
-      return new T.Vector3().setFromSpherical(new T.Spherical(1, phi, theta));
-    }
-
-    function fitDistance(rw, rh, W, H, phi, theta) {
-      const dir = dirFrom(phi, theta);
-      probe.fov = camera.fov;
-      probe.aspect = W / H;
-      probe.updateProjectionMatrix();
+    function fitDistance(box, phi, theta) {
+      const rw = region.x1 - region.x0;
+      const rh = region.y1 - region.y0;
+      const dir = new T.Vector3().setFromSpherical(new T.Spherical(1, phi, theta));
+      const c = box.getCenter(new T.Vector3());
+      const pts = [];
+      [box.min.x, box.max.x].forEach((x) => [box.min.y, box.max.y].forEach((y) => [box.min.z, box.max.z].forEach((z) => pts.push(new T.Vector3(x, y, z)))));
+      probeCam.fov = camera.fov;
+      probeCam.aspect = W / H;
+      probeCam.updateProjectionMatrix();
+      const wide = !phoneMQ.matches;
+      const fx = wide ? 0.9 : 0.94;
       const ok = (d) => {
-        probe.position.copy(target).addScaledVector(dir, d);
-        probe.lookAt(target);
-        probe.updateMatrixWorld();
-        return corners.every((c) => {
-          tmp.copy(c).project(probe);
-          return Math.abs(tmp.x) * W / 2 <= rw / 2 && Math.abs(tmp.y) * H / 2 <= rh / 2;
+        probeCam.position.copy(c).addScaledVector(dir, d);
+        probeCam.lookAt(c);
+        probeCam.updateMatrixWorld();
+        return pts.every((p) => {
+          tmpV.copy(p).project(probeCam);
+          return Math.abs(tmpV.x) * W / 2 <= rw * 0.5 * fx && Math.abs(tmpV.y) * H / 2 <= rh * 0.5 * 0.92;
         });
       };
-      let lo = 4;
+      let lo = 2;
       let hi = 200;
-      for (let i = 0; i < 24; i++) {
+      for (let i = 0; i < 22; i++) {
         const mid = (lo + hi) / 2;
         if (ok(mid)) hi = mid;
         else lo = mid;
@@ -1279,226 +1119,234 @@ const RESUME = {
       return hi;
     }
 
-    let W = 1;
-    let H = 1;
-    function relayout(first) {
-      W = Math.max(1, canvas.clientWidth);
-      H = Math.max(1, canvas.clientHeight);
+    function activeBox(e) {
+      const it = items[state.active];
+      return it.bounds(e);
+    }
+
+    function retarget(snap) {
+      const it = items[state.active];
+      if (!it.ready) return;
+      const box = activeBox(it.te);
+      const c = box.getCenter(new T.Vector3());
+      sph.setFromVector3(tmpV.copy(camera.position).sub(controls.target));
+      const phi = snap ? (state.top ? 0.0001 : BASE_PHI) : sph.phi;
+      const theta = snap ? (state.top ? 0 : BASE_THETA) : sph.theta;
+      const r = fitDistance(box, phi, theta);
+      controls.minDistance = r * 0.45;
+      controls.maxDistance = r * 1.7;
+      if (snap) {
+        controls.target.copy(c);
+        camera.position.copy(c).add(tmpV.setFromSpherical(new T.Spherical(r, phi, theta)));
+        camera.lookAt(c);
+        settle = 0;
+      } else settle = 1.2;
+      dirty = true;
+    }
+
+    function relayout() {
+      const r = stage.getBoundingClientRect();
+      W = Math.max(1, r.width);
+      H = Math.max(1, r.height);
       renderer.setSize(W, H, false);
       camera.aspect = W / H;
-      const phone = phoneMQ.matches;
-      const topBottom = $("#topbar").getBoundingClientRect().bottom;
-      const pr = $("#panel").getBoundingClientRect();
-      let region;
-      if (phone) region = { x0: 12, x1: W - 12, y0: topBottom + 4, y1: pr.top - 40 };
-      else region = { x0: 24, x1: pr.left - 24, y0: topBottom + 8, y1: H - 84 };
-      const rw = Math.max(80, region.x1 - region.x0);
-      const rh = Math.max(80, region.y1 - region.y0);
+      const tb = document.querySelector(".topbar").getBoundingClientRect().bottom;
+      if (phoneMQ.matches) region = { x0: 0, x1: W, y0: Math.max(0, tb - r.top) + 4, y1: H - 56 };
+      else {
+        const pr = $("#panel").getBoundingClientRect();
+        const half = Math.max(160, Math.min(W / 2 - 16, pr.left - 24 - W / 2));
+        region = { x0: W / 2 - half, x1: W / 2 + half, y0: tb + 4, y1: H - 70 };
+      }
       const cx = (region.x0 + region.x1) / 2;
       const cy = (region.y0 + region.y1) / 2;
       camera.setViewOffset(W, H, W / 2 - cx, H / 2 - cy, W, H);
       camera.updateProjectionMatrix();
-      if (first) {
-        view.phi = phone ? 0.62 : 0.8;
-        view.theta = phone ? 0 : 0.3;
-      }
-      const sheetOpen = phone && document.body.classList.contains("sheet-open");
-      if (!sheetOpen) view.fit = fitDistance(rw, rh, W, H, view.phi, view.theta);
-      controls.minDistance = view.fit * 0.42;
-      controls.maxDistance = view.fit * 1.6;
-      if (first) {
-        camera.position.copy(target).addScaledVector(dirFrom(view.phi, view.theta), view.fit);
-        camera.lookAt(target);
-      }
+      retarget(false);
       dirty = true;
     }
 
-    let intro = null;
-    function startIntro() {
-      if (reduceMQ.matches) return;
-      intro = { t0: performance.now(), dur: 1500, from: { r: view.fit * 1.35, phi: view.phi - 0.22, theta: view.theta - 0.35 }, to: { r: view.fit, phi: view.phi, theta: view.theta } };
-      camera.position.copy(target).addScaledVector(dirFrom(intro.from.phi, intro.from.theta), intro.from.r);
-      camera.lookAt(target);
-    }
-    function stepIntro(now) {
-      if (!intro) return false;
-      const t = Math.min(1, (now - intro.t0) / intro.dur);
-      const e = 1 - Math.pow(1 - t, 3);
-      const lerp = (a, b) => a + (b - a) * e;
-      const r = lerp(intro.from.r, intro.to.r);
-      camera.position.copy(target).addScaledVector(dirFrom(lerp(intro.from.phi, intro.to.phi), lerp(intro.from.theta, intro.to.theta)), r);
-      camera.lookAt(target);
-      if (t >= 1) intro = null;
-      return true;
-    }
+
+    let interacting = false;
+    let aim = null;
+    let spin = 0;
+    const SPIN = (Math.PI * 2) / 60;
+    let lastUser = -1e9;
     controls.addEventListener("start", () => {
-      intro = null;
+      interacting = true;
+      settle = 0;
       canvas.classList.add("is-dragging");
     });
-    controls.addEventListener("end", () => canvas.classList.remove("is-dragging"));
+    controls.addEventListener("end", () => {
+      interacting = false;
+      lastUser = performance.now();
+      canvas.classList.remove("is-dragging");
+    });
     controls.addEventListener("change", () => { dirty = true; });
-
-    function sync() {
-      const shown = state.shown !== "overview" ? state.shown : null;
-      const anyActive = !!(state.hovered || shown);
-      blocks.forEach((b) => {
-        const active = b.id === state.hovered || b.id === shown;
-        b.tCol.copy(active ? COL_ON : anyActive ? COL_DIM : COL_BASE);
-        b.tLift = b.id === state.pinned ? 0.11 : active ? 0.07 : 0;
-        b.tGlow = active ? 0.22 : 0;
-        b.tLine = active ? 0.9 : 0;
-      });
-      canvas.classList.toggle("is-hot", !!state.hovered);
-      dirty = true;
-    }
-
-    function stepBlocks() {
-      const k = reduceMQ.matches ? 1 : 0.2;
-      let moving = false;
-      blocks.forEach((b) => {
-        const close = (a, t) => Math.abs(a - t) < 0.0005;
-        b.lift = close(b.lift, b.tLift) ? b.tLift : b.lift + (b.tLift - b.lift) * k;
-        b.glow = close(b.glow, b.tGlow) ? b.tGlow : b.glow + (b.tGlow - b.glow) * k;
-        b.line = close(b.line, b.tLine) ? b.tLine : b.line + (b.tLine - b.line) * k;
-        const dc = Math.abs(b.col.r - b.tCol.r) + Math.abs(b.col.g - b.tCol.g) + Math.abs(b.col.b - b.tCol.b);
-        if (dc < 0.002) b.col.copy(b.tCol);
-        else b.col.lerp(b.tCol, k);
-        if (b.lift !== b.tLift || b.glow !== b.tGlow || b.line !== b.tLine || dc >= 0.002) moving = true;
-        b.mesh.position.y = b.y0 + b.lift;
-        b.top.color.copy(b.col);
-        b.top.emissive.setScalar(b.glow);
-        b.side.color.copy(b.col).multiplyScalar(0.7);
-        b.edgeMat.opacity = b.line;
-      });
-      return moving;
-    }
 
     const ray = new T.Raycaster();
     const ndc = new T.Vector2();
-    function pick(x, y) {
-      const r = canvas.getBoundingClientRect();
-      ndc.set(((x - r.left) / r.width) * 2 - 1, -((y - r.top) / r.height) * 2 + 1);
-      ray.setFromCamera(ndc, camera);
-      const hit = ray.intersectObjects(pickables, false)[0];
-      return hit ? hit.object.userData.id : null;
-    }
-
     let down = null;
-    let hoverQueued = null;
-    canvas.addEventListener("pointerdown", (e) => {
-      down = { x: e.clientX, y: e.clientY, t: performance.now(), type: e.pointerType };
-    });
+    canvas.addEventListener("pointerdown", (e) => { down = { x: e.clientX, y: e.clientY, t: performance.now() }; });
     canvas.addEventListener("pointerup", (e) => {
       if (!down) return;
       const moved = Math.hypot(e.clientX - down.x, e.clientY - down.y);
-      const quick = performance.now() - down.t < 700;
-      const type = down.type;
+      const quick = performance.now() - down.t < 600;
       down = null;
       if (moved > 7 || !quick) return;
-      const id = pick(e.clientX, e.clientY);
-      if (id) {
-        if (type === "mouse" && state.pinned === id) unpin();
-        else pin(id);
-      } else if (type === "mouse" && state.pinned) {
-        unpin();
-      }
-    });
-    canvas.addEventListener("pointermove", (e) => {
-      if (e.pointerType !== "mouse" || (down && e.buttons)) return;
-      if (!hoverQueued) requestAnimationFrame(() => {
-        const ev = hoverQueued;
-        hoverQueued = null;
-        const id = pick(ev.clientX, ev.clientY);
-        if (id !== state.hovered) {
-          state.hovered = id;
-          refresh();
+      const r = canvas.getBoundingClientRect();
+      ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+      ray.setFromCamera(ndc, camera);
+      const act = items[state.active];
+      if (act.ready && !state.top) {
+        act.root.updateMatrixWorld(true);
+        if (ray.ray.intersectsBox(act.bounds(act.e).applyMatrix4(act.root.matrixWorld))) {
+          toggleExplode();
+          return;
         }
-      });
-      hoverQueued = e;
-    });
-    canvas.addEventListener("pointerleave", () => {
-      hoverQueued = null;
-      if (state.hovered) {
-        state.hovered = null;
-        refresh();
+      }
+      for (const it of items) {
+        if (it.index === state.active || !it.root.visible || !it.bounds) continue;
+        it.root.updateMatrixWorld(true);
+        if (ray.ray.intersectsBox(it.bounds(it.e).applyMatrix4(it.root.matrixWorld))) {
+          go(it.index);
+          return;
+        }
       }
     });
 
     let dirty = true;
+    let shadowsDirty = true;
     let raf = 0;
+    let last = 0;
     function frame(now) {
       raf = requestAnimationFrame(frame);
-      let moving = stepIntro(now);
+      const dt = last ? Math.min(0.05, (now - last) / 1000) : 0;
+      last = now;
+      let moving = false;
+      const reduce = reduceMQ.matches;
+      const goal = state.active;
+      if (pos !== goal) {
+        pos = reduce ? goal : pos + (goal - pos) * Math.min(1, dt * 5);
+        if (Math.abs(pos - goal) <= 0.0005) pos = goal;
+        layoutNow();
+        moving = true;
+        shadowsDirty = true;
+      }
+      items.forEach((it) => {
+        if (!it.ready) return;
+        if (it.setTop && it.topOn !== state.top) {
+          it.setTop(state.top);
+          it.topOn = state.top;
+          shadowsDirty = true;
+          moving = true;
+        }
+        it.te = it.index === goal && state.exploded && !state.top && Math.abs(pos - goal) < 0.15 ? 1 : 0;
+        if (it.e !== it.te) {
+          const step = dt * 0.9;
+          it.e = reduce ? it.te : it.te > it.e ? Math.min(it.te, it.e + step) : Math.max(it.te, it.e - step * 1.4);
+          it.apply(it.e);
+          moving = true;
+          shadowsDirty = true;
+          if (it.index === goal) settle = Math.max(settle, 0.4);
+        }
+      });
+      const act = items[goal];
+      const fovGoal = state.top ? 9 : 28;
+      if (Math.abs(camera.fov - fovGoal) > 0.01) {
+        camera.fov = reduce ? fovGoal : lerp(camera.fov, fovGoal, Math.min(1, dt * 4));
+        if (Math.abs(camera.fov - fovGoal) <= 0.01) camera.fov = fovGoal;
+        camera.updateProjectionMatrix();
+        settle = Math.max(settle, 0.2);
+        moving = true;
+      }
+      if (settle > 0 && act.ready) {
+        const box = activeBox(act.e);
+        const c = box.getCenter(new T.Vector3());
+        sph.setFromVector3(tmpV.copy(camera.position).sub(controls.target));
+        if (aim) {
+          const ka = reduce ? 1 : Math.min(1, dt * 4);
+          sph.phi = lerp(sph.phi, aim.phi, ka);
+          sph.theta = lerp(sph.theta, aim.theta, ka);
+          if (Math.abs(sph.phi - aim.phi) < 0.002 && Math.abs(sph.theta - aim.theta) < 0.002) aim = null;
+          else settle = Math.max(settle, 0.1);
+        }
+        const r = fitDistance(box, sph.phi, sph.theta);
+        controls.minDistance = r * 0.45;
+        controls.maxDistance = r * 1.7;
+        const k = reduce ? 1 : Math.min(1, dt * 4);
+        controls.target.lerp(c, k);
+        sph.radius = lerp(sph.radius, r, k);
+        camera.position.copy(controls.target).add(tmpV.setFromSpherical(sph));
+        settle -= dt;
+        moving = true;
+      }
+      if (!interacting && !reduce && !state.top && !aim && act.ready && now - lastUser > 2500) {
+        sph.setFromVector3(tmpV.copy(camera.position).sub(controls.target));
+        spin = Math.min(1, spin + dt * 0.5);
+        sph.theta += dt * SPIN * spin;
+        camera.position.copy(controls.target).add(tmpV.setFromSpherical(sph));
+        moving = true;
+      } else spin = 0;
       moving = controls.update() || moving;
-      moving = stepBlocks() || moving;
       if (moving || dirty) {
+        if (shadowsDirty) {
+          renderer.shadowMap.needsUpdate = true;
+          shadowsDirty = false;
+        }
         renderer.render(scene, camera);
         dirty = false;
       }
     }
     function start() {
       if (raf) return;
-      relayout(false);
-      dirty = true;
+      last = 0;
+      relayout();
       raf = requestAnimationFrame(frame);
     }
     function stop() {
       if (raf) cancelAnimationFrame(raf);
       raf = 0;
     }
+    window.addEventListener("resize", relayout);
+    document.addEventListener("visibilitychange", () => (document.hidden ? stop() : start()));
+    phoneMQ.addEventListener && phoneMQ.addEventListener("change", relayout);
 
-    paintAll();
-    if (document.fonts) {
-      document.fonts.load(`600 40px "IBM Plex Mono"`).then(paintAll, () => {});
-      document.fonts.load(`500 40px "IBM Plex Mono"`).then(paintAll, () => {});
-      document.fonts.ready.then(paintAll);
-      document.fonts.addEventListener && document.fonts.addEventListener("loadingdone", paintAll);
-    }
+    let wasTop = state.top;
+    controls.enableRotate = !state.top;
+    layoutNow();
+    load(items[state.active]).then(() => items.forEach(load));
 
-    window.addEventListener("resize", () => { if (raf) relayout(false); });
-    document.addEventListener("visibilitychange", () => {
-      if (document.hidden) stop();
-      else if (state.mode === "chip") start();
-    });
-
-    relayout(true);
-    startIntro();
-    renderer.render(scene, camera);
-
-    return { start, stop, sync, relayout: () => relayout(false) };
-  }
-
-  let failure = "";
-  try {
-    scene3d = init3D();
-  } catch (err) {
-    scene3d = null;
-    failure = "The 3D chip view could not start in this browser, so the résumé is shown as a list.";
+    return {
+      start,
+      sync() {
+        lastUser = -1e9;
+        controls.enableRotate = !state.top;
+        aim = state.top ? { phi: 0.0001, theta: 0 } : wasTop ? { phi: BASE_PHI, theta: BASE_THETA } : null;
+        wasTop = state.top;
+        settle = Math.max(settle, 1.5);
+        if (!items[state.active].ready) {
+          $("#loading").hidden = false;
+          $("#loading").textContent = "Loading";
+          load(items[state.active]);
+        } else {
+          $("#loading").hidden = true;
+          retarget(false);
+        }
+        dirty = true;
+      }
+    };
   }
 
   renderPanel();
-  updateHints();
-  if (scene3d) scene3d.sync();
-  fineMQ.addEventListener && fineMQ.addEventListener("change", updateHints);
-  phoneMQ.addEventListener && phoneMQ.addEventListener("change", () => {
-    document.body.classList.remove("sheet-open");
-    if (scene3d) scene3d.relayout();
-  });
-
-  if (!scene3d) {
-    list.innerHTML = listHTML(failure);
-    viewChip.disabled = true;
-    setMode("list");
-  } else {
-    const h = readHash();
-    let mode = "chip";
-    try { if (localStorage.getItem("am-view") === "list") mode = "list"; } catch (e) {}
-    if (h === "list") mode = "list";
-    if (BY_ID[h]) {
-      mode = "chip";
-      pin(h);
-    }
-    setMode(mode);
+  renderEnum();
+  renderX();
+  try {
+    scene3d = init3D();
+    scene3d.start();
+  } catch (err) {
+    $("#loading").hidden = true;
+    $("#loading").hidden = false;
+    $("#loading").innerHTML = `3D needs WebGL · <a href="resume.html">résumé</a>`;
   }
 })();
 </script>
