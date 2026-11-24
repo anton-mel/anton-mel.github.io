@@ -60,7 +60,26 @@ body.demo { overflow: hidden; height: 100%; }
 }
 .panel .tools { display: flex; flex: none; gap: 4px; }
 .tr { display: grid; justify-items: end; gap: 8px; }
-.mstep { display: none; }
+.navbtn {
+  appearance: none;
+  position: absolute;
+  z-index: 12;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line-2);
+  border-radius: 0;
+  background: rgba(10, 10, 11, 0.6);
+  color: var(--ink-2);
+  font: 400 13px/1 "Share Tech Mono", var(--font-mono);
+  cursor: pointer;
+}
+.navbtn:hover { color: var(--ink); border-color: var(--ink-3); }
+.navbtn.prev { left: max(28px, env(safe-area-inset-left, 0px)); }
+.navbtn.next { right: max(28px, env(safe-area-inset-right, 0px)); }
 .panel .tools button, a.stars {
   appearance: none;
   display: inline-flex;
@@ -168,7 +187,7 @@ body.demo { overflow: hidden; height: 100%; }
 .loading { position: fixed; z-index: 5; left: 0; right: 0; top: 44%; margin: 0; text-align: center; font: 500 11px/1 var(--font-mono); letter-spacing: 0.24em; text-transform: uppercase; color: var(--ink-3); pointer-events: none; }
 
 @media (min-width: 761px) {
-  .panel, .loading, .xview, .enum { zoom: 0.72; }
+  .panel, .loading, .xview, .enum, .navbtn { zoom: 0.72; }
 }
 
 @media (max-width: 760px) {
@@ -178,20 +197,9 @@ body.demo { overflow: hidden; height: 100%; }
   .stage { position: relative; flex: none; height: 56vh; height: 56dvh; min-height: 300px; background: radial-gradient(ellipse 110% 70% at 50% 45%, var(--bg-glow), var(--bg) 72%); }
   .loading { right: 0; top: 26vh; }
   .topbar { align-items: flex-start; }
-  .mstep { display: flex; gap: 6px; }
-  .mstep button {
-    appearance: none;
-    width: 44px;
-    height: 44px;
-    border: 1px solid var(--line-2);
-    border-radius: 0;
-    background: rgba(10, 10, 11, 0.6);
-    color: var(--ink-2);
-    font: 400 14px/1 "Share Tech Mono", var(--font-mono);
-    cursor: pointer;
-  }
-  .mstep button:active { color: var(--ink); border-color: var(--ink-3); }
-  .panel .tools button[data-step] { display: none; }
+  .navbtn { width: 44px; height: 44px; font-size: 15px; }
+  .navbtn.prev { left: max(12px, env(safe-area-inset-left, 0px)); }
+  .navbtn.next { right: max(12px, env(safe-area-inset-right, 0px)); }
   .xview { bottom: 12px; font-size: 11px; letter-spacing: 0.12em; white-space: nowrap; }
   .xview button { height: 44px; padding: 0 12px; }
   .panel {
@@ -212,6 +220,8 @@ body.demo { overflow: hidden; height: 100%; }
 <body class="demo">
 <div class="stage" id="stage">
   <canvas id="scene" role="img" aria-label="3D exploded views of hardware projects"></canvas>
+  <button type="button" class="navbtn prev" id="navPrev" data-step="-1" aria-label="Previous demo">&lt;</button>
+  <button type="button" class="navbtn next" id="navNext" data-step="1" aria-label="Next demo">&gt;</button>
   <div class="xview" id="xview" role="group" aria-label="View mode"><button type="button" data-x="0">Assembled</button><button type="button" data-x="1">Exploded</button><button type="button" data-x="top">Top 2D</button></div>
 </div>
 <p class="loading" id="loading">Loading</p>
@@ -225,7 +235,6 @@ body.demo { overflow: hidden; height: 100%; }
       <a href="./" aria-current="page">Chip</a>
       <a href="resume.html">List</a>
     </nav>
-    <div class="mstep" id="mstep"><button type="button" data-step="-1" aria-label="Previous demo">&lt;</button><button type="button" data-step="1" aria-label="Next demo">&gt;</button></div>
   </div>
 </header>
 
@@ -359,7 +368,7 @@ const DEMOS = [
   function renderPanel() {
     const d = DEMOS[state.active];
     $("#panel").innerHTML = `<div class="view">
-      <div class="head"><h2 class="ttl">${esc(d.title)}</h2><div class="tools">${DEMOS.length > 1 ? `<button type="button" data-step="-1" aria-label="Previous demo">&lt;</button><button type="button" data-step="1" aria-label="Next demo">&gt;</button>` : ""}<a class="stars" href="https://github.com/${d.repo}/stargazers" target="_blank" rel="noopener" aria-label="${d.stars || 0} GitHub stars">${STAR}<span>${(d.stars || 0).toLocaleString()}</span></a></div></div>
+      <div class="head"><h2 class="ttl">${esc(d.title)}</h2><div class="tools"><a class="stars" href="https://github.com/${d.repo}/stargazers" target="_blank" rel="noopener" aria-label="${d.stars || 0} GitHub stars">${STAR}<span>${(d.stars || 0).toLocaleString()}</span></a></div></div>
       <dl class="specs">${d.specs.map(([k, v]) => `<div><dt>${esc(k)}</dt><i aria-hidden="true"></i><dd title="${esc(v)}">${esc(v)}</dd></div>`).join("")}${d.credits ? `<div><dt>Contributors</dt><i aria-hidden="true"></i><dd>${d.credits.map(([n, u]) => `<a href="${u}" target="_blank" rel="noopener">${esc(n)}</a>`).join(" · ")}</dd></div>` : ""}</dl>
       <p class="repo"><a href="https://github.com/${d.repo}" target="_blank" rel="noopener">github.com/${esc(d.repo)} ↗</a></p>
     </div>`;
@@ -398,14 +407,7 @@ const DEMOS = [
     renderEnum();
     if (scene3d) scene3d.sync();
   }
-  $("#mstep").addEventListener("click", (e) => {
-    const b = e.target.closest("button[data-step]");
-    if (b) go(state.active + Number(b.dataset.step));
-  });
-  $("#panel").addEventListener("click", (e) => {
-    const b = e.target.closest("button[data-step]");
-    if (b) go(state.active + Number(b.dataset.step));
-  });
+  document.querySelectorAll(".navbtn").forEach((b) => b.addEventListener("click", () => go(state.active + Number(b.dataset.step))));
   function renderX() {
     document.querySelectorAll("#xview button").forEach((b) => {
       const on = b.dataset.x === "top" ? state.top : !state.top && (b.dataset.x === "1") === state.exploded;
