@@ -66,15 +66,15 @@ body.demo { overflow: hidden; height: 100%; }
   z-index: 12;
   top: 50%;
   transform: translateY(-50%);
-  width: 24px;
-  height: 24px;
+  width: 33px;
+  height: 33px;
   display: grid;
   place-items: center;
   border: 1px solid var(--line-2);
   border-radius: 0;
   background: rgba(10, 10, 11, 0.6);
   color: var(--ink-2);
-  font: 400 13px/1 "Share Tech Mono", var(--font-mono);
+  font: 400 14px/1 "Share Tech Mono", var(--font-mono);
   cursor: pointer;
 }
 .navbtn:hover { color: var(--ink); border-color: var(--ink-3); }
@@ -114,45 +114,6 @@ body.demo { overflow: hidden; height: 100%; }
 .repo { margin: 12px 0 0; font-size: 12px; letter-spacing: 0.04em; }
 .repo a { color: var(--ink-3); text-decoration: none; }
 .repo a:hover { color: var(--ink); }
-.enum {
-  position: fixed;
-  z-index: 15;
-  left: max(28px, env(safe-area-inset-left, 0px));
-  bottom: calc(env(safe-area-inset-bottom, 0px) + 24px);
-  display: grid;
-  gap: 0;
-  padding: 10px 0 10px;
-  border-left: 1px solid var(--line-2);
-  font: 400 12px/1 "Share Tech Mono", var(--font-mono);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-.enum::before, .enum::after { content: ""; position: absolute; left: -1px; width: 8px; height: 1px; background: var(--line-2); }
-.enum::before { top: 0; }
-.enum::after { bottom: 0; }
-.enum button {
-  appearance: none;
-  position: relative;
-  display: grid;
-  grid-template-columns: 2.6em auto;
-  align-items: center;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  color: var(--ink-3);
-  font: inherit;
-  letter-spacing: inherit;
-  text-transform: inherit;
-  text-align: left;
-  padding: 7px 14px;
-  cursor: pointer;
-}
-.enum button::before { content: ""; position: absolute; left: -1px; top: 4px; bottom: 4px; width: 2px; background: transparent; }
-.enum button:hover { color: var(--ink-2); }
-.enum button[aria-current="true"] { color: var(--ink); }
-.enum button[aria-current="true"]::before { background: var(--ink); }
-.enum .n { color: var(--ink-3); }
-.enum button[aria-current="true"] .n { color: var(--ink-2); }
 .xview {
   position: absolute;
   z-index: 12;
@@ -162,8 +123,8 @@ body.demo { overflow: hidden; height: 100%; }
   display: flex;
   border: 1px solid var(--line-2);
   background: rgba(10, 10, 11, 0.6);
-  font: 400 12px/1 "Share Tech Mono", var(--font-mono);
-  letter-spacing: 0.16em;
+  font: 400 11px/1 "Share Tech Mono", var(--font-mono);
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 .xview button {
@@ -178,7 +139,7 @@ body.demo { overflow: hidden; height: 100%; }
   padding: 9px 14px;
   cursor: pointer;
 }
-.xview button { white-space: nowrap; height: 24px; padding: 0 11px; }
+.xview button { white-space: nowrap; height: 33px; padding: 0 10px; }
 .xview button + button { border-left: 1px solid var(--line-2); }
 .xview button:hover { color: var(--ink); }
 .xview button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
@@ -187,13 +148,12 @@ body.demo { overflow: hidden; height: 100%; }
 .loading { position: fixed; z-index: 5; left: 0; right: 0; top: 44%; margin: 0; text-align: center; font: 500 11px/1 var(--font-mono); letter-spacing: 0.24em; text-transform: uppercase; color: var(--ink-3); pointer-events: none; }
 
 @media (min-width: 761px) {
-  .panel, .loading, .xview, .enum, .navbtn { zoom: 0.72; }
+  .panel, .loading { zoom: 0.72; }
 }
 
 @media (max-width: 760px) {
   html, body.demo { height: 100vh; height: 100dvh; overflow: hidden; overscroll-behavior: none; }
   body.demo { display: flex; flex-direction: column; }
-  .enum { display: none; }
   .stage { position: relative; flex: none; height: 56vh; height: 56dvh; min-height: 300px; background: radial-gradient(ellipse 110% 70% at 50% 45%, var(--bg-glow), var(--bg) 72%); }
   .loading { right: 0; top: 26vh; }
   .topbar { align-items: flex-start; }
@@ -234,7 +194,6 @@ body.demo { overflow: hidden; height: 100%; }
 
 
 <aside class="panel" id="panel" aria-label="Demo details" aria-live="polite"></aside>
-<nav class="enum" id="enum" aria-label="Demos"></nav>
 
 <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
@@ -374,13 +333,6 @@ const DEMOS = [
       st.setAttribute("aria-label", `${c} GitHub stars`);
     });
   }
-  function renderEnum() {
-    $("#enum").innerHTML = DEMOS.map((d, i) => `<button type="button" data-go="${i}" aria-current="${i === state.active}"><span class="n">${String(i + 1).padStart(2, "0")}</span><span>${esc(d.title)}</span></button>`).join("");
-  }
-  $("#enum").addEventListener("click", (e) => {
-    const b = e.target.closest("button[data-go]");
-    if (b) go(Number(b.dataset.go));
-  });
   function fitSpecs() {
     document.querySelectorAll("#panel .specs dd").forEach((dd) => {
       dd.style.fontSize = "";
@@ -398,7 +350,6 @@ const DEMOS = [
     const n = DEMOS.length;
     state.active = ((i % n) + n) % n;
     renderPanel();
-    renderEnum();
     if (scene3d) scene3d.sync();
   }
   document.querySelectorAll(".navbtn").forEach((b) => b.addEventListener("click", () => go(state.active + Number(b.dataset.step))));
@@ -1392,7 +1343,6 @@ const DEMOS = [
   }
 
   renderPanel();
-  renderEnum();
   renderX();
   try {
     scene3d = init3D();
