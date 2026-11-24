@@ -246,7 +246,8 @@ const DEMOS = [
     id: "bringup",
     kind: "board",
     src: "assets/bringup6502.glb",
-    decals: { top: "assets/bringup_top.webp", bottom: "assets/bringup_bottom.webp" },
+    decals: { top: "assets/bringup_top.webp?v=3", bottom: "assets/bringup_bottom.webp?v=3" },
+    decalFinish: { roughness: 0.85, metalness: 0, envMapIntensity: 0.2, color: 0xb4b4b4 },
     title: "6502 Bring-up",
     specs: [
       ["Board", "100 × 80 mm · 2 layers"],
@@ -262,7 +263,7 @@ const DEMOS = [
     repo: "anton-mel/6502MOS",
     stars: 14,
     palette: {
-      mat_30: { c: 0x1c1c1f, m: 0.15, r: 0.6 },
+      mat_30: { c: 0x9e9e9c, m: 0, r: 0.85 },
       mat_0: { c: 0x111113, m: 0.05, r: 0.55 },
       mat_1: { c: 0xd4ad52, m: 0.95, r: 0.28 },
       mat_2: { c: 0x2a2a2d, m: 0.2, r: 0.5 },
@@ -617,7 +618,7 @@ const DEMOS = [
           const tex = tl.load(url, () => { dirty = true; });
           tex.encoding = T.sRGBEncoding;
           tex.anisotropy = aniso;
-          const m = new T.MeshStandardMaterial({ map: tex, transparent: true, roughness: 0.55, metalness: 0.15, envMapIntensity: 0.4, side: back ? T.BackSide : T.FrontSide, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -4, polygonOffsetUnits: -4 });
+          const m = new T.MeshStandardMaterial({ map: tex, transparent: true, roughness: 0.55, metalness: 0.15, envMapIntensity: 0.4, ...(item.def.decalFinish || {}), side: back ? T.BackSide : T.FrontSide, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -4, polygonOffsetUnits: -4 });
           const plane = new T.Mesh(new T.PlaneGeometry(dw, dd).rotateX(-Math.PI / 2), m);
           plane.position.set((ref.min.x + ref.max.x) / 2, y, (ref.min.z + ref.max.z) / 2);
           plane.receiveShadow = true;
