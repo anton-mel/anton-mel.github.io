@@ -66,8 +66,8 @@ body.demo { overflow: hidden; height: 100%; }
   z-index: 12;
   top: 50%;
   transform: translateY(-50%);
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   display: grid;
   place-items: center;
   border: 1px solid var(--line-2);
@@ -85,7 +85,7 @@ body.demo { overflow: hidden; height: 100%; }
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  height: 24px;
+  height: 18px;
   border: 1px solid var(--line-2);
   border-radius: 0;
   background: transparent;
@@ -178,7 +178,7 @@ body.demo { overflow: hidden; height: 100%; }
   padding: 9px 14px;
   cursor: pointer;
 }
-.xview button { white-space: nowrap; }
+.xview button { white-space: nowrap; height: 24px; padding: 0 11px; }
 .xview button + button { border-left: 1px solid var(--line-2); }
 .xview button:hover { color: var(--ink); }
 .xview button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
@@ -197,11 +197,11 @@ body.demo { overflow: hidden; height: 100%; }
   .stage { position: relative; flex: none; height: 56vh; height: 56dvh; min-height: 300px; background: radial-gradient(ellipse 110% 70% at 50% 45%, var(--bg-glow), var(--bg) 72%); }
   .loading { right: 0; top: 26vh; }
   .topbar { align-items: flex-start; }
-  .navbtn { width: 44px; height: 44px; font-size: 15px; }
+  .navbtn { width: 33px; height: 33px; font-size: 14px; }
   .navbtn.prev { left: max(12px, env(safe-area-inset-left, 0px)); }
   .navbtn.next { right: max(12px, env(safe-area-inset-right, 0px)); }
   .xview { bottom: 12px; font-size: 11px; letter-spacing: 0.12em; white-space: nowrap; }
-  .xview button { height: 44px; padding: 0 12px; }
+  .xview button { height: 33px; padding: 0 10px; }
   .panel {
     position: static;
     flex: 1 1 auto;
@@ -229,12 +229,6 @@ body.demo { overflow: hidden; height: 100%; }
 <header class="topbar">
   <div class="brand" role="img" aria-label="Anton Melnychuk">
     <svg class="brand-mark" viewBox="-58 0 116 100" aria-hidden="true" focusable="false"><polygon points="0,0 58,100 9,78 22,77.5 0,36.5 -22,77.5 -9,78 -58,100"/></svg>
-  </div>
-  <div class="tr">
-    <nav class="viewswitch" aria-label="View">
-      <a href="./" aria-current="page">Chip</a>
-      <a href="resume.html">List</a>
-    </nav>
   </div>
 </header>
 
@@ -788,6 +782,7 @@ const DEMOS = [
       const OFF = { ferrule: [0, 0, -10], can: [0, 0, 0], header: [18, 0, 0], cell: [0, 0, 10], lower: [0, 3, 18], upper: [0, 6, 27], inside: [0, 3, 18], coil: [0, 9, 36], cover: [0, 12, 45] };
       const fold = data.fold;
       let cellBounds = null;
+      let canMark = null;
       const groupOf = (m) => {
         if (m.group !== "inside" || !fold) return m.group;
         if (m.name === "battery") return "cell";
@@ -967,9 +962,17 @@ const DEMOS = [
         const ltex = new T.CanvasTexture(lc);
         ltex.encoding = T.sRGBEncoding;
         ltex.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
-        const mark = new T.Mesh(new T.PlaneGeometry(PW * S, PD * S).rotateX(-Math.PI / 2), new T.MeshStandardMaterial({ map: ltex, transparent: true, metalness: 0.7, roughness: 0.62, envMapIntensity: 0.6, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -4, polygonOffsetUnits: -4 }));
+        const mark = new T.Mesh(new T.PlaneGeometry(PW * S, PD * S).rotateX(-Math.PI / 2), new T.MeshStandardMaterial({ map: ltex, transparent: true, metalness: 0.7, roughness: 0.62, envMapIntensity: 0.6, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1 }));
         mark.position.set((23 - cx) * S, 6.8 * S + 0.0008, -(14 - cy) * S);
+        mark.visible = false;
         groups.can.add(mark);
+        canMark = mark;
+        if (groups.coil) {
+          const onFerrite = mark.clone();
+          onFerrite.visible = true;
+          onFerrite.position.y = 7.0 * S + 0.0012;
+          groups.coil.add(onFerrite);
+        }
         if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => {
           paintLid();
           ltex.needsUpdate = true;
@@ -1065,6 +1068,7 @@ const DEMOS = [
       };
       item.setTop = (on) => {
         ["cover", "coil"].forEach((g) => { if (groups[g]) groups[g].visible = !on; });
+        if (canMark) canMark.visible = on;
       };
       item.apply(0);
     }
