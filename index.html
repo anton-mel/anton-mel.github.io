@@ -97,7 +97,7 @@ body.demo { overflow: hidden; height: 100%; }
 }
 .panel .tools button:hover, a.stars:hover { color: var(--ink); border-color: var(--ink-3); }
 .stars svg { width: 11px; height: 11px; fill: currentColor; }
-.specs { margin: 12px 0 0; padding: 0 0 12px; border-bottom: 1px solid var(--line-2); }
+.specs { margin: 12px 0 0; padding: 0; }
 .specs div { display: flex; align-items: baseline; gap: 8px; padding: 4px 0; }
 .specs dt {
   flex: none;
@@ -111,9 +111,6 @@ body.demo { overflow: hidden; height: 100%; }
 .specs dd { flex: 0 1 auto; min-width: 0; margin: 0; color: var(--ink); font-size: 13.5px; line-height: 1.5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .specs dd a { color: inherit; text-decoration: none; border-bottom: 1px dotted var(--ink-3); }
 .specs dd a:hover { border-bottom-color: var(--ink); }
-.repo { margin: 12px 0 0; font-size: 12px; letter-spacing: 0.04em; }
-.repo a { color: var(--ink-3); text-decoration: none; }
-.repo a:hover { color: var(--ink); }
 .xview {
   position: absolute;
   z-index: 12;
@@ -145,6 +142,43 @@ body.demo { overflow: hidden; height: 100%; }
 .xview button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
 .panel .view { animation: rise 0.25s ease-out; }
 @keyframes rise { from { opacity: 0.2; transform: translateY(4px); } }
+.actions {
+  position: absolute;
+  z-index: 12;
+  right: max(28px, env(safe-area-inset-right, 0px));
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 24px);
+  display: flex;
+  gap: 8px;
+}
+.actbtn {
+  appearance: none;
+  height: 33px;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 0 14px 0 12px;
+  border: 1px solid var(--line-2);
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink-2);
+  font: 400 11px/1 "Share Tech Mono", var(--font-mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.actbtn:hover { color: var(--ink); border-color: var(--ink-3); }
+.actbtn svg { flex: none; }
+.ghbtn svg { width: 14px; height: 14px; fill: currentColor; }
+.ytbtn { border-color: var(--ink); background: var(--ink); color: var(--bg); }
+.ytbtn svg { width: 18px; height: 13px; }
+.ytbtn svg rect { fill: currentColor; }
+.ytbtn svg path { fill: var(--ink); }
+.ytbtn:hover { background: var(--ink-2); border-color: var(--ink-2); color: var(--bg); }
+.ytbtn:hover svg path { fill: var(--ink-2); }
+.ytbtn:disabled { background: rgba(10, 10, 11, 0.6); border-color: var(--line-2); color: var(--ink-3); cursor: not-allowed; }
+.ytbtn:disabled svg path { fill: var(--bg); }
 .mocktag {
   position: absolute;
   left: 50%;
@@ -176,6 +210,9 @@ body.demo { overflow: hidden; height: 100%; }
   .navbtn { width: 33px; height: 33px; font-size: 14px; }
   .navbtn.prev { left: max(12px, env(safe-area-inset-left, 0px)); }
   .navbtn.next { right: max(12px, env(safe-area-inset-right, 0px)); }
+  .actions { right: max(12px, env(safe-area-inset-right, 0px)); bottom: 12px; flex-direction: column; gap: 6px; }
+  .actbtn { width: 33px; padding: 0; justify-content: center; }
+  .actbtn span { display: none; }
   .mocktag { top: calc(env(safe-area-inset-top, 0px) + 14px); height: 26px; font-size: 9.5px; letter-spacing: 0.16em; }
   .xview { bottom: 12px; font-size: 11px; letter-spacing: 0.12em; white-space: nowrap; }
   .xview button { height: 33px; padding: 0 10px; }
@@ -200,6 +237,7 @@ body.demo { overflow: hidden; height: 100%; }
   <button type="button" class="navbtn prev" id="navPrev" data-step="-1" aria-label="Previous demo">&lt;</button>
   <button type="button" class="navbtn next" id="navNext" data-step="1" aria-label="Next demo">&gt;</button>
   <div class="xview" id="xview" role="group" aria-label="View mode"><button type="button" data-x="0">Assembled</button><button type="button" data-x="1">Exploded</button><button type="button" data-x="top">Top 2D</button></div>
+  <div class="actions" id="actions"></div>
 </div>
 <p class="loading" id="loading">Loading</p>
 
@@ -237,6 +275,7 @@ const DEMOS = [
     ],
     repo: "anton-mel/6502MOS",
     stars: 14,
+    youtube: "",
     credits: [["pradyunSolai", "https://github.com/pradyunSolai"], ["Momozavur", "https://github.com/Momozavur"]]
   },
   {
@@ -258,7 +297,8 @@ const DEMOS = [
       ["BOM", "~$600 per prototype"]
     ],
     repo: "VerifyHalo/RESPNS-PCB",
-    stars: 0
+    stars: 0,
+    youtube: ""
   },
   {
     id: "bringup",
@@ -279,6 +319,7 @@ const DEMOS = [
     ],
     repo: "anton-mel/6502MOS",
     stars: 14,
+    youtube: "",
     palette: {
       mat_30: { c: 0x1c1c1f, m: 0.15, r: 0.6 },
       mat_0: { c: 0x111113, m: 0.05, r: 0.55 },
@@ -341,8 +382,12 @@ const DEMOS = [
     $("#panel").innerHTML = `<div class="view">
       <div class="head"><h2 class="ttl">${esc(d.title)}</h2><div class="tools"><a class="stars" href="https://github.com/${d.repo}/stargazers" target="_blank" rel="noopener" aria-label="${d.stars || 0} GitHub stars">${STAR}<span>${(d.stars || 0).toLocaleString()}</span></a></div></div>
       <dl class="specs">${d.specs.map(([k, v]) => `<div><dt>${esc(k)}</dt><i aria-hidden="true"></i><dd title="${esc(v)}">${esc(v)}</dd></div>`).join("")}${d.credits ? `<div><dt>Contributors</dt><i aria-hidden="true"></i><dd>${d.credits.map(([n, u]) => `<a href="${u}" target="_blank" rel="noopener">${esc(n)}</a>`).join(" · ")}</dd></div>` : ""}</dl>
-      <p class="repo"><a href="https://github.com/${d.repo}" target="_blank" rel="noopener">github.com/${esc(d.repo)} ↗</a></p>
     </div>`;
+    const ytIcon = `<svg viewBox="0 0 18 13" aria-hidden="true" focusable="false"><rect width="18" height="13" rx="3"/><path d="M7 3.5v6l5-3z"/></svg>`;
+    const ghIcon = `<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>`;
+    $("#actions").innerHTML = `<a class="actbtn ghbtn" href="https://github.com/${d.repo}" target="_blank" rel="noopener" aria-label="${esc(d.title)} on GitHub (${esc(d.repo)})">${ghIcon}<span>GitHub</span></a>` + (d.youtube
+      ? `<a class="actbtn ytbtn" href="${esc(d.youtube)}" target="_blank" rel="noopener" aria-label="Watch the real demo of ${esc(d.title)} on YouTube">${ytIcon}<span>Real demo</span></a>`
+      : `<button type="button" class="actbtn ytbtn" disabled title="Real demo video coming soon" aria-label="Real demo video of ${esc(d.title)} coming soon">${ytIcon}<span>Real demo · soon</span></button>`);
     fitSpecs();
     stars(d.repo).then((c) => {
       if (c === null || DEMOS[state.active] !== d) return;
